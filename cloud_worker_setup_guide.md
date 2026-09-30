@@ -21,8 +21,7 @@ Durch diesen Proxy bleibt dein **Gemini API-Key absolut geheim** auf den Cloudfl
 ## Schritt 3: Gemini API-Key als Secret hinterlegen
 1. Navigiere in deinem Worker zu **Settings** -> **Variables and Secrets**.
 2. Klicke unter **Secrets** auf **Add secret**.
-3. **Variable name:** `GEMINI_API_KEY`
-4. **Value:** Füge deinen echten Google Gemini API-Key ein.
+3. **Variable name:** `GROQ_API_KEY`. **Value:** Füge deinen echten groq API-Key ein.
 5. Klicke auf **Save and deploy**.
 
 ---

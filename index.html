@@ -27,11 +27,7 @@
       --font-mono: 'Share Tech Mono', monospace;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%;
@@ -45,12 +41,8 @@
       line-height: 1.3;
     }
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
+    body { display: flex; flex-direction: column; }
 
-    /* NASA Header */
     .nasa-header {
       flex-shrink: 0;
       width: 100%;
@@ -66,12 +58,7 @@
       box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .brand { display: flex; align-items: center; gap: 10px; }
     .brand h1 {
       font-family: var(--font-heading);
       font-size: clamp(0.85rem, 2vw, 1.05rem);
@@ -94,8 +81,7 @@
     }
 
     .pulse-dot {
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       background-color: var(--accent-green);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--accent-green);
@@ -117,20 +103,10 @@
       font-size: 0.72rem;
     }
 
-    .metric {
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
+    .metric { color: var(--text-muted); white-space: nowrap; }
+    .metric strong { color: var(--accent-cyan); }
 
-    .metric strong {
-      color: var(--accent-cyan);
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
+    .header-actions { display: flex; gap: 8px; }
     .btn-action {
       background: linear-gradient(135deg, rgba(0,240,255,0.2) 0%, rgba(0,102,255,0.2) 100%);
       border: 1px solid var(--accent-cyan);
@@ -143,34 +119,23 @@
       transition: all 0.3s ease;
       letter-spacing: 1px;
     }
-
     .btn-action:hover {
       background: var(--accent-cyan);
       color: #000;
       box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
     }
 
-    /* Dashboard Layout */
     .dashboard-container {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      position: relative;
-      width: 100%;
+      flex: 1; min-height: 0; display: flex; position: relative; width: 100%;
     }
 
     .sidebar {
-      width: 420px;
-      max-width: 45%;
+      width: 420px; max-width: 45%;
       background-color: var(--panel-bg);
       backdrop-filter: blur(14px);
       border-right: 1px solid var(--panel-border);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 10px;
-      overflow-y: auto;
-      z-index: 500;
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 10px; overflow-y: auto; z-index: 500;
       box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
     }
 
@@ -181,318 +146,109 @@
       padding: 9px 11px;
       transition: border-color 0.3s ease;
     }
-
-    .panel:hover {
-      border-color: rgba(0, 240, 255, 0.5);
-    }
+    .panel:hover { border-color: rgba(0, 240, 255, 0.5); }
 
     .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 7px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 7px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 5px;
     }
-
     .panel h2 {
-      font-family: var(--font-heading);
-      font-size: 0.78rem;
-      color: var(--accent-cyan);
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-family: var(--font-heading); font-size: 0.78rem;
+      color: var(--accent-cyan); letter-spacing: 1px; text-transform: uppercase;
     }
 
-    /* Controls & Toggles */
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
+    .control-group { display: flex; flex-direction: column; gap: 5px; }
     .toggle-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 9px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--panel-border);
-      color: var(--text-main);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      cursor: pointer;
-      border-radius: 3px;
-      transition: all 0.2s ease;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 9px; background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--panel-border); color: var(--text-main);
+      font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer;
+      border-radius: 3px; transition: all 0.2s ease;
     }
-
-    .toggle-btn:hover {
-      border-color: var(--accent-cyan);
-      background: rgba(0, 240, 255, 0.06);
-    }
-
+    .toggle-btn:hover { border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.06); }
     .toggle-btn.active {
-      border-color: var(--accent-cyan);
-      background: rgba(0, 240, 255, 0.15);
-      color: #fff;
-      box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
+      border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.15);
+      color: #fff; box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
     }
+    .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); }
 
-    .toggle-btn input[type="radio"], .toggle-btn input[type="checkbox"] {
-      accent-color: var(--accent-cyan);
-    }
+    .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.78rem; }
+    .data-label { color: var(--text-muted); }
+    .data-value { color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600; text-align: right; }
 
-    /* Data Rows */
-    .data-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-      font-size: 0.78rem;
-    }
-
-    .data-label {
-      color: var(--text-muted);
-    }
-
-    .data-value {
-      color: var(--accent-cyan);
-      font-family: var(--font-mono);
-      font-weight: 600;
-      text-align: right;
-    }
-
-    /* Search & Filter Bar */
-    .search-bar {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
+    .search-bar { display: flex; gap: 6px; margin-bottom: 8px; }
     .search-input {
-      flex: 1;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--panel-border);
-      border-radius: 3px;
-      padding: 5px 8px;
-      color: #fff;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
+      flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border);
+      border-radius: 3px; padding: 5px 8px; color: #fff; font-family: var(--font-mono); font-size: 0.72rem;
     }
+    .search-input:focus { outline: none; border-color: var(--accent-cyan); }
 
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent-cyan);
-    }
-
-    /* AI Copilot Panel Styles */
     .ai-chat-box {
-      height: 110px;
-      background: #020305;
-      border: 1px solid var(--panel-border);
-      border-radius: 4px;
-      padding: 6px;
-      overflow-y: auto;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 6px;
+      height: 110px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 4px; padding: 6px; overflow-y: auto; font-family: var(--font-mono);
+      font-size: 0.68rem; display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px;
     }
-
-    .ai-msg {
-      padding: 4px 6px;
-      border-radius: 3px;
-      line-height: 1.25;
-    }
-
-    .ai-msg.system {
-      background: rgba(0, 240, 255, 0.08);
-      border-left: 2px solid var(--accent-cyan);
-      color: var(--text-main);
-    }
-
-    .ai-msg.user {
-      background: rgba(255, 255, 255, 0.05);
-      border-left: 2px solid var(--accent-amber);
-      color: var(--accent-amber);
-      align-self: flex-end;
-      width: 90%;
-    }
-
-    .ai-input-row {
-      display: flex;
-      gap: 5px;
-    }
-
+    .ai-msg { padding: 4px 6px; border-radius: 3px; line-height: 1.25; }
+    .ai-msg.system { background: rgba(0, 240, 255, 0.08); border-left: 2px solid var(--accent-cyan); color: var(--text-main); }
+    .ai-msg.user { background: rgba(255, 255, 255, 0.05); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 90%; }
+    .ai-input-row { display: flex; gap: 5px; }
     .ai-input {
-      flex: 1;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--panel-border);
-      border-radius: 3px;
-      padding: 4px 6px;
-      color: #fff;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
+      flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--panel-border);
+      border-radius: 3px; padding: 4px 6px; color: #fff; font-family: var(--font-mono); font-size: 0.68rem;
     }
-
     .ai-btn {
-      background: var(--accent-cyan);
-      color: #000;
-      border: none;
-      padding: 4px 10px;
-      border-radius: 3px;
-      font-family: var(--font-heading);
-      font-size: 0.65rem;
-      cursor: pointer;
-      font-weight: bold;
+      background: var(--accent-cyan); color: #000; border: none; padding: 4px 10px;
+      border-radius: 3px; font-family: var(--font-heading); font-size: 0.65rem; cursor: pointer; font-weight: bold;
     }
 
-    /* Terminal Log */
     .terminal-log {
-      height: 85px;
-      background: #010204;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      padding: 5px;
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      color: var(--accent-green);
-      overflow-y: auto;
+      height: 85px; background: #010204; border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px; padding: 5px; font-family: var(--font-mono); font-size: 0.64rem;
+      color: var(--accent-green); overflow-y: auto;
     }
 
-    /* 3D Viewport */
     #viewport-3d-box {
-      width: 100%;
-      height: 130px;
-      background: #020305;
-      border: 1px solid var(--panel-border);
-      border-radius: 5px;
-      position: relative;
-      overflow: hidden;
+      width: 100%; height: 130px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 5px; position: relative; overflow: hidden;
     }
-
-    #canvas-3d {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
+    #canvas-3d { width: 100%; height: 100%; display: block; }
     .viewport-overlay {
-      position: absolute;
-      top: 6px;
-      left: 8px;
-      pointer-events: none;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--accent-cyan);
-      text-shadow: 0 0 4px #000;
+      position: absolute; top: 6px; left: 8px; pointer-events: none;
+      font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan); text-shadow: 0 0 4px #000;
     }
 
-    /* Map Viewport */
-    .map-viewport {
-      flex: 1;
-      height: 100%;
-      position: relative;
-      background: #020305;
-    }
+    .map-viewport { flex: 1; height: 100%; position: relative; background: #020305; }
+    #map { width: 100%; height: 100%; background: #020305; }
 
-    #map {
-      width: 100%;
-      height: 100%;
-      background: #020305;
-    }
-
-    /* Modal */
     .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(2, 4, 8, 0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 2000;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-card {
-      width: 650px;
-      max-width: 90%;
-      background: #0c121e;
-      border: 1px solid var(--accent-cyan);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
-      max-height: 85vh;
-      overflow-y: auto;
+      width: 650px; max-width: 90%; background: #0c121e; border: 1px solid var(--accent-cyan);
+      border-radius: 8px; padding: 20px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); max-height: 85vh; overflow-y: auto;
     }
-
     .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      border-bottom: 1px solid var(--panel-border);
-      padding-bottom: 6px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px; border-bottom: 1px solid var(--panel-border); padding-bottom: 6px;
     }
+    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1rem; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; }
+    .close-btn:hover { color: var(--accent-cyan); }
+    .modal-body { font-size: 0.85rem; line-height: 1.45; color: #c0cdf0; }
+    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.82rem; margin: 10px 0 4px 0; }
 
-    .modal-header h2 {
-      font-family: var(--font-heading);
-      color: var(--accent-cyan);
-      font-size: 1rem;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      color: var(--accent-cyan);
-    }
-
-    .modal-body {
-      font-size: 0.85rem;
-      line-height: 1.45;
-      color: #c0cdf0;
-    }
-
-    .modal-body h3 {
-      font-family: var(--font-heading);
-      color: var(--accent-amber);
-      font-size: 0.82rem;
-      margin: 10px 0 4px 0;
-    }
-
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #050810;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--panel-border);
-      border-radius: 3px;
-    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #050810; }
+    ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- NASA Header -->
   <header class="nasa-header">
     <div class="brand">
       <div class="pulse-dot"></div>
@@ -514,11 +270,10 @@
     </div>
   </header>
 
-  <!-- Dashboard Container -->
   <div class="dashboard-container">
     <aside class="sidebar">
       
-      <!-- Panel 1: SAR Layer Selection & Target Search -->
+      <!-- Panel 1 -->
       <section class="panel">
         <div class="panel-header">
           <h2>SAR Radar-Ebenen & Suche</h2>
@@ -543,7 +298,7 @@
         </div>
       </section>
 
-      <!-- Panel 2: Target Telemetry Details -->
+      <!-- Panel 2 -->
       <section class="panel">
         <div class="panel-header">
           <h2>CLPS Ziel-Messwerte</h2>
@@ -578,7 +333,7 @@
         </div>
       </section>
 
-      <!-- Panel 4: Interactive 3D Orbital Viewport -->
+      <!-- Panel 4 -->
       <section class="panel">
         <div class="panel-header">
           <h2>3D Orbitale Mondansicht</h2>
@@ -590,7 +345,7 @@
         </div>
       </section>
 
-      <!-- Panel 5: Mission Terminal & Event Log -->
+      <!-- Panel 5 -->
       <section class="panel">
         <div class="panel-header">
           <h2>Missions-Terminal (Syslog)</h2>
@@ -610,7 +365,6 @@
     </main>
   </div>
 
-  <!-- Modal Briefing -->
   <div class="modal-overlay" id="briefing-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -619,77 +373,47 @@
       </div>
       <div class="modal-body">
         <p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und verborgene Felsbrocken.</p>
-        
         <h3>1. Wassereis in dunklen Kratern</h3>
-        <p>Optische Kameras können nicht in Schattenkrater wie Shackleton oder Cabeus blicken. Synthetic Aperture Radar (SAR) nutzt die zirkulare Polarisationsrate (CPR > 1.0), um durch die Dunkelheit zu blicken und Vorkommen von Wassereis zu lokalisieren.</p>
-
-        <h3>2. Gefahrenkartierung für sichere Landungen</h3>
-        <p>Durch Auswertung der Rückstreu-Rauigkeit identifiziert das System steile Hänge (>10°) und Felsfelder, um ein Umkippen von CLPS-Landern beim Aufsetzen zu verhindern.</p>
-
-        <h3>3. Energie & Thermische Grenzen</h3>
-        <p>Lander benötigen sonnenbeschienene Kraterränder für Solarenergie, während Rover kurze Fahrten in die Kältefallen unternehmen. Unser Control Center optimiert die Standortwahl nach Energieausbeute und wissenschaftlichem Nutzen.</p>
+        <p>Optische Kameras können nicht in Schattenkrater blicken. SAR nutzt die zirkulare Polarisationsrate, um Vorkommen von Wassereis zu lokalisieren.</p>
+        <h3>2. Gefahrenkartierung</h3>
+        <p>Identifiziert steile Hänge (>10°) und Felsfelder, um ein Umkippen von Landern zu verhindern.</p>
       </div>
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
-    // Procedural Dynamic Lunar Surface Texture Generator
     function generateLunarBaseTexture() {
       const canvas = document.createElement('canvas');
-      canvas.width = 1024;
-      canvas.height = 512;
+      canvas.width = 1024; canvas.height = 512;
       const ctx = canvas.getContext('2d');
-
       ctx.fillStyle = '#0d111a';
       ctx.fillRect(0, 0, 1024, 512);
-
       for (let i = 0; i < 400; i++) {
-        const x = Math.random() * 1024;
-        const y = Math.random() * 512;
-        const radius = Math.random() * 32 + 3;
-        
+        const x = Math.random() * 1024, y = Math.random() * 512, radius = Math.random() * 32 + 3;
         const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
         grad.addColorStop(0, 'rgba(50, 65, 85, 0.45)');
         grad.addColorStop(0.6, 'rgba(25, 35, 50, 0.65)');
         grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
-        
         ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       }
-
       ctx.fillStyle = 'rgba(0, 240, 255, 0.18)';
-      ctx.beginPath();
-      ctx.arc(512, 450, 190, 0, Math.PI * 2);
-      ctx.fill();
-
+      ctx.beginPath(); ctx.arc(512, 450, 190, 0, Math.PI * 2); ctx.fill();
       return canvas.toDataURL();
     }
 
-    // Initialize Leaflet Map
     const map = L.map('map', {
-      center: [-60, 0],
-      zoom: 2,
-      crs: L.CRS.Simple,
-      minZoom: 1,
-      maxZoom: 5,
-      attributionControl: false
+      center: [-60, 0], zoom: 2, crs: L.CRS.Simple, minZoom: 1, maxZoom: 5, attributionControl: false
     });
 
     const mapBounds = [[-90, -180], [90, 180]];
     map.setMaxBounds([[-110, -200], [110, 200]]);
 
     const lunarSurfaceUrl = generateLunarBaseTexture();
-    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, {
-      opacity: 0.9,
-      interactive: false
-    }).addTo(map);
-
+    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, { opacity: 0.9, interactive: false }).addTo(map);
     map.fitBounds(mapBounds);
 
     map.on('mousemove', (e) => {
@@ -699,101 +423,32 @@
       document.getElementById('telemetry-elev').innerText = `${elev} m`;
     });
 
-    // Target Database
     const defaultTargets = [
-      {
-        id: "SAR-001",
-        name: "Shackleton Crater Rim",
-        lat: -89.9,
-        lng: 0.0,
-        ice_score: "89 %",
-        illumination_pct: "86 %",
-        slope_deg: "4.2° (Sicher)",
-        thermal_k: "40 K bis 220 K",
-        backscatter_db: "-2.4 dB",
-        clps_suitability: "HOCHER WERT (Wassereis + Energie)"
-      },
-      {
-        id: "SAR-002",
-        name: "Cabeus Crater Floor",
-        lat: -84.9,
-        lng: -35.5,
-        ice_score: "94 %",
-        illumination_pct: "12 %",
-        slope_deg: "8.5° (Achtung)",
-        thermal_k: "35 K bis 100 K",
-        backscatter_db: "-1.8 dB",
-        clps_suitability: "FORSCHUNGSZIEL (Kältefalle)"
-      },
-      {
-        id: "SAR-003",
-        name: "Madrigal Connecting Ridge",
-        lat: -88.7,
-        lng: -15.2,
-        ice_score: "62 %",
-        illumination_pct: "92 %",
-        slope_deg: "2.1° (Optimal)",
-        thermal_k: "110 K bis 240 K",
-        backscatter_db: "-5.1 dB",
-        clps_suitability: "OPTIMALER LANDESPUNKT"
-      },
-      {
-        id: "SAR-004",
-        name: "Tycho Crater",
-        lat: -43.3,
-        lng: -11.2,
-        ice_score: "14 %",
-        illumination_pct: "45 %",
-        slope_deg: "14.8° (Hohes Risiko)",
-        thermal_k: "100 K bis 380 K",
-        backscatter_db: "-12.1 dB",
-        clps_suitability: "GEFÄHRLICH (Steilhang)"
-      },
-      {
-        id: "SAR-005",
-        name: "Aristarchus Plateau",
-        lat: 23.7,
-        lng: -47.4,
-        ice_score: "31 %",
-        illumination_pct: "50 %",
-        slope_deg: "3.5° (Sicher)",
-        thermal_k: "120 K bis 390 K",
-        backscatter_db: "-8.5 dB",
-        clps_suitability: "MITTLERES RISIKO"
-      }
+      { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.9, lng: 0.0, ice_score: "89 %", illumination_pct: "86 %", slope_deg: "4.2° (Sicher)", thermal_k: "40 K bis 220 K", backscatter_db: "-2.4 dB", clps_suitability: "HOCHER WERT (Wassereis + Energie)" },
+      { id: "SAR-002", name: "Cabeus Crater Floor", lat: -84.9, lng: -35.5, ice_score: "94 %", illumination_pct: "12 %", slope_deg: "8.5° (Achtung)", thermal_k: "35 K bis 100 K", backscatter_db: "-1.8 dB", clps_suitability: "FORSCHUNGSZIEL (Kältefalle)" },
+      { id: "SAR-003", name: "Madrigal Connecting Ridge", lat: -88.7, lng: -15.2, ice_score: "62 %", illumination_pct: "92 %", slope_deg: "2.1° (Optimal)", thermal_k: "110 K bis 240 K", backscatter_db: "-5.1 dB", clps_suitability: "OPTIMALER LANDESPUNKT" },
+      { id: "SAR-004", name: "Tycho Crater", lat: -43.3, lng: -11.2, ice_score: "14 %", illumination_pct: "45 %", slope_deg: "14.8° (Hohes Risiko)", thermal_k: "100 K bis 380 K", backscatter_db: "-12.1 dB", clps_suitability: "GEFÄHRLICH (Steilhang)" },
+      { id: "SAR-005", name: "Aristarchus Plateau", lat: 23.7, lng: -47.4, ice_score: "31 %", illumination_pct: "50 %", slope_deg: "3.5° (Sicher)", thermal_k: "120 K bis 390 K", backscatter_db: "-8.5 dB", clps_suitability: "MITTLERES RISIKO" }
     ];
 
     let currentMarkers = [];
+    let selectedTargetData = defaultTargets[0];
 
     function loadTargets(targets) {
-      // Clear existing
       currentMarkers.forEach(m => map.removeLayer(m));
       currentMarkers = [];
-
       targets.forEach(target => {
         const marker = L.circleMarker([target.lat, target.lng], {
-          radius: 9,
-          fillColor: '#00f0ff',
-          color: '#ffffff',
-          weight: 2,
-          opacity: 1,
-          fillOpacity: 0.85
+          radius: 9, fillColor: '#00f0ff', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.85
         }).addTo(map);
-
-        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score}`, {
-          permanent: false,
-          direction: 'top'
-        });
-
-        marker.on('click', () => {
-          selectTarget(target);
-        });
-
+        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score}`, { permanent: false, direction: 'top' });
+        marker.on('click', () => selectTarget(target));
         currentMarkers.push(marker);
       });
     }
 
     function selectTarget(target) {
+      selectedTargetData = target;
       document.getElementById('target-id').innerText = target.id;
       document.getElementById('val-name').innerText = target.name;
       document.getElementById('val-coords').innerText = `${target.lat}°, ${target.lng}°`;
@@ -803,7 +458,6 @@
       document.getElementById('val-thermal').innerText = target.thermal_k;
       document.getElementById('val-backscatter').innerText = target.backscatter_db;
       document.getElementById('val-clps').innerText = target.clps_suitability;
-
       document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
       logTerminal(`Ziel ausgewählt: ${target.name} (${target.id})`);
       rotateMoonToTarget();
@@ -817,34 +471,24 @@
 
     loadTargets(defaultTargets);
 
-    // SAR Layer Event Listener
     document.querySelectorAll('input[name="sar-layer"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
         e.target.closest('.toggle-btn').classList.add('active');
-
         const val = e.target.value;
-        if (val === 'cpr') {
-          lunarOverlay.setOpacity(0.9);
-          logTerminal("SAR Layer gewechselt: Mini-RF CPR");
-        } else if (val === 'roughness') {
-          lunarOverlay.setOpacity(0.5);
-          logTerminal("SAR Layer gewechselt: Geländerauigkeit");
-        } else {
-          lunarOverlay.setOpacity(1.0);
-          logTerminal("SAR Layer gewechselt: Optische Basiskarte");
-        }
+        if (val === 'cpr') { lunarOverlay.setOpacity(0.9); logTerminal("SAR Layer gewechselt: Mini-RF CPR"); }
+        else if (val === 'roughness') { lunarOverlay.setOpacity(0.5); logTerminal("SAR Layer gewechselt: Geländerauigkeit"); }
+        else { lunarOverlay.setOpacity(1.0); logTerminal("SAR Layer gewechselt: Optische Basiskarte"); }
       });
     });
 
-    // Modal Control
     function toggleModal(show) {
       const modal = document.getElementById('briefing-modal');
       if (show) modal.classList.add('active');
       else modal.classList.remove('active');
     }
 
-    // AI Copilot Logic
+    // --- DYNAMISCHE KI-ANTWORT-LOGIK ---
     function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
@@ -852,20 +496,32 @@
 
       appendAiMsg(text, 'user');
       input.value = '';
-
       logTerminal(`KI-Abfrage gesendet: "${text}"`);
 
       setTimeout(() => {
-        let reply = "Analyse abgeschlossen: Die Region weist stabile thermische Bedingungen auf. Empfehle L-Band Radar-Feinscan zur Bestätigung von Oberflächeneis.";
-        const lowText = text.toLowerCase();
-        if (lowText.includes('eis') || lowText.includes('wasser')) {
-          reply = "SAR-CPR Signatur zeigt in diesem Sektor stark erhöhte Werte (>1.2), was auf verbackenes Wassereis im Regolith hindeutet.";
-        } else if (lowText.includes('sicher') || lowText.includes('landung')) {
-          reply = "Hangneigung liegt unter 5 Grad. Ausgezeichnete Bedingungen für CLPS-Landegeräte mit automatischem Hindernisausgleich.";
+        let reply = "Analyse läuft...";
+        const low = text.toLowerCase();
+        const cur = selectedTargetData;
+
+        if (low.includes('gut') || low.includes('schlecht') || low.includes('sicher') || low.includes('risiko')) {
+          if (cur.slope_deg.includes('Hohes Risiko') || cur.slope_deg.includes('Achtung')) {
+            reply = `Bewertung für ${cur.name}: Eher kritisch! Die Hangneigung beträgt ${cur.slope_deg}, was ein erhöhtes Risiko für die Landung darstellt. Vorsicht geboten!`;
+          } else {
+            reply = `Bewertung für ${cur.name}: Positiv! Die Werte sehen gut aus (${cur.slope_deg}, ${cur.illumination_pct} Sonne). Ausgezeichneter Standort für CLPS.`;
+          }
+        } else if (low.includes('eis') || low.includes('wasser')) {
+          reply = `Der aktuelle Sektor (${cur.name}) zeigt eine Eis-Wahrscheinlichkeit von ${cur.ice_score}. Der SAR-Rückstreuwert liegt bei ${cur.backscatter_db}.`;
+        } else if (low.includes('sonne') || low.includes('energie') || low.includes('licht')) {
+          reply = `Sonneneinstrahlung am gewählten Ziel (${cur.name}): ${cur.illumination_pct}. Optimal für Solarkollektoren und dauerhafte Stromversorgung.`;
+        } else if (low.includes('hallo') || low.includes('hi') || low.includes('hey')) {
+          reply = `Hallo Commander! Das System überwacht aktuell das Ziel "${cur.name}". Was möchtest du wissen?`;
+        } else {
+          reply = `Analyse für ${cur.name} (${cur.clps_suitability}): Thermik liegt bei ${cur.thermal_k}. Für diesen Bereich wird ein L-Band Radar-Feinscan empfohlen.`;
         }
+
         appendAiMsg(reply, 'system');
-        logTerminal("KI-Antwort empfangen und verarbeitet.");
-      }, 900);
+        logTerminal("KI-Antwort erfolgreich generiert.");
+      }, 700);
     }
 
     function appendAiMsg(text, sender) {
@@ -883,7 +539,7 @@
 
     function triggerScan() {
       logTerminal("Manueller SAR-Vollscan der Südpolregion gestartet...");
-      appendAiMsg("Vollständiger Radar-Scan gestartet. Alle Kraterränder werden auf Eisvorkommen und Felsstrukturen überprüft.", 'system');
+      appendAiMsg("Vollständiger Radar-Scan gestartet. Kraterprofile und Eisvorkommen werden aktualisiert.", 'system');
     }
 
     function logTerminal(msg) {
@@ -895,10 +551,8 @@
       term.scrollTop = term.scrollHeight;
     }
 
-    // Three.js 3D Orbital Viewport
     const container = document.getElementById('viewport-3d-box');
     const canvas = document.getElementById('canvas-3d');
-    
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 2.8;
@@ -907,11 +561,7 @@
     renderer.setSize(container.clientWidth, container.clientHeight);
 
     const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x8899aa,
-      wireframe: false,
-      shininess: 5
-    });
+    const material = new THREE.MeshPhongMaterial({ color: 0x8899aa, shininess: 5 });
     const moon = new THREE.Mesh(geometry, material);
     scene.add(moon);
 

@@ -1,221 +1,477 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANCING WITH SARS | NASA CLPS Mission Dashboard v3.8</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        :root {
-            --bg-deep: #050b14;
-            --panel-bg: rgba(8, 18, 35, 0.94);
-            --border-glow: rgba(0, 243, 255, 0.4);
-            --neon-cyan: #00f3ff;
-            --text-main: #c0d8ff;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
-        body { background-color: var(--bg-deep); color: var(--text-main); height: 100vh; display: grid; grid-template-rows: 50px 1fr; grid-template-columns: 380px 1fr; overflow: hidden; }
-        header { grid-column: 1 / -1; background: linear-gradient(90deg, #02060d, #0b1930); border-bottom: 1px solid var(--border-glow); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
-        .brand { display: flex; align-items: center; gap: 12px; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
-        .status-dot { width: 10px; height: 10px; background-color: #00ff66; border-radius: 50%; box-shadow: 0 0 8px #00ff66; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-        .telemetry-header { display: flex; gap: 20px; font-size: 0.85rem; color: #8ab4f8; }
-        .btn-briefing { background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 6px 14px; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
-        .btn-briefing:hover { background: var(--neon-cyan); color: var(--bg-deep); }
-        sidebar { background: var(--panel-bg); border-right: 1px solid var(--border-glow); display: flex; flex-direction: column; gap: 12px; padding: 12px; overflow-y: auto; z-index: 900; }
-        .panel-box { background: rgba(3, 10, 20, 0.8); border: 1px solid rgba(0, 243, 255, 0.2); padding: 10px; border-radius: 4px; }
-        .panel-title { font-size: 0.75rem; letter-spacing: 1.5px; color: var(--neon-cyan); margin-bottom: 8px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding-bottom: 4px; display: flex; justify-content: space-between; }
-        .layer-option { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; margin-bottom: 6px; cursor: pointer; }
-        .layer-option input { accent-color: var(--neon-cyan); cursor: pointer; }
-        .metric-row { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 5px; }
-        .metric-label { color: #7b9edb; }
-        .metric-val { color: #ffffff; font-weight: bold; }
-        .copilot-chat { height: 95px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 243, 255, 0.2); padding: 6px; font-size: 0.72rem; overflow-y: auto; margin-bottom: 6px; color: #a0d2ff; }
-        .copilot-input-area { display: flex; gap: 5px; }
-        .copilot-input-area input { flex: 1; background: rgba(0, 20, 40, 0.9); border: 1px solid var(--border-glow); color: #fff; padding: 5px; font-size: 0.72rem; outline: none; }
-        .copilot-input-area button { background: var(--neon-cyan); border: none; color: var(--bg-deep); padding: 0 10px; font-weight: bold; cursor: pointer; }
-        #globe-container { width: 100%; height: 120px; position: relative; background: radial-gradient(circle, #0a1930 0%, #02060d 100%); border: 1px solid rgba(0, 243, 255, 0.2); }
-        #map { width: 100%; height: 100%; background-color: var(--bg-deep); }
-        @media(max-width: 900px) { body { grid-template-columns: 1fr; grid-template-rows: 50px auto 1fr; } sidebar { max-height: 350px; } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dancing with SARS — Lunar SAR & CLPS Control Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --bg-dark: #04060a;
+      --panel-bg: rgba(13, 17, 26, 0.92);
+      --panel-border: rgba(0, 240, 255, 0.25);
+      --panel-border-bright: #00f0ff;
+      --accent-cyan: #00f0ff;
+      --accent-green: #00ff66;
+      --accent-amber: #ffb700;
+      --accent-red: #ff3366;
+      --text-main: #d1d9e6;
+      --text-muted: #6c7d93;
+      --font-heading: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    body { display: flex; flex-direction: column; }
+
+    .nasa-header {
+      flex-shrink: 0;
+      width: 100%;
+      padding: 10px 16px;
+      background: linear-gradient(180deg, #090e18 0%, #04060a 100%);
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.12);
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      letter-spacing: 1.5px;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .badge {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 3px 7px;
+      border-radius: 3px;
+    }
+
+    .pulse-dot {
+      width: 9px; height: 9px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .telemetry-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+    }
+
+    .metric { color: var(--text-muted); }
+    .metric strong { color: var(--accent-cyan); }
+
+    .btn-briefing {
+      background: linear-gradient(135deg, rgba(0,240,255,0.25) 0%, rgba(0,102,255,0.25) 100%);
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-briefing:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+    }
+
+    .dashboard-container {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      position: relative;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 380px;
+      max-width: 42%;
+      background-color: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+      overflow-y: auto;
+      z-index: 500;
+    }
+
+    .panel {
+      background: rgba(10, 15, 25, 0.8);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
+    }
+
+    .panel h2 {
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .control-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .toggle-btn.active {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.15);
+      color: #fff;
+    }
+
+    .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.82rem;
+    }
+
+    .data-label { color: var(--text-muted); }
+    .data-value { color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600; text-align: right; }
+
+    #viewport-3d-box {
+      width: 100%;
+      height: 140px;
+      background: #020305;
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #canvas-3d { width: 100%; height: 100%; display: block; }
+
+    .viewport-overlay {
+      position: absolute;
+      top: 8px; left: 10px;
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent-cyan);
+      text-shadow: 0 0 4px #000;
+    }
+
+    .map-viewport { flex: 1; height: 100%; position: relative; background: #020305; }
+    #map { width: 100%; height: 100%; background: #020305; }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      width: 620px; max-width: 90%; background: #0c121e;
+      border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 22px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.25);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--panel-border); padding-bottom: 8px; }
+    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.05rem; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+    .close-btn:hover { color: var(--accent-cyan); }
+    .modal-body { font-size: 0.9rem; line-height: 1.5; color: #c0cdf0; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050810; }
+    ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="brand"><div class="status-dot"></div>DANCING WITH SARS</div>
-        <div class="telemetry-header">
-            <span id="header-lat">LAT: -89.90°</span>
-            <span id="header-lng">LNG: 0.00°</span>
-            <span id="header-elev">ELEV: 1,840 m</span>
+
+  <header class="nasa-header">
+    <div class="brand">
+      <div class="pulse-dot"></div>
+      <h1>Dancing with SARS</h1>
+      <span class="badge">CLPS MISSION DASHBOARD</span>
+    </div>
+
+    <div class="telemetry-bar">
+      <div class="metric">LAT: <strong id="telemetry-lat">-89.90°</strong></div>
+      <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
+      <div class="metric">ELEV: <strong id="telemetry-elev">1,840 m</strong></div>
+      <div class="metric">SAR FREQ: <strong>L-Band (1.25 GHz)</strong></div>
+    </div>
+
+    <button class="btn-briefing" onclick="toggleModal(true)">CLPS BRIEFING</button>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      
+      <!-- SAR Layers -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>SAR Radar-Ebenen</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">MULTI-LAYER</span>
         </div>
-        <button class="btn-briefing" onclick="alert('CLPS Mission Briefing: Active SAR radar anomaly telemetry loaded from data.json.')">CLPS BRIEFING</button>
-    </header>
-
-    <sidebar>
-        <div class="panel-box">
-            <div class="panel-title"><span>SAR RADAR-EBENEN</span><span>MULTI-LAYER</span></div>
-            <label class="layer-option"><span>Mini-RF Polarisationsrate (CPR)</span><input type="checkbox" id="layer-cpr" checked onchange="toggleLayer('cpr')"></label>
-            <label class="layer-option"><span>Geländeneigung / Gefahrenkarte</span><input type="checkbox" id="layer-slope" checked onchange="toggleLayer('slope')"></label>
-            <label class="layer-option"><span>Diviner Thermalkarte (Kältefallen)</span><input type="checkbox" id="layer-thermal" checked onchange="toggleLayer('thermal')"></label>
+        <div class="control-group">
+          <label class="toggle-btn active">
+            <span>Mini-RF Polarisationsrate (CPR)</span>
+            <input type="radio" name="sar-layer" value="cpr" checked>
+          </label>
+          <label class="toggle-btn">
+            <span>Geländerauigkeit / Gefahrenkarte</span>
+            <input type="radio" name="sar-layer" value="roughness">
+          </label>
+          <label class="toggle-btn">
+            <span>Diviner Thermalkarte (Kältefallen)</span>
+            <input type="radio" name="sar-layer" value="thermal">
+          </label>
         </div>
+      </section>
 
-        <div class="panel-box">
-            <div class="panel-title"><span>CLPS ZIEL-MESSWERTE</span><span id="target-id">SAR-001</span></div>
-            <div class="metric-row"><span class="metric-label">Landeplatz:</span><span class="metric-val" id="m-name">Laden...</span></div>
-            <div class="metric-row"><span class="metric-label">Koordinaten:</span><span class="metric-val" id="m-coords">--</span></div>
-            <div class="metric-row"><span class="metric-label">Eis-Wahrscheinlichkeit:</span><span class="metric-val" id="m-ice">--</span></div>
-            <div class="metric-row"><span class="metric-label">Sonneneinstrahlung:</span><span class="metric-val" id="m-sun">--</span></div>
-            <div class="metric-row"><span class="metric-label">Hangneigung:</span><span class="metric-val" id="m-slope">--</span></div>
-            <div class="metric-row"><span class="metric-label">Temperaturbereich:</span><span class="metric-val" id="m-temp">--</span></div>
+      <!-- Target Telemetry -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>CLPS Ziel-Messwerte</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
         </div>
-
-        <div class="panel-box">
-            <div class="panel-title"><span>GEMINI MISSION COPILOT</span><span>SECURE PROXY</span></div>
-            <div class="copilot-chat" id="copilot-output">[SYSTEM ONLINE] Ask questions regarding SAR data or landing safety...</div>
-            <div class="copilot-input-area">
-                <input type="text" id="copilot-prompt" placeholder="Ask Copilot..." onkeydown="if(event.key==='Enter') sendToCopilot()">
-                <button onclick="sendToCopilot()">SEND</button>
-            </div>
+        <div id="target-info-content">
+          <div class="data-row"><span class="data-label">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
+          <div class="data-row"><span class="data-label">Koordinaten:</span><span class="data-value" id="val-coords">-89.90°, 0.00°</span></div>
+          <div class="data-row"><span class="data-label">Eis-Wahrscheinlichkeit:</span><span class="data-value" style="color: var(--accent-green);" id="val-ice">89 %</span></div>
+          <div class="data-row"><span class="data-label">Sonneneinstrahlung:</span><span class="data-value" id="val-solar">86 %</span></div>
+          <div class="data-row"><span class="data-label">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
+          <div class="data-row"><span class="data-label">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
+          <div class="data-row"><span class="data-label">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
         </div>
+      </section>
 
-        <div class="panel-box" style="flex:1; min-height: 140px; display:flex; flex-direction:column;">
-            <div class="panel-title"><span>3D ORBITALE MONDANSICHT</span><span>THREE.JS</span></div>
-            <div id="globe-container"></div>
+      <!-- 3D Orbital Viewport -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>3D Orbitale Mondansicht</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS</span>
         </div>
-    </sidebar>
+        <div id="viewport-3d-box">
+          <canvas id="canvas-3d"></canvas>
+          <div class="viewport-overlay" id="3d-status">LUNAR ORBIT: LOCKED</div>
+        </div>
+      </section>
 
-    <div id="map"></div>
+    </aside>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        const WORKER_URL = "https://nexus.elias256.workers.dev/";
+    <main class="map-viewport">
+      <div id="map"></div>
+    </main>
+  </div>
 
-        const map = L.map('map', { center: [-89.2, 10.0], zoom: 5, minZoom: 2, maxZoom: 12, attributionControl: false });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd' }).addTo(map);
+  <div class="modal-overlay" id="briefing-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>CLPS Mission & SAR System-Briefing</h2>
+        <button class="close-btn" onclick="toggleModal(false)">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Commercial Lunar Payload Services (CLPS) Control Center: Analyse von SAR-Radardaten zur Detektion von Wassereis und Gefahrenkartierung am lunaren Südpol.</p>
+      </div>
+    </div>
+  </div>
 
-        const layerCprGroup = L.layerGroup().addTo(map);
-        const layerSlopeGroup = L.layerGroup().addTo(map);
-        const layerThermalGroup = L.layerGroup().addTo(map);
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-        let targets = [];
+  <script>
+    // Leaflet Map Initialization
+    const map = L.map('map', {
+      center: [-60, 0],
+      zoom: 2,
+      crs: L.CRS.Simple,
+      minZoom: 1,
+      maxZoom: 5,
+      attributionControl: false
+    });
 
-        // Fetch Real NASA/CLPS Data from data.json
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                targets = data.targets;
-                initMapMarkers();
-                if(targets.length > 0) selectTarget(0);
-            })
-            .catch(err => console.error("Fehler beim Laden der data.json:", err));
+    const mapBounds = [[-90, -180], [90, 180]];
+    map.setMaxBounds([[-110, -200], [110, 200]]);
 
-        function initMapMarkers() {
-            targets.forEach((t, idx) => {
-                const cprCircle = L.circle([t.lat, t.lng], { color: '#00f3ff', fillColor: '#00f3ff', fillOpacity: 0.12, radius: 35000, weight: 1.5, dashArray: '4, 6' });
-                layerCprGroup.addLayer(cprCircle);
+    // Canvas Texture Generator for Map
+    function generateLunarBaseTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024; canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#0d111a';
+      ctx.fillRect(0, 0, 1024, 512);
+      for (let i = 0; i < 350; i++) {
+        const x = Math.random() * 1024, y = Math.random() * 512, radius = Math.random() * 30 + 3;
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        grad.addColorStop(0, 'rgba(50, 65, 85, 0.4)');
+        grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+      }
+      return canvas.toDataURL();
+    }
 
-                const slopeCircle = L.circle([t.lat, t.lng], { color: '#ffaa00', fillColor: '#ffaa00', fillOpacity: 0.08, radius: 20000, weight: 1 });
-                layerSlopeGroup.addLayer(slopeCircle);
+    const lunarOverlay = L.imageOverlay(generateLunarBaseTexture(), mapBounds, { opacity: 0.9, interactive: false }).addTo(map);
+    map.fitBounds(mapBounds);
 
-                const thermalCircle = L.circle([t.lat, t.lng], { color: '#0088ff', fillColor: '#0055ff', fillOpacity: 0.15, radius: 45000, weight: 1, dashArray: '2, 4' });
-                layerThermalGroup.addLayer(thermalCircle);
+    map.on('mousemove', (e) => {
+      document.getElementById('telemetry-lat').innerText = `${e.latlng.lat.toFixed(2)}°`;
+      document.getElementById('telemetry-lng').innerText = `${e.latlng.lng.toFixed(2)}°`;
+    });
 
-                const customIcon = L.divIcon({
-                    className: 'custom-pin',
-                    html: `<div style="width:16px;height:16px;background:#00f3ff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 12px #00f3ff;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:4px;height:4px;background:#050b14;border-radius:50%;"></div></div>`,
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8]
-                });
+    // Load Targets from data.json (with fallback array)
+    const fallbackTargets = [
+      { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.9, lng: 0.0, ice_score: "89 %", illumination_pct: "86 %", slope_deg: "4.2° (Sicher)", thermal_k: "40 K bis 220 K", backscatter_db: "-2.4 dB" },
+      { id: "SAR-002", name: "Faustini Rim A", lat: -87.35, lng: 42.10, ice_score: "76 %", illumination_pct: "71 %", slope_deg: "8.1° (Sicher)", thermal_k: "35 K bis 190 K", backscatter_db: "-3.1 dB" },
+      { id: "SAR-003", name: "Shoemaker Ridge", lat: -88.10, lng: -35.40, ice_score: "82 %", illumination_pct: "64 %", slope_deg: "12.5° (Moderat)", thermal_k: "30 K bis 210 K", backscatter_db: "-4.0 dB" },
+      { id: "SAR-004", name: "Amundsen Crater Edge", lat: -84.50, lng: 85.60, ice_score: "68 %", illumination_pct: "91 %", slope_deg: "14.8° (Steilhang)", thermal_k: "50 K bis 240 K", backscatter_db: "-5.2 dB" }
+    ];
 
-                const marker = L.marker([t.lat, t.lng], {icon: customIcon});
-                marker.bindPopup(`<div style="color:#050b14; font-weight:bold;">${t.name}</div><div style="font-size:11px;">Klicken zum Aktivieren der Telemetrie.</div>`);
-                marker.on('click', () => selectTarget(idx));
-                layerCprGroup.addLayer(marker);
-            });
-        }
+    function renderMarkers(targets) {
+      targets.forEach(target => {
+        const marker = L.circleMarker([target.lat, target.lng], {
+          radius: 8,
+          fillColor: '#00f0ff',
+          color: '#ffffff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.9
+        }).addTo(map);
 
-        function selectTarget(idx) {
-            const t = targets[idx];
-            document.getElementById('target-id').innerText = t.id;
-            document.getElementById('m-name').innerText = t.name;
-            document.getElementById('m-coords').innerText = `${t.lat}°, ${t.lng}°`;
-            document.getElementById('m-ice').innerText = t.ice;
-            document.getElementById('m-sun').innerText = t.sun;
-            document.getElementById('m-slope').innerText = t.slope;
-            document.getElementById('m-temp').innerText = t.temp;
-            document.getElementById('header-lat').innerText = `LAT: ${t.lat}°`;
-            document.getElementById('header-lng').innerText = `LNG: ${t.lng}°`;
-            document.getElementById('header-elev').innerText = `ELEV: ${t.elev}`;
-        }
+        marker.bindTooltip(`<b>${target.name}</b><br>Eis: ${target.ice_score}`, { direction: 'top' });
 
-        function toggleLayer(layerName) {
-            const isChecked = document.getElementById(`layer-${layerName}`).checked;
-            if (layerName === 'cpr') isChecked ? map.addLayer(layerCprGroup) : map.removeLayer(layerCprGroup);
-            if (layerName === 'slope') isChecked ? map.addLayer(layerSlopeGroup) : map.removeLayer(layerSlopeGroup);
-            if (layerName === 'thermal') isChecked ? map.addLayer(layerThermalGroup) : map.removeLayer(layerThermalGroup);
-        }
-
-        async function sendToCopilot() {
-            const inputField = document.getElementById('copilot-prompt');
-            const outputBox = document.getElementById('copilot-output');
-            const prompt = inputField.value.trim();
-            if (!prompt) return;
-
-            outputBox.innerHTML += `<br><span style="color:#00f3ff;">> ${prompt}</span>`;
-            inputField.value = '';
-            outputBox.scrollTop = outputBox.scrollHeight;
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await response.json();
-                let reply = "Keine Antwort von der KI.";
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    reply = data.candidates[0].content.parts[0].text;
-                } else if (data.error) {
-                    reply = "Fehler: " + data.error.message;
-                }
-                outputBox.innerHTML += `<br><span style="color:#fff;">${reply}</span>`;
-            } catch (err) {
-                outputBox.innerHTML += `<br><span style="color:#ff4444;">[Verbindungsfehler zum Worker]</span>`;
-            }
-            outputBox.scrollTop = outputBox.scrollHeight;
-        }
-
-        const container = document.getElementById('globe-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-
-        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-        const pLight = new THREE.PointLight(0xffffff, 1.2);
-        pLight.position.set(10, 10, 10);
-        scene.add(pLight);
-
-        const moon = new THREE.Mesh(new THREE.SphereGeometry(2, 32, 32), new THREE.MeshStandardMaterial({ color: 0x88aacc, roughness: 0.8, metalness: 0.1 }));
-        scene.add(moon);
-        const moonWire = new THREE.Mesh(new THREE.SphereGeometry(2.03, 16, 16), new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true, transparent: true, opacity: 0.2 }));
-        scene.add(moonWire);
-
-        camera.position.z = 5;
-        function animate() {
-            requestAnimationFrame(animate);
-            moon.rotation.y += 0.005;
-            moonWire.rotation.y += 0.005;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+        marker.on('click', () => {
+          document.getElementById('target-id').innerText = target.id;
+          document.getElementById('val-name').innerText = target.name;
+          document.getElementById('val-coords').innerText = `${target.lat}°, ${target.lng}°`;
+          document.getElementById('val-ice').innerText = target.ice_score;
+          document.getElementById('val-solar').innerText = target.illumination_pct;
+          document.getElementById('val-slope').innerText = target.slope_deg;
+          document.getElementById('val-thermal').innerText = target.thermal_k;
+          document.getElementById('val-backscatter').innerText = target.backscatter_db;
+          document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
         });
-    </script>
+      });
+    }
+
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.targets) renderMarkers(data.targets);
+        else renderMarkers(fallbackTargets);
+      })
+      .catch(() => renderMarkers(fallbackTargets));
+
+    function toggleModal(show) {
+      document.getElementById('briefing-modal').classList.toggle('active', show);
+    }
+
+    // Three.js 3D Moon Renderer Setup (Fixes missing moon display)
+    const container = document.getElementById('viewport-3d-box');
+    const canvas = document.getElementById('canvas-3d');
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 2.8;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+
+    const moonGeo = new THREE.SphereGeometry(1, 32, 32);
+    const moonMat = new THREE.MeshPhongMaterial({ color: 0x8899aa, shininess: 5 });
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    scene.add(moon);
+
+    const wireGeo = new THREE.SphereGeometry(1.02, 16, 16);
+    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.15 });
+    const wireframe = new THREE.Mesh(wireGeo, wireMat);
+    scene.add(wireframe);
+
+    scene.add(new THREE.DirectionalLight(0xffffff, 1.2)).position.set(5, 3, 5);
+    scene.add(new THREE.AmbientLight(0x112233));
+
+    function animate() {
+      requestAnimationFrame(animate);
+      moon.rotation.y += 0.004;
+      wireframe.rotation.y -= 0.002;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      if (!container) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+  </script>
 </body>
 </html>

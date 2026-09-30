@@ -66,6 +66,7 @@
       color: var(--accent-cyan);
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+      white-space: nowrap;
     }
 
     .badge {
@@ -246,6 +247,7 @@
     .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
     .close-btn:hover { color: var(--accent-cyan); }
     .modal-body { font-size: 0.9rem; line-height: 1.5; color: #c0cdf0; }
+    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.88rem; margin: 12px 0 4px 0; }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #050810; }
@@ -274,11 +276,11 @@
   <div class="dashboard-container">
     <aside class="sidebar">
       
-      <!-- SAR Layers -->
+      <!-- Panel 1: SAR Layer Selection -->
       <section class="panel">
         <div class="panel-header">
           <h2>SAR Radar-Ebenen</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">MULTI-LAYER</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">AKTIV</span>
         </div>
         <div class="control-group">
           <label class="toggle-btn active">
@@ -290,13 +292,13 @@
             <input type="radio" name="sar-layer" value="roughness">
           </label>
           <label class="toggle-btn">
-            <span>Diviner Thermalkarte (Kältefallen)</span>
-            <input type="radio" name="sar-layer" value="thermal">
+            <span>Optische Basiskarte (LROC WAC)</span>
+            <input type="radio" name="sar-layer" value="optical">
           </label>
         </div>
       </section>
 
-      <!-- Target Telemetry -->
+      <!-- Panel 2: Target Telemetry Details -->
       <section class="panel">
         <div class="panel-header">
           <h2>CLPS Ziel-Messwerte</h2>
@@ -310,14 +312,17 @@
           <div class="data-row"><span class="data-label">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
           <div class="data-row"><span class="data-label">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
           <div class="data-row"><span class="data-label">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
+          <div class="data-row" style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px;">
+            <span class="data-label">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
+          </div>
         </div>
       </section>
 
-      <!-- 3D Orbital Viewport -->
+      <!-- Panel 3: Interactive 3D Orbital Viewport -->
       <section class="panel">
         <div class="panel-header">
           <h2>3D Orbitale Mondansicht</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
         </div>
         <div id="viewport-3d-box">
           <canvas id="canvas-3d"></canvas>
@@ -339,7 +344,16 @@
         <button class="close-btn" onclick="toggleModal(false)">&times;</button>
       </div>
       <div class="modal-body">
-        <p>Commercial Lunar Payload Services (CLPS) Control Center: Analyse von SAR-Radardaten zur Detektion von Wassereis und Gefahrenkartierung am lunaren Südpol.</p>
+        <p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und verborgene Felsbrocken.</p>
+        
+        <h3>1. Wassereis in dunklen Kratern</h3>
+        <p>Optische Kameras können nicht in Schattenkrater wie Shackleton oder Cabeus blicken. Synthetic Aperture Radar (SAR) nutzt die zirkulare Polarisationsrate (CPR > 1.0), um durch die Dunkelheit zu blicken und Vorkommen von Wassereis zu lokalisieren.</p>
+
+        <h3>2. Gefahrenkartierung für sichere Landungen</h3>
+        <p>Durch Auswertung der Rückstreu-Rauigkeit identifiziert das System steile Hänge (>10°) und Felsfelder, um ein Umkippen von CLPS-Landern beim Aufsetzen zu verhindern.</p>
+
+        <h3>3. Energie & Thermische Grenzen</h3>
+        <p>Lander benötigen sonnenbeschienene Kraterränder für Solarenergie, während Rover kurze Fahrten in die Kältefallen unternehmen. Unser Control Center optimiert die Standortwahl nach Energieausbeute und wissenschaftlichem Nutzen.</p>
       </div>
     </div>
   </div>
@@ -348,7 +362,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
-    // Leaflet Map Initialization
+    // Procedural Dynamic Lunar Surface Texture
+    function generateLunarBaseTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0d111a';
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let i = 0; i < 350; i++) {
+        const x = Math.random() * 1024;
+        const y = Math.random() * 512;
+        const radius = Math.random() * 30 + 3;
+        
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        grad.addColorStop(0, 'rgba(50, 65, 85, 0.4)');
+        grad.addColorStop(0.6, 'rgba(25, 35, 50, 0.6)');
+        grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
+      ctx.beginPath();
+      ctx.arc(512, 450, 180, 0, Math.PI * 2);
+      ctx.fill();
+
+      return canvas.toDataURL();
+    }
+
+    // Initialize Map
     const map = L.map('map', {
       center: [-60, 0],
       zoom: 2,
@@ -361,63 +409,113 @@
     const mapBounds = [[-90, -180], [90, 180]];
     map.setMaxBounds([[-110, -200], [110, 200]]);
 
-    // Canvas Texture Generator for Map
-    function generateLunarBaseTexture() {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1024; canvas.height = 512;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#0d111a';
-      ctx.fillRect(0, 0, 1024, 512);
-      for (let i = 0; i < 350; i++) {
-        const x = Math.random() * 1024, y = Math.random() * 512, radius = Math.random() * 30 + 3;
-        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        grad.addColorStop(0, 'rgba(50, 65, 85, 0.4)');
-        grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
-      }
-      return canvas.toDataURL();
-    }
+    const lunarSurfaceUrl = generateLunarBaseTexture();
+    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, {
+      opacity: 0.9,
+      interactive: false
+    }).addTo(map);
 
-    const lunarOverlay = L.imageOverlay(generateLunarBaseTexture(), mapBounds, { opacity: 0.9, interactive: false }).addTo(map);
     map.fitBounds(mapBounds);
 
     map.on('mousemove', (e) => {
       document.getElementById('telemetry-lat').innerText = `${e.latlng.lat.toFixed(2)}°`;
       document.getElementById('telemetry-lng').innerText = `${e.latlng.lng.toFixed(2)}°`;
+      const elev = Math.abs(Math.sin(e.latlng.lat) * 1200 - Math.cos(e.latlng.lng) * 450).toFixed(0);
+      document.getElementById('telemetry-elev').innerText = `${elev} m`;
     });
 
-    // Load Targets from data.json (with fallback array)
-    const fallbackTargets = [
-      { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.9, lng: 0.0, ice_score: "89 %", illumination_pct: "86 %", slope_deg: "4.2° (Sicher)", thermal_k: "40 K bis 220 K", backscatter_db: "-2.4 dB" },
-      { id: "SAR-002", name: "Faustini Rim A", lat: -87.35, lng: 42.10, ice_score: "76 %", illumination_pct: "71 %", slope_deg: "8.1° (Sicher)", thermal_k: "35 K bis 190 K", backscatter_db: "-3.1 dB" },
-      { id: "SAR-003", name: "Shoemaker Ridge", lat: -88.10, lng: -35.40, ice_score: "82 %", illumination_pct: "64 %", slope_deg: "12.5° (Moderat)", thermal_k: "30 K bis 210 K", backscatter_db: "-4.0 dB" },
-      { id: "SAR-004", name: "Amundsen Crater Edge", lat: -84.50, lng: 85.60, ice_score: "68 %", illumination_pct: "91 %", slope_deg: "14.8° (Steilhang)", thermal_k: "50 K bis 240 K", backscatter_db: "-5.2 dB" }
+    const defaultTargets = [
+      {
+        id: "SAR-001",
+        name: "Shackleton Crater Rim",
+        lat: -89.9,
+        lng: 0.0,
+        ice_score: "89 %",
+        illumination_pct: "86 %",
+        slope_deg: "4.2° (Sicher)",
+        thermal_k: "40 K bis 220 K",
+        backscatter_db: "-2.4 dB",
+        clps_suitability: "HOCHER WERT (Wassereis + Energie)"
+      },
+      {
+        id: "SAR-002",
+        name: "Cabeus Crater Floor",
+        lat: -84.9,
+        lng: -35.5,
+        ice_score: "94 %",
+        illumination_pct: "12 %",
+        slope_deg: "8.5° (Achtung)",
+        thermal_k: "35 K bis 100 K",
+        backscatter_db: "-1.8 dB",
+        clps_suitability: "FORSCHUNGSZIEL (Kältefalle)"
+      },
+      {
+        id: "SAR-003",
+        name: "Madrigal Connecting Ridge",
+        lat: -88.7,
+        lng: -15.2,
+        ice_score: "62 %",
+        illumination_pct: "92 %",
+        slope_deg: "2.1° (Optimal)",
+        thermal_k: "110 K bis 240 K",
+        backscatter_db: "-5.1 dB",
+        clps_suitability: "OPTIMALER LANDESPUNKT"
+      },
+      {
+        id: "SAR-004",
+        name: "Tycho Crater",
+        lat: -43.3,
+        lng: -11.2,
+        ice_score: "14 %",
+        illumination_pct: "45 %",
+        slope_deg: "14.8° (Hohes Risiko)",
+        thermal_k: "100 K bis 380 K",
+        backscatter_db: "-12.1 dB",
+        clps_suitability: "GEFÄHRLICH (Steilhang)"
+      },
+      {
+        id: "SAR-005",
+        name: "Aristarchus Plateau",
+        lat: 23.7,
+        lng: -47.4,
+        ice_score: "31 %",
+        illumination_pct: "50 %",
+        slope_deg: "3.5° (Sicher)",
+        thermal_k: "120 K bis 390 K",
+        backscatter_db: "-8.5 dB",
+        clps_suitability: "MITTLERES RISIKO"
+      }
     ];
 
-    function renderMarkers(targets) {
+    function loadTargets(targets) {
       targets.forEach(target => {
         const marker = L.circleMarker([target.lat, target.lng], {
-          radius: 8,
+          radius: 9,
           fillColor: '#00f0ff',
           color: '#ffffff',
           weight: 2,
           opacity: 1,
-          fillOpacity: 0.9
+          fillOpacity: 0.85
         }).addTo(map);
 
-        marker.bindTooltip(`<b>${target.name}</b><br>Eis: ${target.ice_score}`, { direction: 'top' });
+        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score || 'N/A'}`, {
+          permanent: false,
+          direction: 'top'
+        });
 
         marker.on('click', () => {
-          document.getElementById('target-id').innerText = target.id;
-          document.getElementById('val-name').innerText = target.name;
+          document.getElementById('target-id').innerText = target.id || 'SAR-TRG';
+          document.getElementById('val-name').innerText = target.name || 'Lunar Location';
           document.getElementById('val-coords').innerText = `${target.lat}°, ${target.lng}°`;
-          document.getElementById('val-ice').innerText = target.ice_score;
-          document.getElementById('val-solar').innerText = target.illumination_pct;
-          document.getElementById('val-slope').innerText = target.slope_deg;
-          document.getElementById('val-thermal').innerText = target.thermal_k;
-          document.getElementById('val-backscatter').innerText = target.backscatter_db;
+          document.getElementById('val-ice').innerText = target.ice_score || 'N/A';
+          document.getElementById('val-solar').innerText = target.illumination_pct || '85 %';
+          document.getElementById('val-slope').innerText = target.slope_deg || '4.2° (Sicher)';
+          document.getElementById('val-thermal').innerText = target.thermal_k || '40 K bis 220 K';
+          document.getElementById('val-backscatter').innerText = target.backscatter_db || 'N/A';
+          document.getElementById('val-clps').innerText = target.clps_suitability || 'BEWERTETE LANDESPOSITION';
+
           document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
+          rotateMoonToTarget();
         });
       });
     }
@@ -425,16 +523,37 @@
     fetch('data.json')
       .then(res => res.json())
       .then(data => {
-        if (data && data.targets) renderMarkers(data.targets);
-        else renderMarkers(fallbackTargets);
+        if (data && data.targets && data.targets.length > 0) {
+          loadTargets(data.targets);
+        } else {
+          loadTargets(defaultTargets);
+        }
       })
-      .catch(() => renderMarkers(fallbackTargets));
+      .catch(() => loadTargets(defaultTargets));
+
+    document.querySelectorAll('input[name="sar-layer"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.closest('.toggle-btn').classList.add('active');
+
+        const val = e.target.value;
+        if (val === 'cpr') {
+          lunarOverlay.setOpacity(0.9);
+        } else if (val === 'roughness') {
+          lunarOverlay.setOpacity(0.5);
+        } else {
+          lunarOverlay.setOpacity(1.0);
+        }
+      });
+    });
 
     function toggleModal(show) {
-      document.getElementById('briefing-modal').classList.toggle('active', show);
+      const modal = document.getElementById('briefing-modal');
+      if (show) modal.classList.add('active');
+      else modal.classList.remove('active');
     }
 
-    // Three.js 3D Moon Renderer Setup (Fixes missing moon display)
+    // Three.js 3D Orbital Viewport (Mit fester Initialisierung und Resize-Handling)
     const container = document.getElementById('viewport-3d-box');
     const canvas = document.getElementById('canvas-3d');
     
@@ -445,9 +564,13 @@
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
 
-    const moonGeo = new THREE.SphereGeometry(1, 32, 32);
-    const moonMat = new THREE.MeshPhongMaterial({ color: 0x8899aa, shininess: 5 });
-    const moon = new THREE.Mesh(moonGeo, moonMat);
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x8899aa,
+      wireframe: false,
+      shininess: 5
+    });
+    const moon = new THREE.Mesh(geometry, material);
     scene.add(moon);
 
     const wireGeo = new THREE.SphereGeometry(1.02, 16, 16);
@@ -455,8 +578,16 @@
     const wireframe = new THREE.Mesh(wireGeo, wireMat);
     scene.add(wireframe);
 
-    scene.add(new THREE.DirectionalLight(0xffffff, 1.2)).position.set(5, 3, 5);
-    scene.add(new THREE.AmbientLight(0x112233));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(5, 3, 5);
+    scene.add(dirLight);
+
+    const ambientLight = new THREE.AmbientLight(0x112233);
+    scene.add(ambientLight);
+
+    function rotateMoonToTarget() {
+      moon.rotation.y += Math.PI / 4;
+    }
 
     function animate() {
       requestAnimationFrame(animate);

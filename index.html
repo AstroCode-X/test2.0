@@ -11,12 +11,10 @@
     <style>
         :root {
             --bg-deep: #050b14;
-            --panel-bg: rgba(8, 18, 35, 0.85);
-            --border-glow: rgba(0, 243, 255, 0.3);
+            --panel-bg: rgba(8, 18, 35, 0.90);
+            --border-glow: rgba(0, 243, 255, 0.4);
             --neon-cyan: #00f3ff;
-            --neon-blue: #0088ff;
             --text-main: #c0d8ff;
-            --accent-glow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
 
         * {
@@ -90,7 +88,7 @@
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: var(--accent-glow);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
         }
 
         .btn-briefing:hover {
@@ -98,22 +96,22 @@
             color: var(--bg-deep);
         }
 
-        /* Sidebar Panel Control */
+        /* Sidebar */
         sidebar {
             background: var(--panel-bg);
             border-right: 1px solid var(--border-glow);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            padding: 15px;
+            gap: 12px;
+            padding: 12px;
             overflow-y: auto;
             z-index: 900;
         }
 
         .panel-box {
-            background: rgba(3, 10, 20, 0.6);
-            border: 1px solid rgba(0, 243, 255, 0.15);
-            padding: 12px;
+            background: rgba(3, 10, 20, 0.75);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 10px;
             border-radius: 4px;
         }
 
@@ -121,20 +119,20 @@
             font-size: 0.75rem;
             letter-spacing: 1.5px;
             color: var(--neon-cyan);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             padding-bottom: 4px;
             display: flex;
             justify-content: space-between;
         }
 
-        /* SAR Radar Layer Options */
+        /* SAR Radar Layers */
         .layer-option {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
+            font-size: 0.78rem;
+            margin-bottom: 6px;
             cursor: pointer;
         }
 
@@ -147,8 +145,8 @@
         .metric-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 6px;
+            font-size: 0.78rem;
+            margin-bottom: 5px;
         }
 
         .metric-label {
@@ -162,28 +160,28 @@
 
         /* AI Copilot Box */
         .copilot-chat {
-            height: 110px;
-            background: rgba(0, 0, 0, 0.5);
+            height: 95px;
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 8px;
-            font-size: 0.75rem;
+            padding: 6px;
+            font-size: 0.72rem;
             overflow-y: auto;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #a0d2ff;
         }
 
         .copilot-input-area {
             display: flex;
-            gap: 6px;
+            gap: 5px;
         }
 
         .copilot-input-area input {
             flex: 1;
-            background: rgba(0, 20, 40, 0.8);
+            background: rgba(0, 20, 40, 0.9);
             border: 1px solid var(--border-glow);
             color: #fff;
-            padding: 6px;
-            font-size: 0.75rem;
+            padding: 5px;
+            font-size: 0.72rem;
             outline: none;
         }
 
@@ -191,35 +189,48 @@
             background: var(--neon-cyan);
             border: none;
             color: var(--bg-deep);
-            padding: 0 12px;
+            padding: 0 10px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        /* 3D Orbit Viewport */
+        /* 3D Viewport */
         #globe-container {
             width: 100%;
-            height: 140px;
+            height: 120px;
             position: relative;
             background: radial-gradient(circle, #0a1930 0%, #02060d 100%);
             border: 1px solid rgba(0, 243, 255, 0.2);
         }
 
-        /* Main GIS Map Area */
+        /* GIS Map */
         #map {
             width: 100%;
             height: 100%;
             background-color: var(--bg-deep);
         }
 
-        /* Responsive */
+        /* Custom Radar Pulse Circles on Map */
+        .radar-pulse-ring {
+            border: 2px dashed rgba(0, 243, 255, 0.6);
+            background: rgba(0, 243, 255, 0.05);
+            border-radius: 50%;
+            animation: radarExpand 3s infinite linear;
+        }
+
+        @keyframes radarExpand {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.3; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
         @media(max-width: 900px) {
             body {
                 grid-template-columns: 1fr;
                 grid-template-rows: 50px auto 1fr;
             }
             sidebar {
-                max-height: 400px;
+                max-height: 350px;
             }
         }
     </style>
@@ -237,7 +248,7 @@
             <span>LNG: 0.00°</span>
             <span>ELEV: 1,840 m</span>
         </div>
-        <button class="btn-briefing" onclick="alert('CLPS Mission Briefing: Active SAR radar anomaly telemetry for Shackleton Crater Rim.')">CLPS BRIEFING</button>
+        <button class="btn-briefing" onclick="alert('CLPS Briefing: Active SAR telemetry linked.')">CLPS BRIEFING</button>
     </header>
 
     <!-- SIDEBAR -->
@@ -247,15 +258,15 @@
             <div class="panel-title"><span>SAR RADAR-EBENEN</span><span>MULTI-LAYER</span></div>
             <label class="layer-option">
                 <span>Mini-RF Polarisationsrate (CPR)</span>
-                <input type="checkbox" id="layer-cpr" checked onchange="toggleLayer('cpr')">
+                <input type="checkbox" id="layer-cpr" checked onchange="toggleRadarLayer('cpr')">
             </label>
             <label class="layer-option">
                 <span>Geländereueigkeit / Gefahrenkarte</span>
-                <input type="checkbox" id="layer-slope" checked onchange="toggleLayer('slope')">
+                <input type="checkbox" id="layer-slope" checked onchange="toggleRadarLayer('slope')">
             </label>
             <label class="layer-option">
                 <span>Diviner Thermalkarte (Kältefallen)</span>
-                <input type="checkbox" id="layer-thermal" checked onchange="toggleLayer('thermal')">
+                <input type="checkbox" id="layer-thermal" checked onchange="toggleRadarLayer('thermal')">
             </label>
         </div>
 
@@ -281,7 +292,7 @@
         </div>
 
         <!-- 3D Orbital View -->
-        <div class="panel-box" style="flex:1; min-height: 180px; display:flex; flex-direction:column;">
+        <div class="panel-box" style="flex:1; min-height: 140px; display:flex; flex-direction:column;">
             <div class="panel-title"><span>3D ORBITALE MONDANSICHT</span><span>THREE.JS</span></div>
             <div id="globe-container"></div>
         </div>
@@ -290,51 +301,78 @@
     <!-- MAP VIEWPORT -->
     <div id="map"></div>
 
-    <!-- Leaflet JS & Three.js CDN -->
+    <!-- Leaflet & Three.js CDN -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
-        // ==========================================
-        // WORKER API CONFIGURATION
-        // ==========================================
         const WORKER_URL = "https://nexus.elias256.workers.dev/";
 
-        // ==========================================
-        // 1. LEAFLET GIS MAP SETUP
-        // ==========================================
+        // Initialize Map in Pseudo-Grid View matching original style
         const map = L.map('map', {
             center: [-89.9, 0.0],
-            zoom: 5,
+            zoom: 6,
             minZoom: 2,
-            maxZoom: 10
+            maxZoom: 12,
+            attributionControl: false
         });
 
-        // NASA LRO WMS / Tile Layer
-        L.tileLayer('https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/{z}/{y}/{x}.jpg', {
-            attribution: 'NASA / LRO / USGS',
-            maxZoom: 9,
-            tms: true
+        // Base background space grid simulation using dark tile setup
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            subdomains: 'abcd'
         }).addTo(map);
 
-        // Custom Target Markers
-        const targetIcon = L.divIcon({
-            className: 'custom-div-icon',
-            html: '<div style="width:14px;height:14px;background:#00f3ff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 10px #00f3ff;"></div>',
-            iconSize: [14, 14],
-            iconAnchor: [7, 7]
+        // Add dynamic radar target rings (bringing back the glowing circles from the original prototype)
+        const radarGroup = L.layerGroup().addTo(map);
+
+        const targets = [
+            {lat: -89.90, lng: 0.00, name: "Shackleton Crater Rim", ice: "89%", risk: "Sicher", radius: 45000},
+            {lat: -89.50, lng: 45.00, name: "Faustini Rim A", ice: "76%", risk: "Moderat", radius: 35000},
+            {lat: -88.80, lng: -30.00, name: "Shoemaker Ridge", ice: "82%", risk: "Sicher", radius: 40000}
+        ];
+
+        targets.forEach((t, idx) => {
+            // Glowing radar ring
+            L.circle([t.lat, t.lng], {
+                color: '#00f3ff',
+                fillColor: '#00f3ff',
+                fillOpacity: 0.12,
+                radius: t.radius,
+                weight: 1.5,
+                dashArray: '4, 8'
+            }).addTo(radarGroup);
+
+            // Center target pin
+            const customIcon = L.divIcon({
+                className: 'custom-pin',
+                html: `<div style="width:12px;height:12px;background:#00f3ff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 12px #00f3ff;cursor:pointer;" onclick="selectTarget(${idx})"></div>`,
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+            L.marker([t.lat, t.lng], {icon: customIcon}).addTo(radarGroup)
+             .bindPopup(`<b>${t.name}</b><br>Eis: ${t.ice}<br>Status: ${t.risk}`);
         });
 
-        const markerShackleton = L.marker([-89.9, 0.0], {icon: targetIcon}).addTo(map);
-        markerShackleton.bindPopup("<b>Shackleton Crater Rim</b><br>Primary CLPS Target (High Ice Content)");
-
-        function toggleLayer(layerName) {
-            console.log("Toggled layer:", layerName);
+        function selectTarget(idx) {
+            const t = targets[idx];
+            document.getElementById('target-id').innerText = `SAR-00${idx+1}`;
+            document.getElementById('m-name').innerText = t.name;
+            document.getElementById('m-coords').innerText = `${t.lat}°, ${t.lng}°`;
+            document.getElementById('m-ice').innerText = t.ice;
+            document.getElementById('m-slope').innerText = t.risk === 'Sicher' ? '4.2° (Sicher)' : '14.8° (Steilhang)';
         }
 
-        // ==========================================
-        // 2. GEMINI AI MISSION COPILOT INTEGRATION
-        // ==========================================
+        function toggleRadarLayer(layerName) {
+            const checkbox = document.getElementById(`layer-${layerName}`);
+            if (checkbox.checked) {
+                map.addLayer(radarGroup);
+            } else {
+                map.removeLayer(radarGroup);
+            }
+        }
+
+        // Gemini Copilot Integration
         async function sendToCopilot() {
             const inputField = document.getElementById('copilot-prompt');
             const outputBox = document.getElementById('copilot-output');
@@ -353,22 +391,20 @@
                 });
 
                 const data = await response.json();
-                let reply = "No response from AI.";
+                let reply = "Keine Antwort von der KI.";
                 if (data.candidates && data.candidates[0].content.parts[0].text) {
                     reply = data.candidates[0].content.parts[0].text;
                 } else if (data.error) {
-                    reply = "Error: " + data.error.message;
+                    reply = "Fehler: " + data.error.message;
                 }
                 outputBox.innerHTML += `<br><span style="color:#fff;">${reply}</span>`;
             } catch (err) {
-                outputBox.innerHTML += `<br><span style="color:#ff4444;">[Connection Error to Worker]</span>`;
+                outputBox.innerHTML += `<br><span style="color:#ff4444;">[Verbindungsfehler zum Worker]</span>`;
             }
             outputBox.scrollTop = outputBox.scrollHeight;
         }
 
-        // ==========================================
-        // 3. THREE.JS 3D LUNAR ROTATIONAL VIEWPORT
-        // ==========================================
+        // Three.js 3D Moon Orbit Viewport
         const container = document.getElementById('globe-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -377,47 +413,33 @@
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0xffffff, 1.5);
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+        const pLight = new THREE.PointLight(0xffffff, 1.2);
+        pLight.position.set(10, 10, 10);
+        scene.add(pLight);
 
-        // Moon Sphere with Bump/Wireframe Aesthetic
+        // Moon Sphere
         const geometry = new THREE.SphereGeometry(2, 32, 32);
-        const material = new THREE.MeshStandardMaterial({
-            color: 0x88aacc,
-            roughness: 0.9,
-            metalness: 0.1,
-            wireframe: false
-        });
+        const material = new THREE.MeshStandardMaterial({ color: 0x88aacc, roughness: 0.8, metalness: 0.1 });
         const moon = new THREE.Mesh(geometry, material);
         scene.add(moon);
 
-        // Add subtle wireframe overlay for sci-fi HUD look
-        const wireGeometry = new THREE.SphereGeometry(2.02, 16, 16);
-        const wireMaterial = new THREE.MeshBasicMaterial({
-            color: 0x00f3ff,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.15
-        });
+        // Sci-Fi Wireframe Overlay
+        const wireGeometry = new THREE.SphereGeometry(2.03, 16, 16);
+        const wireMaterial = new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true, transparent: true, opacity: 0.2 });
         const moonWire = new THREE.Mesh(wireGeometry, wireMaterial);
         scene.add(moonWire);
 
         camera.position.z = 5;
 
-        // Smooth Continuous Rotation Animation Loop
         function animate() {
             requestAnimationFrame(animate);
-            moon.rotation.y += 0.004;
-            moonWire.rotation.y += 0.004;
+            moon.rotation.y += 0.005;
+            moonWire.rotation.y += 0.005;
             renderer.render(scene, camera);
         }
         animate();
 
-        // Handle Window Resizing
         window.addEventListener('resize', () => {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();

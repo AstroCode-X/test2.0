@@ -46,22 +46,22 @@
     .nasa-header {
       flex-shrink: 0;
       width: 100%;
-      padding: 8px 16px;
+      padding: 10px 18px;
       background: linear-gradient(180deg, #090e18 0%, #04060a 100%);
       border-bottom: 1px solid var(--panel-border);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
     .brand h1 {
       font-family: var(--font-heading);
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      font-size: clamp(0.9rem, 2.2vw, 1.15rem);
       letter-spacing: 1.5px;
       color: var(--accent-cyan);
       text-transform: uppercase;
@@ -74,14 +74,14 @@
       border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan);
       font-family: var(--font-mono);
-      font-size: 0.6rem;
-      padding: 2px 6px;
+      font-size: 0.65rem;
+      padding: 3px 8px;
       border-radius: 3px;
       letter-spacing: 1px;
     }
 
     .pulse-dot {
-      width: 8px; height: 8px;
+      width: 9px; height: 9px;
       background-color: var(--accent-green);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--accent-green);
@@ -98,9 +98,9 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
     }
 
     .metric { color: var(--text-muted); white-space: nowrap; }
@@ -112,8 +112,8 @@
       border: 1px solid var(--accent-cyan);
       color: #fff;
       font-family: var(--font-heading);
-      font-size: 0.65rem;
-      padding: 5px 10px;
+      font-size: 0.68rem;
+      padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -130,41 +130,41 @@
     }
 
     .sidebar {
-      width: 420px; max-width: 45%;
+      width: 440px; max-width: 46%;
       background-color: var(--panel-bg);
       backdrop-filter: blur(14px);
       border-right: 1px solid var(--panel-border);
       display: flex; flex-direction: column; gap: 10px;
-      padding: 10px; overflow-y: auto; z-index: 500;
+      padding: 12px; overflow-y: auto; z-index: 500;
       box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
     }
 
     .panel {
       background: rgba(8, 12, 20, 0.85);
       border: 1px solid var(--panel-border);
-      border-radius: 5px;
-      padding: 9px 11px;
+      border-radius: 6px;
+      padding: 10px 12px;
       transition: border-color 0.3s ease;
     }
     .panel:hover { border-color: rgba(0, 240, 255, 0.5); }
 
     .panel-header {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 7px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 5px;
+      margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
     }
     .panel h2 {
-      font-family: var(--font-heading); font-size: 0.78rem;
+      font-family: var(--font-heading); font-size: 0.8rem;
       color: var(--accent-cyan); letter-spacing: 1px; text-transform: uppercase;
     }
 
-    .control-group { display: flex; flex-direction: column; gap: 5px; }
+    .control-group { display: flex; flex-direction: column; gap: 6px; }
     .toggle-btn {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 6px 9px; background: rgba(255, 255, 255, 0.02);
+      padding: 7px 10px; background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--panel-border); color: var(--text-main);
-      font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer;
-      border-radius: 3px; transition: all 0.2s ease;
+      font-family: var(--font-mono); font-size: 0.74rem; cursor: pointer;
+      border-radius: 4px; transition: all 0.2s ease;
     }
     .toggle-btn:hover { border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.06); }
     .toggle-btn.active {
@@ -173,49 +173,54 @@
     }
     .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); }
 
-    .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.78rem; }
+    .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.8rem; }
     .data-label { color: var(--text-muted); }
     .data-value { color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600; text-align: right; }
 
-    .search-bar { display: flex; gap: 6px; margin-bottom: 8px; }
+    .search-bar { display: flex; gap: 6px; margin-bottom: 10px; }
     .search-input {
       flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border);
-      border-radius: 3px; padding: 5px 8px; color: #fff; font-family: var(--font-mono); font-size: 0.72rem;
+      border-radius: 4px; padding: 6px 10px; color: #fff; font-family: var(--font-mono); font-size: 0.75rem;
     }
     .search-input:focus { outline: none; border-color: var(--accent-cyan); }
 
     .ai-chat-box {
-      height: 110px; background: #020305; border: 1px solid var(--panel-border);
-      border-radius: 4px; padding: 6px; overflow-y: auto; font-family: var(--font-mono);
-      font-size: 0.68rem; display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px;
+      height: 130px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 4px; padding: 8px; overflow-y: auto; font-family: var(--font-mono);
+      font-size: 0.7rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px;
     }
-    .ai-msg { padding: 4px 6px; border-radius: 3px; line-height: 1.25; }
+    .ai-msg { padding: 5px 8px; border-radius: 4px; line-height: 1.3; word-break: break-word; }
     .ai-msg.system { background: rgba(0, 240, 255, 0.08); border-left: 2px solid var(--accent-cyan); color: var(--text-main); }
-    .ai-msg.user { background: rgba(255, 255, 255, 0.05); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 90%; }
-    .ai-input-row { display: flex; gap: 5px; }
+    .ai-msg.user { background: rgba(255, 255, 255, 0.05); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 92%; }
+    .ai-msg.error { background: rgba(255, 51, 102, 0.1); border-left: 2px solid var(--accent-red); color: var(--accent-red); }
+    
+    .ai-input-row { display: flex; gap: 6px; }
     .ai-input {
       flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--panel-border);
-      border-radius: 3px; padding: 4px 6px; color: #fff; font-family: var(--font-mono); font-size: 0.68rem;
+      border-radius: 4px; padding: 6px 8px; color: #fff; font-family: var(--font-mono); font-size: 0.7rem;
     }
+    .ai-input:focus { outline: none; border-color: var(--accent-cyan); }
     .ai-btn {
-      background: var(--accent-cyan); color: #000; border: none; padding: 4px 10px;
-      border-radius: 3px; font-family: var(--font-heading); font-size: 0.65rem; cursor: pointer; font-weight: bold;
+      background: var(--accent-cyan); color: #000; border: none; padding: 6px 12px;
+      border-radius: 4px; font-family: var(--font-heading); font-size: 0.68rem; cursor: pointer; font-weight: bold;
+      transition: background 0.2s;
     }
+    .ai-btn:hover { background: #00c2cc; }
 
     .terminal-log {
-      height: 85px; background: #010204; border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 4px; padding: 5px; font-family: var(--font-mono); font-size: 0.64rem;
+      height: 90px; background: #010204; border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px; padding: 6px; font-family: var(--font-mono); font-size: 0.66rem;
       color: var(--accent-green); overflow-y: auto;
     }
 
     #viewport-3d-box {
-      width: 100%; height: 130px; background: #020305; border: 1px solid var(--panel-border);
-      border-radius: 5px; position: relative; overflow: hidden;
+      width: 100%; height: 140px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 6px; position: relative; overflow: hidden;
     }
     #canvas-3d { width: 100%; height: 100%; display: block; }
     .viewport-overlay {
       position: absolute; top: 6px; left: 8px; pointer-events: none;
-      font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan); text-shadow: 0 0 4px #000;
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan); text-shadow: 0 0 4px #000;
     }
 
     .map-viewport { flex: 1; height: 100%; position: relative; background: #020305; }
@@ -229,18 +234,18 @@
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-card {
-      width: 650px; max-width: 90%; background: #0c121e; border: 1px solid var(--accent-cyan);
-      border-radius: 8px; padding: 20px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); max-height: 85vh; overflow-y: auto;
+      width: 680px; max-width: 90%; background: #0c121e; border: 1px solid var(--accent-cyan);
+      border-radius: 8px; padding: 22px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); max-height: 85vh; overflow-y: auto;
     }
     .modal-header {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 12px; border-bottom: 1px solid var(--panel-border); padding-bottom: 6px;
+      margin-bottom: 12px; border-bottom: 1px solid var(--panel-border); padding-bottom: 8px;
     }
-    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1rem; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; }
+    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.05rem; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
     .close-btn:hover { color: var(--accent-cyan); }
-    .modal-body { font-size: 0.85rem; line-height: 1.45; color: #c0cdf0; }
-    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.82rem; margin: 10px 0 4px 0; }
+    .modal-body { font-size: 0.88rem; line-height: 1.5; color: #c0cdf0; }
+    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.85rem; margin: 12px 0 6px 0; }
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #050810; }
@@ -273,11 +278,11 @@
   <div class="dashboard-container">
     <aside class="sidebar">
       
-      <!-- Panel 1 -->
+      <!-- Panel 1: SAR Layer & Suche -->
       <section class="panel">
         <div class="panel-header">
           <h2>SAR Radar-Ebenen & Suche</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan);">ONLINE</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">ONLINE</span>
         </div>
         <div class="search-bar">
           <input type="text" id="target-search" class="search-input" placeholder="Zielsuche (z.B. Shackleton)..." oninput="filterTargets(this.value)">
@@ -298,11 +303,11 @@
         </div>
       </section>
 
-      <!-- Panel 2 -->
+      <!-- Panel 2: CLPS Ziel-Messwerte -->
       <section class="panel">
         <div class="panel-header">
           <h2>CLPS Ziel-Messwerte</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
         </div>
         <div id="target-info-content">
           <div class="data-row"><span class="data-label">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
@@ -312,32 +317,32 @@
           <div class="data-row"><span class="data-label">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
           <div class="data-row"><span class="data-label">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
           <div class="data-row"><span class="data-label">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
-          <div class="data-row" style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
+          <div class="data-row" style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px;">
             <span class="data-label">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
           </div>
         </div>
       </section>
 
-      <!-- Panel 3: SAR AI Copilot / Chat -->
+      <!-- Panel 3: Echter GPT Cloudflare Worker Chat -->
       <section class="panel">
         <div class="panel-header">
-          <h2>SAR AI Copilot</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-green);">AKTIV</span>
+          <h2>SAR AI Copilot (ChatGPT Proxy)</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);">VERBUNDEN</span>
         </div>
         <div class="ai-chat-box" id="ai-chat-box">
-          <div class="ai-msg system">[SYSTEM]: KI-Copilot initialisiert. Bereit für Krateranalyse und Landeplatzoptimierung.</div>
+          <div class="ai-msg system">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für Live-Anfragen an das OpenAI Modell.</div>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an SAR-KI..." onkeypress="handleAiKeyPress(event)">
+          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die echte ChatGPT KI..." onkeypress="handleAiKeyPress(event)">
           <button class="ai-btn" onclick="sendAiMessage()">SEND</button>
         </div>
       </section>
 
-      <!-- Panel 4 -->
+      <!-- Panel 4: 3D Ansicht -->
       <section class="panel">
         <div class="panel-header">
           <h2>3D Orbitale Mondansicht</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
         </div>
         <div id="viewport-3d-box">
           <canvas id="canvas-3d"></canvas>
@@ -345,16 +350,17 @@
         </div>
       </section>
 
-      <!-- Panel 5 -->
+      <!-- Panel 5: Missions-Terminal -->
       <section class="panel">
         <div class="panel-header">
           <h2>Missions-Terminal (Syslog)</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);">LIVE</span>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted);">LIVE</span>
         </div>
         <div class="terminal-log" id="terminal-log">
           <div>[00:00:01] Link zu Deep Space Network stabilisiert.</div>
           <div>[00:00:04] SAR L-Band Kalibrierung erfolgreich.</div>
           <div>[00:00:12] Ziel Shackleton Rim geladen.</div>
+          <div>[00:00:18] Cloudflare Worker Verbindung geprüft.</div>
         </div>
       </section>
 
@@ -385,7 +391,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
-    // Funktion zur Generierung einer realistischeren Mondoberflächen-Textur für die Karte
+    // Funktion zur Generierung einer detaillierten Mondoberflächen-Textur
     function generateLunarBaseTexture() {
       const canvas = document.createElement('canvas');
       canvas.width = 2048; canvas.height = 1024;
@@ -393,20 +399,18 @@
       ctx.fillStyle = '#080c14';
       ctx.fillRect(0, 0, 2048, 1024);
       
-      // Krater-Strukturen und Textur-Details zeichnen
-      for (let i = 0; i < 800; i++) {
-        const x = Math.random() * 2048, y = Math.random() * 1024, radius = Math.random() * 45 + 4;
+      for (let i = 0; i < 900; i++) {
+        const x = Math.random() * 2048, y = Math.random() * 1024, radius = Math.random() * 50 + 4;
         const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        grad.addColorStop(0, 'rgba(45, 55, 75, 0.55)');
-        grad.addColorStop(0.5, 'rgba(20, 28, 40, 0.75)');
+        grad.addColorStop(0, 'rgba(45, 55, 75, 0.6)');
+        grad.addColorStop(0.5, 'rgba(20, 28, 40, 0.8)');
         grad.addColorStop(1, 'rgba(8, 12, 20, 0)');
         ctx.fillStyle = grad;
         ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       }
       
-      // Südpol-Highlight-Bereich
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.22)';
-      ctx.beginPath(); ctx.arc(1024, 900, 280, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
+      ctx.beginPath(); ctx.arc(1024, 900, 300, 0, Math.PI * 2); ctx.fill();
       return canvas.toDataURL();
     }
 
@@ -493,50 +497,72 @@
       else modal.classList.remove('active');
     }
 
-    // --- VERBesserte, reaktive KI-ANALYSE-ENGINE ---
-    function sendAiMessage() {
+    // --- ECHTER CLOUDFLARE WORKER / CHATGPT AUFRUF ---
+    async function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
       if (!text) return;
 
       appendAiMsg(text, 'user');
       input.value = '';
-      logTerminal(`KI-Abfrage gesendet: "${text}"`);
+      logTerminal(`Sende Anfrage an ChatGPT (Worker)...`);
 
-      setTimeout(() => {
-        let reply = "";
-        const low = text.toLowerCase();
-        const cur = selectedTargetData;
+      // Systemkontext mit dem aktuellen Mond-Ziel füttern
+      const cur = selectedTargetData;
+      const systemPrompt = `Du bist der KI-Copilot für eine NASA-Mond-SAR- und CLPS-Landeplatz-Analyse im Dashboard "Dancing with SARS". 
+Der Commander hat aktuell folgenden Landeplatz ausgewählt:
+- Name: ${cur.name} (${cur.id})
+- Koordinaten: LAT ${cur.lat}°, LNG ${cur.lng}°
+- Eis-Wahrscheinlichkeit: ${cur.ice_score}
+- Sonneneinstrahlung: ${cur.illumination_pct}
+- Hangneigung: ${cur.slope_deg}
+- Thermik: ${cur.thermal_k}
+- Bewertung: ${cur.clps_suitability}
 
-        // Gezielt auf Fragen reagieren ("gut", "schlecht", "warum", "eis", "sonne", "sicher")
-        if (low.includes('gut') || low.includes('schlecht') || low.includes('sicher') || low.includes('risiko') || low.includes('lohnt')) {
-          if (cur.slope_deg.includes('Hohes Risiko') || cur.slope_deg.includes('Achtung') || cur.slope_deg.includes('Steilhang')) {
-            reply = `Das ist eher ungünstig bzw. riskant! Für ${cur.name} zeigen unsere Sensoren eine Hangneigung von ${cur.slope_deg} und eine Beleuchtung von ${cur.illumination_pct}. Das erhöht die Gefahr für den Lander.`;
-          } else {
-            reply = `Das ist ziemlich gut! ${cur.name} bietet mit einer Neigung von ${cur.slope_deg} und ${cur.illumination_pct} Sonneneinstrahlung hervorragende Bedingungen für eine sichere CLPS-Landung.`;
-          }
-        } else if (low.includes('eis') || low.includes('wasser') || low.includes('kalt')) {
-          reply = `Bezirkseinschätzung zu Wassereis bei ${cur.name}: Die Eis-Wahrscheinlichkeit liegt bei ${cur.ice_score} (Rückstreuwert: ${cur.backscatter_db}, Thermik: ${cur.thermal_k}).`;
-        } else if (low.includes('sonne') || low.includes('licht') || low.includes('strom') || low.includes('energie')) {
-          reply = `Die Sonneneinstrahlung am gewählten Ziel (${cur.name}) beträgt ${cur.illumination_pct}. Damit ist die Energieversorgung für Solarmodule ${parseInt(cur.illumination_pct) > 50 ? 'gesichert und optimal' : 'stark eingeschränkt (Schattenregion)'}.`;
-        } else if (low.includes('warum') || low.includes('wieso')) {
-          reply = `Die Analyse von ${cur.name} basiert auf L-Band Radar-Rückstreuung und topografischen Höhendaten. Der Status wird als '${cur.clps_suitability}' eingestuft.`;
-        } else if (low.includes('hallo') || low.includes('hi') || low.includes('hey')) {
-          reply = `Hallo Commander! Ich überwache aktuell das Ziel "${cur.name}" (${cur.lat}°, ${cur.lng}°). Was möchtest du zu diesem Landeplatz wissen?`;
+Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die Fragen des Nutzers (z.B. ob etwas gut/schlecht ist) und nutze die oben genannten Telemetriedaten des ausgewählten Ziels.`;
+
+      try {
+        const workerUrl = 'https://nexus.elias256.workers.dev/';
+        
+        const response = await fetch(workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: text }
+            ]
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.choices && data.choices.length > 0) {
+          const aiReply = data.choices[0].message.content;
+          appendAiMsg(aiReply, 'system');
+          logTerminal("Echte ChatGPT-Antwort erhalten.");
+        } else if (data.error) {
+          appendAiMsg(`API-Fehler: ${data.error.message || JSON.stringify(data.error)}`, 'error');
+          logTerminal("Fehler vom OpenAI/Worker erhalten.");
         } else {
-          reply = `Analyse-Update für ${cur.name}: ${cur.clps_suitability}. Hangneigung: ${cur.slope_deg}, Eis: ${cur.ice_score}. Empfehle die Details im Messwerte-Panel zu prüfen.`;
+          appendAiMsg("Unerwartete Antwortstruktur vom Worker.", 'error');
         }
 
-        appendAiMsg(reply, 'system');
-        logTerminal("KI-Antwort erfolgreich generiert.");
-      }, 600);
+      } catch (err) {
+        console.error(err);
+        appendAiMsg(`Netzwerk- oder CORS-Fehler beim Worker-Aufruf: ${err.message}`, 'error');
+        logTerminal("Fehler: Verbindung zum Cloudflare Worker fehlgeschlagen.");
+      }
     }
 
     function appendAiMsg(text, sender) {
       const box = document.getElementById('ai-chat-box');
       const div = document.createElement('div');
       div.className = `ai-msg ${sender}`;
-      div.innerText = sender === 'system' ? `[KI]: ${text}` : `[OP]: ${text}`;
+      if (sender === 'system') div.innerText = `[KI]: ${text}`;
+      else if (sender === 'user') div.innerText = `[OP]: ${text}`;
+      else div.innerText = `[FEHLER]: ${text}`;
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
     }
@@ -547,7 +573,7 @@
 
     function triggerScan() {
       logTerminal("Manueller SAR-Vollscan der Südpolregion gestartet...");
-      appendAiMsg("Vollständiger Radar-Scan gestartet. Kraterprofile und Eisvorkommen werden aktualisiert.", 'system');
+      appendAiMsg("Vollständiger Radar-Scan gestartet. Kraterprofile und Eisvorkommen werden via L-Band aktualisiert.", 'system');
     }
 
     function logTerminal(msg) {

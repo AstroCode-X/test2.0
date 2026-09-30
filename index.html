@@ -323,17 +323,17 @@
         </div>
       </section>
 
-      <!-- Panel 3: Echter GPT Cloudflare Worker Chat -->
+      <!-- Panel 3: Echter Groq / Llama Cloudflare Worker Chat -->
       <section class="panel">
         <div class="panel-header">
-          <h2>SAR AI Copilot (ChatGPT Proxy)</h2>
+          <h2>SAR AI Copilot (Groq / Llama)</h2>
           <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);">VERBUNDEN</span>
         </div>
         <div class="ai-chat-box" id="ai-chat-box">
-          <div class="ai-msg system">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für Live-Anfragen an das OpenAI Modell.</div>
+          <div class="ai-msg system">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für kostenlose Live-Anfragen an das Llama Modell.</div>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die echte ChatGPT KI..." onkeypress="handleAiKeyPress(event)">
+          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die Groq KI..." onkeypress="handleAiKeyPress(event)">
           <button class="ai-btn" onclick="sendAiMessage()">SEND</button>
         </div>
       </section>
@@ -360,7 +360,7 @@
           <div>[00:00:01] Link zu Deep Space Network stabilisiert.</div>
           <div>[00:00:04] SAR L-Band Kalibrierung erfolgreich.</div>
           <div>[00:00:12] Ziel Shackleton Rim geladen.</div>
-          <div>[00:00:18] Cloudflare Worker Verbindung geprüft.</div>
+          <div>[00:00:18] Cloudflare Worker (Groq) Verbindung geprüft.</div>
         </div>
       </section>
 
@@ -497,7 +497,7 @@
       else modal.classList.remove('active');
     }
 
-    // --- ECHTER CLOUDFLARE WORKER / CHATGPT AUFRUF ---
+    // --- ECHTER GROQ / LLAMA CLOUDFLARE WORKER AUFRUF ---
     async function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
@@ -505,9 +505,8 @@
 
       appendAiMsg(text, 'user');
       input.value = '';
-      logTerminal(`Sende Anfrage an ChatGPT (Worker)...`);
+      logTerminal(`Sende Anfrage an Groq (Llama 3.3 Worker)...`);
 
-      // Systemkontext mit dem aktuellen Mond-Ziel füttern
       const cur = selectedTargetData;
       const systemPrompt = `Du bist der KI-Copilot für eine NASA-Mond-SAR- und CLPS-Landeplatz-Analyse im Dashboard "Dancing with SARS". 
 Der Commander hat aktuell folgenden Landeplatz ausgewählt:
@@ -528,7 +527,7 @@ Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: 'gpt-4o-mini',
+            model: 'llama-3.3-70b-versatile',
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: text }
@@ -541,10 +540,10 @@ Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die
         if (data.choices && data.choices.length > 0) {
           const aiReply = data.choices[0].message.content;
           appendAiMsg(aiReply, 'system');
-          logTerminal("Echte ChatGPT-Antwort erhalten.");
+          logTerminal("Kostenlose Llama-Antwort erhalten.");
         } else if (data.error) {
           appendAiMsg(`API-Fehler: ${data.error.message || JSON.stringify(data.error)}`, 'error');
-          logTerminal("Fehler vom OpenAI/Worker erhalten.");
+          logTerminal("Fehler vom Groq/Worker erhalten.");
         } else {
           appendAiMsg("Unerwartete Antwortstruktur vom Worker.", 'error');
         }

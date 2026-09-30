@@ -1,0 +1,81 @@
+{
+    "metadata": {
+        "mission": "Dancing with SARS - Lunar SAR & CLPS Control Center",
+        "team": "00000000A_LAGRANGE_NEXUS",
+        "generator": "generate_data.py",
+        "total_targets": 5,
+        "clps_framework": "Commercial Lunar Payload Services Hazard & Resource Mapping"
+    },
+    "targets": [
+        {
+            "id": "SAR-001",
+            "name": "Shackleton Crater Rim",
+            "lat": -89.9,
+            "lng": 0.0,
+            "polarization": "Circular (CPR High)",
+            "backscatter_db": "-2.4 dB",
+            "roughness": "Very High",
+            "ice_score": "89 %",
+            "illumination_pct": "86 %",
+            "slope_deg": "4.2° (Safe)",
+            "thermal_k": "40 K to 220 K",
+            "clps_suitability": "HIGH VALUE (Water Ice + Power)"
+        },
+        {
+            "id": "SAR-002",
+            "name": "Cabeus Crater Floor",
+            "lat": -84.9,
+            "lng": -35.5,
+            "polarization": "Circular (CPR High)",
+            "backscatter_db": "-1.8 dB",
+            "roughness": "High Shadow",
+            "ice_score": "94 %",
+            "illumination_pct": "12 %",
+            "slope_deg": "8.5° (Caution)",
+            "thermal_k": "35 K to 100 K",
+            "clps_suitability": "SCIENCE TARGET (Cold Trap)"
+        },
+        {
+            "id": "SAR-003",
+            "name": "Madrigal Connecting Ridge",
+            "lat": -88.7,
+            "lng": -15.2,
+            "polarization": "Circular (CPR Medium)",
+            "backscatter_db": "-5.1 dB",
+            "roughness": "Moderate",
+            "ice_score": "62 %",
+            "illumination_pct": "92 %",
+            "slope_deg": "2.1° (Optimal)",
+            "thermal_k": "110 K to 240 K",
+            "clps_suitability": "OPTIMAL CLPS LANDER SITE"
+        },
+        {
+            "id": "SAR-004",
+            "name": "Tycho Crater",
+            "lat": -43.3,
+            "lng": -11.2,
+            "polarization": "Linear Dual (HH/VV)",
+            "backscatter_db": "-12.1 dB",
+            "roughness": "High Boulders",
+            "ice_score": "14 %",
+            "illumination_pct": "45 %",
+            "slope_deg": "14.8° (High Risk)",
+            "thermal_k": "100 K to 380 K",
+            "clps_suitability": "HAZARDOUS (Slope Risk)"
+        },
+        {
+            "id": "SAR-005",
+            "name": "Aristarchus Plateau",
+            "lat": 23.7,
+            "lng": -47.4,
+            "polarization": "Circular (CPR Medium)",
+            "backscatter_db": "-8.5 dB",
+            "roughness": "High Ejecta",
+            "ice_score": "31 %",
+            "illumination_pct": "50 %",
+            "slope_deg": "3.5° (Safe)",
+            "thermal_k": "120 K to 390 K",
+            "clps_suitability": "MODERATE RISK"
+        }
+    ]
+}

@@ -11,7 +11,7 @@
     <style>
         :root {
             --bg-deep: #050b14;
-            --panel-bg: rgba(8, 18, 35, 0.90);
+            --panel-bg: rgba(8, 18, 35, 0.94);
             --border-glow: rgba(0, 243, 255, 0.4);
             --neon-cyan: #00f3ff;
             --text-main: #c0d8ff;
@@ -109,7 +109,7 @@
         }
 
         .panel-box {
-            background: rgba(3, 10, 20, 0.75);
+            background: rgba(3, 10, 20, 0.8);
             border: 1px solid rgba(0, 243, 255, 0.2);
             padding: 10px;
             border-radius: 4px;
@@ -210,20 +210,6 @@
             background-color: var(--bg-deep);
         }
 
-        /* Custom Radar Pulse Circles on Map */
-        .radar-pulse-ring {
-            border: 2px dashed rgba(0, 243, 255, 0.6);
-            background: rgba(0, 243, 255, 0.05);
-            border-radius: 50%;
-            animation: radarExpand 3s infinite linear;
-        }
-
-        @keyframes radarExpand {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 0.3; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-
         @media(max-width: 900px) {
             body {
                 grid-template-columns: 1fr;
@@ -244,11 +230,11 @@
             DANCING WITH SARS
         </div>
         <div class="telemetry-header">
-            <span>LAT: -89.90°</span>
-            <span>LNG: 0.00°</span>
-            <span>ELEV: 1,840 m</span>
+            <span id="header-lat">LAT: -89.90°</span>
+            <span id="header-lng">LNG: 0.00°</span>
+            <span id="header-elev">ELEV: 1,840 m</span>
         </div>
-        <button class="btn-briefing" onclick="alert('CLPS Briefing: Active SAR telemetry linked.')">CLPS BRIEFING</button>
+        <button class="btn-briefing" onclick="alert('CLPS Mission Briefing: Multi-layer SAR radar telemetry active.')">CLPS BRIEFING</button>
     </header>
 
     <!-- SIDEBAR -->
@@ -258,15 +244,15 @@
             <div class="panel-title"><span>SAR RADAR-EBENEN</span><span>MULTI-LAYER</span></div>
             <label class="layer-option">
                 <span>Mini-RF Polarisationsrate (CPR)</span>
-                <input type="checkbox" id="layer-cpr" checked onchange="toggleRadarLayer('cpr')">
+                <input type="checkbox" id="layer-cpr" checked onchange="toggleLayer('cpr')">
             </label>
             <label class="layer-option">
-                <span>Geländereueigkeit / Gefahrenkarte</span>
-                <input type="checkbox" id="layer-slope" checked onchange="toggleRadarLayer('slope')">
+                <span>Geländeneigung / Gefahrenkarte</span>
+                <input type="checkbox" id="layer-slope" checked onchange="toggleLayer('slope')">
             </label>
             <label class="layer-option">
                 <span>Diviner Thermalkarte (Kältefallen)</span>
-                <input type="checkbox" id="layer-thermal" checked onchange="toggleRadarLayer('thermal')">
+                <input type="checkbox" id="layer-thermal" checked onchange="toggleLayer('thermal')">
             </label>
         </div>
 
@@ -308,71 +294,120 @@
     <script>
         const WORKER_URL = "https://nexus.elias256.workers.dev/";
 
-        // Initialize Map in Pseudo-Grid View matching original style
+        // Initialize Map
         const map = L.map('map', {
-            center: [-89.9, 0.0],
-            zoom: 6,
+            center: [-89.2, 10.0],
+            zoom: 5,
             minZoom: 2,
             maxZoom: 12,
             attributionControl: false
         });
 
-        // Base background space grid simulation using dark tile setup
+        // Dark sci-fi map grid background
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             subdomains: 'abcd'
         }).addTo(map);
 
-        // Add dynamic radar target rings (bringing back the glowing circles from the original prototype)
-        const radarGroup = L.layerGroup().addTo(map);
+        // Layer Groups for separate toggle control
+        const layerCprGroup = L.layerGroup().addTo(map);
+        const layerSlopeGroup = L.layerGroup().addTo(map);
+        const layerThermalGroup = L.layerGroup().addTo(map);
 
+        // Comprehensive Target List (Multiple clickable points)
         const targets = [
-            {lat: -89.90, lng: 0.00, name: "Shackleton Crater Rim", ice: "89%", risk: "Sicher", radius: 45000},
-            {lat: -89.50, lng: 45.00, name: "Faustini Rim A", ice: "76%", risk: "Moderat", radius: 35000},
-            {lat: -88.80, lng: -30.00, name: "Shoemaker Ridge", ice: "82%", risk: "Sicher", radius: 40000}
+            { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.90, lng: 0.00, ice: "89 %", sun: "86 %", slope: "4.2° (Sicher)", temp: "40 K bis 220 K", elev: "1,840 m" },
+            { id: "SAR-002", name: "Faustini Rim A", lat: -87.35, lng: 42.10, ice: "76 %", sun: "71 %", slope: "8.1° (Sicher)", temp: "35 K bis 190 K", elev: "2,100 m" },
+            { id: "SAR-003", name: "Shoemaker Ridge", lat: -88.10, lng: -35.40, ice: "82 %", sun: "64 %", slope: "12.5° (Moderat)", temp: "30 K bis 210 K", elev: "1,650 m" },
+            { id: "SAR-004", name: "Amundsen Crater Edge", lat: -84.50, lng: 85.60, ice: "68 %", sun: "91 %", slope: "14.8° (Steilhang)", temp: "50 K bis 240 K", elev: "2,400 m" },
+            { id: "SAR-005", name: "Nobile Region B", lat: -85.80, lng: -52.30, ice: "74 %", sun: "82 %", slope: "5.5° (Sicher)", temp: "45 K bis 230 K", elev: "1,920 m" },
+            { id: "SAR-006", name: "Haworth Sector C", lat: -86.20, lng: -3.10, ice: "85 %", sun: "58 %", slope: "3.1° (Sicher)", temp: "38 K bis 195 K", elev: "1,780 m" }
         ];
 
+        // Populate layers with visual radar circles and clickable markers
         targets.forEach((t, idx) => {
-            // Glowing radar ring
-            L.circle([t.lat, t.lng], {
+            // 1. CPR Layer Objects (Cyan Rings)
+            const cprCircle = L.circle([t.lat, t.lng], {
                 color: '#00f3ff',
                 fillColor: '#00f3ff',
                 fillOpacity: 0.12,
-                radius: t.radius,
+                radius: 35000,
                 weight: 1.5,
-                dashArray: '4, 8'
-            }).addTo(radarGroup);
+                dashArray: '4, 6'
+            });
+            layerCprGroup.addLayer(cprCircle);
 
-            // Center target pin
+            // 2. Slope Hazard Layer (Orange / Red Warning Zones)
+            const slopeCircle = L.circle([t.lat, t.lng], {
+                color: '#ffaa00',
+                fillColor: '#ffaa00',
+                fillOpacity: 0.08,
+                radius: 20000,
+                weight: 1
+            });
+            layerSlopeGroup.addLayer(slopeCircle);
+
+            // 3. Thermal Cold Trap Layer (Deep Blue Cold Traps)
+            const thermalCircle = L.circle([t.lat, t.lng], {
+                color: '#0088ff',
+                fillColor: '#0055ff',
+                fillOpacity: 0.15,
+                radius: 45000,
+                weight: 1,
+                dashArray: '2, 4'
+            });
+            layerThermalGroup.addLayer(thermalCircle);
+
+            // Clickable Marker Pin for each target
             const customIcon = L.divIcon({
                 className: 'custom-pin',
-                html: `<div style="width:12px;height:12px;background:#00f3ff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 12px #00f3ff;cursor:pointer;" onclick="selectTarget(${idx})"></div>`,
-                iconSize: [12, 12],
-                iconAnchor: [6, 6]
+                html: `<div style="width:16px;height:16px;background:#00f3ff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 12px #00f3ff;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:4px;height:4px;background:#050b14;border-radius:50%;"></div></div>`,
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
             });
-            L.marker([t.lat, t.lng], {icon: customIcon}).addTo(radarGroup)
-             .bindPopup(`<b>${t.name}</b><br>Eis: ${t.ice}<br>Status: ${t.risk}`);
+
+            const marker = L.marker([t.lat, t.lng], {icon: customIcon});
+            marker.bindPopup(`<div style="color:#050b14; font-weight:bold;">${t.name}</div><div style="font-size:11px;">Klicken zum Aktivieren der Telemetrie.</div>`);
+            
+            marker.on('click', () => {
+                selectTarget(idx);
+            });
+
+            layerCprGroup.addLayer(marker);
         });
 
+        // Function to update sidebar telemetry when clicking any point
         function selectTarget(idx) {
             const t = targets[idx];
-            document.getElementById('target-id').innerText = `SAR-00${idx+1}`;
+            document.getElementById('target-id').innerText = t.id;
             document.getElementById('m-name').innerText = t.name;
             document.getElementById('m-coords').innerText = `${t.lat}°, ${t.lng}°`;
             document.getElementById('m-ice').innerText = t.ice;
-            document.getElementById('m-slope').innerText = t.risk === 'Sicher' ? '4.2° (Sicher)' : '14.8° (Steilhang)';
+            document.getElementById('m-sun').innerText = t.sun;
+            document.getElementById('m-slope').innerText = t.slope;
+            document.getElementById('m-temp').innerText = t.temp;
+
+            document.getElementById('header-lat').innerText = `LAT: ${t.lat}°`;
+            document.getElementById('header-lng').innerText = `LNG: ${t.lng}°`;
+            document.getElementById('header-elev').innerText = `ELEV: ${t.elev}`;
         }
 
-        function toggleRadarLayer(layerName) {
-            const checkbox = document.getElementById(`layer-${layerName}`);
-            if (checkbox.checked) {
-                map.addLayer(radarGroup);
-            } else {
-                map.removeLayer(radarGroup);
+        // Toggle Layers function linked to checkboxes
+        function toggleLayer(layerName) {
+            const isChecked = document.getElementById(`layer-${layerName}`).checked;
+            if (layerName === 'cpr') {
+                if (isChecked) map.addLayer(layerCprGroup);
+                else map.removeLayer(layerCprGroup);
+            } else if (layerName === 'slope') {
+                if (isChecked) map.addLayer(layerSlopeGroup);
+                else map.removeLayer(layerSlopeGroup);
+            } else if (layerName === 'thermal') {
+                if (isChecked) map.addLayer(layerThermalGroup);
+                else map.removeLayer(layerThermalGroup);
             }
         }
 
-        // Gemini Copilot Integration
+        // Gemini AI Mission Copilot Integration (Fixed Payload)
         async function sendToCopilot() {
             const inputField = document.getElementById('copilot-prompt');
             const outputBox = document.getElementById('copilot-output');

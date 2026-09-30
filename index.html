@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dancing with SARS — Lunar SAR & CLPS Control Dashboard</title>
+  <title>Dancing with SARS — Advanced Lunar SAR & CLPS Control Dashboard</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg-dark: #04060a;
-      --panel-bg: rgba(13, 17, 26, 0.92);
-      --panel-border: rgba(0, 240, 255, 0.25);
+      --panel-bg: rgba(10, 14, 22, 0.95);
+      --panel-border: rgba(0, 240, 255, 0.3);
       --panel-border-bright: #00f0ff;
       --accent-cyan: #00f0ff;
       --accent-green: #00ff66;
@@ -27,7 +27,11 @@
       --font-mono: 'Share Tech Mono', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     html, body {
       width: 100%;
@@ -37,16 +41,20 @@
       color: var(--text-main);
       font-family: var(--font-body);
       overflow: hidden;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.3;
     }
 
-    body { display: flex; flex-direction: column; }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
+    /* NASA Header */
     .nasa-header {
       flex-shrink: 0;
       width: 100%;
-      padding: 10px 16px;
+      padding: 8px 16px;
       background: linear-gradient(180deg, #090e18 0%, #04060a 100%);
       border-bottom: 1px solid var(--panel-border);
       display: flex;
@@ -55,13 +63,18 @@
       align-items: center;
       gap: 10px;
       z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.12);
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .brand h1 {
       font-family: var(--font-heading);
-      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
       letter-spacing: 1.5px;
       color: var(--accent-cyan);
       text-transform: uppercase;
@@ -74,13 +87,15 @@
       border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan);
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 3px 7px;
+      font-size: 0.6rem;
+      padding: 2px 6px;
       border-radius: 3px;
+      letter-spacing: 1px;
     }
 
     .pulse-dot {
-      width: 9px; height: 9px;
+      width: 8px;
+      height: 8px;
       background-color: var(--accent-green);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--accent-green);
@@ -97,32 +112,45 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       font-family: var(--font-mono);
-      font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+      font-size: 0.72rem;
     }
 
-    .metric { color: var(--text-muted); }
-    .metric strong { color: var(--accent-cyan); }
+    .metric {
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
 
-    .btn-briefing {
-      background: linear-gradient(135deg, rgba(0,240,255,0.25) 0%, rgba(0,102,255,0.25) 100%);
+    .metric strong {
+      color: var(--accent-cyan);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, rgba(0,240,255,0.2) 0%, rgba(0,102,255,0.2) 100%);
       border: 1px solid var(--accent-cyan);
       color: #fff;
       font-family: var(--font-heading);
-      font-size: 0.7rem;
-      padding: 6px 14px;
+      font-size: 0.65rem;
+      padding: 5px 10px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s ease;
+      letter-spacing: 1px;
     }
 
-    .btn-briefing:hover {
+    .btn-action:hover {
       background: var(--accent-cyan);
       color: #000;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
     }
 
+    /* Dashboard Layout */
     .dashboard-container {
       flex: 1;
       min-height: 0;
@@ -132,135 +160,344 @@
     }
 
     .sidebar {
-      width: 380px;
-      max-width: 42%;
+      width: 420px;
+      max-width: 45%;
       background-color: var(--panel-bg);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border-right: 1px solid var(--panel-border);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 12px;
+      gap: 10px;
+      padding: 10px;
       overflow-y: auto;
       z-index: 500;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
     }
 
     .panel {
-      background: rgba(10, 15, 25, 0.8);
+      background: rgba(8, 12, 20, 0.85);
       border: 1px solid var(--panel-border);
-      border-radius: 6px;
-      padding: 10px 12px;
+      border-radius: 5px;
+      padding: 9px 11px;
+      transition: border-color 0.3s ease;
+    }
+
+    .panel:hover {
+      border-color: rgba(0, 240, 255, 0.5);
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 6px;
+      padding-bottom: 5px;
     }
 
     .panel h2 {
       font-family: var(--font-heading);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--accent-cyan);
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
 
-    .control-group { display: flex; flex-direction: column; gap: 6px; }
+    /* Controls & Toggles */
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
 
     .toggle-btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 7px 10px;
-      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 9px;
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--panel-border);
       color: var(--text-main);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.06);
     }
 
     .toggle-btn.active {
       border-color: var(--accent-cyan);
       background: rgba(0, 240, 255, 0.15);
       color: #fff;
+      box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
     }
 
-    .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); }
+    .toggle-btn input[type="radio"], .toggle-btn input[type="checkbox"] {
+      accent-color: var(--accent-cyan);
+    }
 
+    /* Data Rows */
     .data-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
-      font-size: 0.82rem;
+      margin-bottom: 5px;
+      font-size: 0.78rem;
     }
 
-    .data-label { color: var(--text-muted); }
-    .data-value { color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600; text-align: right; }
+    .data-label {
+      color: var(--text-muted);
+    }
 
-    #viewport-3d-box {
-      width: 100%;
-      height: 140px;
+    .data-value {
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Search & Filter Bar */
+    .search-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .search-input {
+      flex: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--panel-border);
+      border-radius: 3px;
+      padding: 5px 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+
+    /* AI Copilot Panel Styles */
+    .ai-chat-box {
+      height: 110px;
       background: #020305;
       border: 1px solid var(--panel-border);
-      border-radius: 6px;
+      border-radius: 4px;
+      padding: 6px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .ai-msg {
+      padding: 4px 6px;
+      border-radius: 3px;
+      line-height: 1.25;
+    }
+
+    .ai-msg.system {
+      background: rgba(0, 240, 255, 0.08);
+      border-left: 2px solid var(--accent-cyan);
+      color: var(--text-main);
+    }
+
+    .ai-msg.user {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 2px solid var(--accent-amber);
+      color: var(--accent-amber);
+      align-self: flex-end;
+      width: 90%;
+    }
+
+    .ai-input-row {
+      display: flex;
+      gap: 5px;
+    }
+
+    .ai-input {
+      flex: 1;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--panel-border);
+      border-radius: 3px;
+      padding: 4px 6px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
+    .ai-btn {
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Terminal Log */
+    .terminal-log {
+      height: 85px;
+      background: #010204;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      color: var(--accent-green);
+      overflow-y: auto;
+    }
+
+    /* 3D Viewport */
+    #viewport-3d-box {
+      width: 100%;
+      height: 130px;
+      background: #020305;
+      border: 1px solid var(--panel-border);
+      border-radius: 5px;
       position: relative;
       overflow: hidden;
     }
 
-    #canvas-3d { width: 100%; height: 100%; display: block; }
+    #canvas-3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     .viewport-overlay {
       position: absolute;
-      top: 8px; left: 10px;
+      top: 6px;
+      left: 8px;
       pointer-events: none;
       font-family: var(--font-mono);
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       color: var(--accent-cyan);
       text-shadow: 0 0 4px #000;
     }
 
-    .map-viewport { flex: 1; height: 100%; position: relative; background: #020305; }
-    #map { width: 100%; height: 100%; background: #020305; }
-
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    /* Map Viewport */
+    .map-viewport {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      background: #020305;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    #map {
+      width: 100%;
+      height: 100%;
+      background: #020305;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 4, 8, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     .modal-card {
-      width: 620px; max-width: 90%; background: #0c121e;
-      border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 22px;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.25);
+      width: 650px;
+      max-width: 90%;
+      background: #0c121e;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
+      max-height: 85vh;
+      overflow-y: auto;
     }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--panel-border); padding-bottom: 8px; }
-    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.05rem; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
-    .close-btn:hover { color: var(--accent-cyan); }
-    .modal-body { font-size: 0.9rem; line-height: 1.5; color: #c0cdf0; }
-    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.88rem; margin: 12px 0 4px 0; }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #050810; }
-    ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 6px;
+    }
+
+    .modal-header h2 {
+      font-family: var(--font-heading);
+      color: var(--accent-cyan);
+      font-size: 1rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: var(--accent-cyan);
+    }
+
+    .modal-body {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #c0cdf0;
+    }
+
+    .modal-body h3 {
+      font-family: var(--font-heading);
+      color: var(--accent-amber);
+      font-size: 0.82rem;
+      margin: 10px 0 4px 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050810;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--panel-border);
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- NASA Header -->
   <header class="nasa-header">
     <div class="brand">
       <div class="pulse-dot"></div>
       <h1>Dancing with SARS</h1>
-      <span class="badge">CLPS MISSION DASHBOARD</span>
+      <span class="badge">CLPS v4.2 PRO</span>
     </div>
 
     <div class="telemetry-bar">
@@ -268,19 +505,27 @@
       <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
       <div class="metric">ELEV: <strong id="telemetry-elev">1,840 m</strong></div>
       <div class="metric">SAR FREQ: <strong>L-Band (1.25 GHz)</strong></div>
+      <div class="metric">PING: <strong id="telemetry-ping">2.64s</strong></div>
     </div>
 
-    <button class="btn-briefing" onclick="toggleModal(true)">CLPS BRIEFING</button>
+    <div class="header-actions">
+      <button class="btn-action" onclick="triggerScan()">KI-SCAN</button>
+      <button class="btn-action" onclick="toggleModal(true)">BRIEFING</button>
+    </div>
   </header>
 
+  <!-- Dashboard Container -->
   <div class="dashboard-container">
     <aside class="sidebar">
       
-      <!-- Panel 1: SAR Layer Selection -->
+      <!-- Panel 1: SAR Layer Selection & Target Search -->
       <section class="panel">
         <div class="panel-header">
-          <h2>SAR Radar-Ebenen</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">AKTIV</span>
+          <h2>SAR Radar-Ebenen & Suche</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan);">ONLINE</span>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="target-search" class="search-input" placeholder="Zielsuche (z.B. Shackleton)..." oninput="filterTargets(this.value)">
         </div>
         <div class="control-group">
           <label class="toggle-btn active">
@@ -302,7 +547,7 @@
       <section class="panel">
         <div class="panel-header">
           <h2>CLPS Ziel-Messwerte</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
+          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
         </div>
         <div id="target-info-content">
           <div class="data-row"><span class="data-label">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
@@ -312,21 +557,49 @@
           <div class="data-row"><span class="data-label">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
           <div class="data-row"><span class="data-label">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
           <div class="data-row"><span class="data-label">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
-          <div class="data-row" style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px;">
+          <div class="data-row" style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
             <span class="data-label">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
           </div>
         </div>
       </section>
 
-      <!-- Panel 3: Interactive 3D Orbital Viewport -->
+      <!-- Panel 3: SAR AI Copilot / Chat -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>SAR AI Copilot</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-green);">AKTIV</span>
+        </div>
+        <div class="ai-chat-box" id="ai-chat-box">
+          <div class="ai-msg system">[SYSTEM]: KI-Copilot initialisiert. Bereit für Krateranalyse und Landeplatzoptimierung.</div>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an SAR-KI..." onkeypress="handleAiKeyPress(event)">
+          <button class="ai-btn" onclick="sendAiMessage()">SEND</button>
+        </div>
+      </section>
+
+      <!-- Panel 4: Interactive 3D Orbital Viewport -->
       <section class="panel">
         <div class="panel-header">
           <h2>3D Orbitale Mondansicht</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
+          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
         </div>
         <div id="viewport-3d-box">
           <canvas id="canvas-3d"></canvas>
           <div class="viewport-overlay" id="3d-status">LUNAR ORBIT: LOCKED</div>
+        </div>
+      </section>
+
+      <!-- Panel 5: Mission Terminal & Event Log -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Missions-Terminal (Syslog)</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);">LIVE</span>
+        </div>
+        <div class="terminal-log" id="terminal-log">
+          <div>[00:00:01] Link zu Deep Space Network stabilisiert.</div>
+          <div>[00:00:04] SAR L-Band Kalibrierung erfolgreich.</div>
+          <div>[00:00:12] Ziel Shackleton Rim geladen.</div>
         </div>
       </section>
 
@@ -337,6 +610,7 @@
     </main>
   </div>
 
+  <!-- Modal Briefing -->
   <div class="modal-overlay" id="briefing-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -358,11 +632,12 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
-    // Procedural Dynamic Lunar Surface Texture
+    // Procedural Dynamic Lunar Surface Texture Generator
     function generateLunarBaseTexture() {
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
@@ -372,14 +647,14 @@
       ctx.fillStyle = '#0d111a';
       ctx.fillRect(0, 0, 1024, 512);
 
-      for (let i = 0; i < 350; i++) {
+      for (let i = 0; i < 400; i++) {
         const x = Math.random() * 1024;
         const y = Math.random() * 512;
-        const radius = Math.random() * 30 + 3;
+        const radius = Math.random() * 32 + 3;
         
         const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        grad.addColorStop(0, 'rgba(50, 65, 85, 0.4)');
-        grad.addColorStop(0.6, 'rgba(25, 35, 50, 0.6)');
+        grad.addColorStop(0, 'rgba(50, 65, 85, 0.45)');
+        grad.addColorStop(0.6, 'rgba(25, 35, 50, 0.65)');
         grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
         
         ctx.fillStyle = grad;
@@ -388,15 +663,15 @@
         ctx.fill();
       }
 
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.18)';
       ctx.beginPath();
-      ctx.arc(512, 450, 180, 0, Math.PI * 2);
+      ctx.arc(512, 450, 190, 0, Math.PI * 2);
       ctx.fill();
 
       return canvas.toDataURL();
     }
 
-    // Initialize Map
+    // Initialize Leaflet Map
     const map = L.map('map', {
       center: [-60, 0],
       zoom: 2,
@@ -424,6 +699,7 @@
       document.getElementById('telemetry-elev').innerText = `${elev} m`;
     });
 
+    // Target Database
     const defaultTargets = [
       {
         id: "SAR-001",
@@ -487,7 +763,13 @@
       }
     ];
 
+    let currentMarkers = [];
+
     function loadTargets(targets) {
+      // Clear existing
+      currentMarkers.forEach(m => map.removeLayer(m));
+      currentMarkers = [];
+
       targets.forEach(target => {
         const marker = L.circleMarker([target.lat, target.lng], {
           radius: 9,
@@ -498,39 +780,44 @@
           fillOpacity: 0.85
         }).addTo(map);
 
-        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score || 'N/A'}`, {
+        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score}`, {
           permanent: false,
           direction: 'top'
         });
 
         marker.on('click', () => {
-          document.getElementById('target-id').innerText = target.id || 'SAR-TRG';
-          document.getElementById('val-name').innerText = target.name || 'Lunar Location';
-          document.getElementById('val-coords').innerText = `${target.lat}°, ${target.lng}°`;
-          document.getElementById('val-ice').innerText = target.ice_score || 'N/A';
-          document.getElementById('val-solar').innerText = target.illumination_pct || '85 %';
-          document.getElementById('val-slope').innerText = target.slope_deg || '4.2° (Sicher)';
-          document.getElementById('val-thermal').innerText = target.thermal_k || '40 K bis 220 K';
-          document.getElementById('val-backscatter').innerText = target.backscatter_db || 'N/A';
-          document.getElementById('val-clps').innerText = target.clps_suitability || 'BEWERTETE LANDESPOSITION';
-
-          document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
-          rotateMoonToTarget();
+          selectTarget(target);
         });
+
+        currentMarkers.push(marker);
       });
     }
 
-    fetch('data.json')
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.targets && data.targets.length > 0) {
-          loadTargets(data.targets);
-        } else {
-          loadTargets(defaultTargets);
-        }
-      })
-      .catch(() => loadTargets(defaultTargets));
+    function selectTarget(target) {
+      document.getElementById('target-id').innerText = target.id;
+      document.getElementById('val-name').innerText = target.name;
+      document.getElementById('val-coords').innerText = `${target.lat}°, ${target.lng}°`;
+      document.getElementById('val-ice').innerText = target.ice_score;
+      document.getElementById('val-solar').innerText = target.illumination_pct;
+      document.getElementById('val-slope').innerText = target.slope_deg;
+      document.getElementById('val-thermal').innerText = target.thermal_k;
+      document.getElementById('val-backscatter').innerText = target.backscatter_db;
+      document.getElementById('val-clps').innerText = target.clps_suitability;
 
+      document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
+      logTerminal(`Ziel ausgewählt: ${target.name} (${target.id})`);
+      rotateMoonToTarget();
+    }
+
+    function filterTargets(query) {
+      const q = query.toLowerCase();
+      const filtered = defaultTargets.filter(t => t.name.toLowerCase().includes(q) || t.id.toLowerCase().includes(q));
+      loadTargets(filtered);
+    }
+
+    loadTargets(defaultTargets);
+
+    // SAR Layer Event Listener
     document.querySelectorAll('input[name="sar-layer"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
@@ -539,21 +826,76 @@
         const val = e.target.value;
         if (val === 'cpr') {
           lunarOverlay.setOpacity(0.9);
+          logTerminal("SAR Layer gewechselt: Mini-RF CPR");
         } else if (val === 'roughness') {
           lunarOverlay.setOpacity(0.5);
+          logTerminal("SAR Layer gewechselt: Geländerauigkeit");
         } else {
           lunarOverlay.setOpacity(1.0);
+          logTerminal("SAR Layer gewechselt: Optische Basiskarte");
         }
       });
     });
 
+    // Modal Control
     function toggleModal(show) {
       const modal = document.getElementById('briefing-modal');
       if (show) modal.classList.add('active');
       else modal.classList.remove('active');
     }
 
-    // Three.js 3D Orbital Viewport (Mit fester Initialisierung und Resize-Handling)
+    // AI Copilot Logic
+    function sendAiMessage() {
+      const input = document.getElementById('ai-user-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendAiMsg(text, 'user');
+      input.value = '';
+
+      logTerminal(`KI-Abfrage gesendet: "${text}"`);
+
+      setTimeout(() => {
+        let reply = "Analyse abgeschlossen: Die Region weist stabile thermische Bedingungen auf. Empfehle L-Band Radar-Feinscan zur Bestätigung von Oberflächeneis.";
+        const lowText = text.toLowerCase();
+        if (lowText.includes('eis') || lowText.includes('wasser')) {
+          reply = "SAR-CPR Signatur zeigt in diesem Sektor stark erhöhte Werte (>1.2), was auf verbackenes Wassereis im Regolith hindeutet.";
+        } else if (lowText.includes('sicher') || lowText.includes('landung')) {
+          reply = "Hangneigung liegt unter 5 Grad. Ausgezeichnete Bedingungen für CLPS-Landegeräte mit automatischem Hindernisausgleich.";
+        }
+        appendAiMsg(reply, 'system');
+        logTerminal("KI-Antwort empfangen und verarbeitet.");
+      }, 900);
+    }
+
+    function appendAiMsg(text, sender) {
+      const box = document.getElementById('ai-chat-box');
+      const div = document.createElement('div');
+      div.className = `ai-msg ${sender}`;
+      div.innerText = sender === 'system' ? `[KI]: ${text}` : `[OP]: ${text}`;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function handleAiKeyPress(e) {
+      if (e.key === 'Enter') sendAiMessage();
+    }
+
+    function triggerScan() {
+      logTerminal("Manueller SAR-Vollscan der Südpolregion gestartet...");
+      appendAiMsg("Vollständiger Radar-Scan gestartet. Alle Kraterränder werden auf Eisvorkommen und Felsstrukturen überprüft.", 'system');
+    }
+
+    function logTerminal(msg) {
+      const term = document.getElementById('terminal-log');
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.innerText = `[${time}] ${msg}`;
+      term.appendChild(div);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    // Three.js 3D Orbital Viewport
     const container = document.getElementById('viewport-3d-box');
     const canvas = document.getElementById('canvas-3d');
     
@@ -591,8 +933,8 @@
 
     function animate() {
       requestAnimationFrame(animate);
-      moon.rotation.y += 0.004;
-      wireframe.rotation.y -= 0.002;
+      moon.rotation.y += 0.003;
+      wireframe.rotation.y -= 0.0015;
       renderer.render(scene, camera);
     }
     animate();

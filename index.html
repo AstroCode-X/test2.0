@@ -30,61 +30,37 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font-body);
-      overflow: hidden;
-      font-size: 14px;
-      line-height: 1.3;
+      width: 100%; height: 100%; height: 100dvh;
+      background-color: var(--bg-dark); color: var(--text-main);
+      font-family: var(--font-body); overflow: hidden; font-size: 14px; line-height: 1.3;
     }
 
     body { display: flex; flex-direction: column; }
 
     .nasa-header {
-      flex-shrink: 0;
-      width: 100%;
-      padding: 10px 18px;
+      flex-shrink: 0; width: 100%; padding: 10px 18px;
       background: linear-gradient(180deg, #090e18 0%, #04060a 100%);
       border-bottom: 1px solid var(--panel-border);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 12px; z-index: 1000; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand h1 {
-      font-family: var(--font-heading);
-      font-size: clamp(0.9rem, 2.2vw, 1.15rem);
-      letter-spacing: 1.5px;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-      white-space: nowrap;
+      font-family: var(--font-heading); font-size: clamp(0.9rem, 2.2vw, 1.15rem);
+      letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); white-space: nowrap;
     }
 
     .badge {
-      background: rgba(0, 240, 255, 0.12);
-      border: 1px solid var(--accent-cyan);
-      color: var(--accent-cyan);
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 3px 8px;
-      border-radius: 3px;
-      letter-spacing: 1px;
+      background: rgba(0, 240, 255, 0.12); border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.65rem;
+      padding: 3px 8px; border-radius: 3px; letter-spacing: 1px;
     }
 
     .pulse-dot {
-      width: 9px; height: 9px;
-      background-color: var(--accent-green);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-green);
+      width: 9px; height: 9px; background-color: var(--accent-green);
+      border-radius: 50%; box-shadow: 0 0 10px var(--accent-green);
       animation: pulse 1.8s infinite;
     }
 
@@ -95,34 +71,30 @@
     }
 
     .telemetry-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 16px;
+      font-family: var(--font-mono); font-size: 0.75rem;
     }
 
     .metric { color: var(--text-muted); white-space: nowrap; }
     .metric strong { color: var(--accent-cyan); }
 
-    .header-actions { display: flex; gap: 8px; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    
+    .lang-select {
+      background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan); font-family: var(--font-heading); font-size: 0.68rem;
+      padding: 5px 8px; border-radius: 4px; cursor: pointer; outline: none;
+    }
+    .lang-select option { background: #04060a; color: #fff; }
+
     .btn-action {
       background: linear-gradient(135deg, rgba(0,240,255,0.2) 0%, rgba(0,102,255,0.2) 100%);
-      border: 1px solid var(--accent-cyan);
-      color: #fff;
-      font-family: var(--font-heading);
-      font-size: 0.68rem;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      letter-spacing: 1px;
+      border: 1px solid var(--accent-cyan); color: #fff; font-family: var(--font-heading);
+      font-size: 0.68rem; padding: 6px 12px; border-radius: 4px; cursor: pointer;
+      transition: all 0.3s ease; letter-spacing: 1px;
     }
     .btn-action:hover {
-      background: var(--accent-cyan);
-      color: #000;
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+      background: var(--accent-cyan); color: #000; box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
     }
 
     .dashboard-container {
@@ -130,32 +102,25 @@
     }
 
     .sidebar {
-      width: 440px; max-width: 46%;
-      background-color: var(--panel-bg);
-      backdrop-filter: blur(14px);
-      border-right: 1px solid var(--panel-border);
-      display: flex; flex-direction: column; gap: 10px;
-      padding: 12px; overflow-y: auto; z-index: 500;
-      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
+      width: 440px; max-width: 46%; background-color: var(--panel-bg);
+      backdrop-filter: blur(14px); border-right: 1px solid var(--panel-border);
+      display: flex; flex-direction: column; gap: 10px; padding: 12px;
+      overflow-y: auto; z-index: 500; box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
     }
 
     .panel {
-      background: rgba(8, 12, 20, 0.85);
-      border: 1px solid var(--panel-border);
-      border-radius: 6px;
-      padding: 10px 12px;
-      transition: border-color 0.3s ease;
+      background: rgba(8, 12, 20, 0.85); border: 1px solid var(--panel-border);
+      border-radius: 6px; padding: 10px 12px; transition: border-color 0.3s ease;
     }
     .panel:hover { border-color: rgba(0, 240, 255, 0.5); }
 
     .panel-header {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 6px;
+      margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;
     }
     .panel h2 {
-      font-family: var(--font-heading); font-size: 0.8rem;
-      color: var(--accent-cyan); letter-spacing: 1px; text-transform: uppercase;
+      font-family: var(--font-heading); font-size: 0.8rem; color: var(--accent-cyan);
+      letter-spacing: 1px; text-transform: uppercase;
     }
 
     .control-group { display: flex; flex-direction: column; gap: 6px; }
@@ -257,21 +222,25 @@
   <header class="nasa-header">
     <div class="brand">
       <div class="pulse-dot"></div>
-      <h1>Dancing with SARS</h1>
+      <h1 data-i18n="title">Dancing with SARS</h1>
       <span class="badge">CLPS v4.2 PRO</span>
     </div>
 
     <div class="telemetry-bar">
       <div class="metric">LAT: <strong id="telemetry-lat">-89.90°</strong></div>
       <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
-      <div class="metric">ELEV: <strong id="telemetry-elev">1,840 m</strong></div>
-      <div class="metric">SAR FREQ: <strong>L-Band (1.25 GHz)</strong></div>
+      <div class="metric"><span data-i18n="elev_lbl">ELEV</span>: <strong id="telemetry-elev">1,840 m</strong></div>
+      <div class="metric"><span data-i18n="freq_lbl">SAR FREQ</span>: <strong>L-Band (1.25 GHz)</strong></div>
       <div class="metric">PING: <strong id="telemetry-ping">2.64s</strong></div>
     </div>
 
     <div class="header-actions">
-      <button class="btn-action" onclick="triggerScan()">KI-SCAN</button>
-      <button class="btn-action" onclick="toggleModal(true)">BRIEFING</button>
+      <select id="language-select" class="lang-select" onchange="changeLanguage(this.value)">
+        <option value="de" selected>DE</option>
+        <option value="en">EN</option>
+      </select>
+      <button class="btn-action" onclick="triggerScan()" data-i18n="btn_scan">KI-SCAN</button>
+      <button class="btn-action" onclick="toggleModal(true)" data-i18n="btn_briefing">BRIEFING</button>
     </div>
   </header>
 
@@ -281,23 +250,23 @@
       <!-- Panel 1: SAR Layer & Suche -->
       <section class="panel">
         <div class="panel-header">
-          <h2>SAR Radar-Ebenen & Suche</h2>
+          <h2 data-i18n="p1_title">SAR Radar-Ebenen & Suche</h2>
           <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">ONLINE</span>
         </div>
         <div class="search-bar">
-          <input type="text" id="target-search" class="search-input" placeholder="Zielsuche (z.B. Shackleton)..." oninput="filterTargets(this.value)">
+          <input type="text" id="target-search" class="search-input" placeholder="Zielsuche (z.B. Shackleton)..." data-i18n-placeholder="search_ph" oninput="filterTargets(this.value)">
         </div>
         <div class="control-group">
           <label class="toggle-btn active">
-            <span>Mini-RF Polarisationsrate (CPR)</span>
+            <span data-i18n="layer_cpr">Mini-RF Polarisationsrate (CPR)</span>
             <input type="radio" name="sar-layer" value="cpr" checked>
           </label>
           <label class="toggle-btn">
-            <span>Geländerauigkeit / Gefahrenkarte</span>
+            <span data-i18n="layer_rough">Geländerauigkeit / Gefahrenkarte</span>
             <input type="radio" name="sar-layer" value="roughness">
           </label>
           <label class="toggle-btn">
-            <span>Optische Basiskarte (LROC WAC)</span>
+            <span data-i18n="layer_opt">Optische Basiskarte (LROC WAC)</span>
             <input type="radio" name="sar-layer" value="optical">
           </label>
         </div>
@@ -306,19 +275,19 @@
       <!-- Panel 2: CLPS Ziel-Messwerte -->
       <section class="panel">
         <div class="panel-header">
-          <h2>CLPS Ziel-Messwerte</h2>
+          <h2 data-i18n="p2_title">CLPS Ziel-Messwerte</h2>
           <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
         </div>
         <div id="target-info-content">
-          <div class="data-row"><span class="data-label">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
-          <div class="data-row"><span class="data-label">Koordinaten:</span><span class="data-value" id="val-coords">-89.90°, 0.00°</span></div>
-          <div class="data-row"><span class="data-label">Eis-Wahrscheinlichkeit:</span><span class="data-value" style="color: var(--accent-green);" id="val-ice">89 %</span></div>
-          <div class="data-row"><span class="data-label">Sonneneinstrahlung:</span><span class="data-value" id="val-solar">86 %</span></div>
-          <div class="data-row"><span class="data-label">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
-          <div class="data-row"><span class="data-label">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
-          <div class="data-row"><span class="data-label">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_site">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_coords">Koordinaten:</span><span class="data-value" id="val-coords">-89.90°, 0.00°</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_ice">Eis-Wahrscheinlichkeit:</span><span class="data-value" style="color: var(--accent-green);" id="val-ice">89 %</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_solar">Sonneneinstrahlung:</span><span class="data-value" id="val-solar">86 %</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_slope">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_thermal">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_backscatter">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
           <div class="data-row" style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px;">
-            <span class="data-label">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
+            <span class="data-label" data-i18n="lbl_clps">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
           </div>
         </div>
       </section>
@@ -326,22 +295,22 @@
       <!-- Panel 3: Echter Groq / Llama Cloudflare Worker Chat -->
       <section class="panel">
         <div class="panel-header">
-          <h2>SAR AI Copilot (Groq / Llama)</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);">VERBUNDEN</span>
+          <h2 data-i18n="p3_title">SAR AI Copilot (Groq / Llama)</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);" data-i18n="status_connected">VERBUNDEN</span>
         </div>
         <div class="ai-chat-box" id="ai-chat-box">
-          <div class="ai-msg system">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für kostenlose Live-Anfragen an das Llama Modell.</div>
+          <div class="ai-msg system" data-i18n="sys_init">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für kostenlose Live-Anfragen an das Llama Modell.</div>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die Groq KI..." onkeypress="handleAiKeyPress(event)">
-          <button class="ai-btn" onclick="sendAiMessage()">SEND</button>
+          <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die Groq KI..." data-i18n-placeholder="chat_ph" onkeypress="handleAiKeyPress(event)">
+          <button class="ai-btn" onclick="sendAiMessage()" data-i18n="btn_send">SEND</button>
         </div>
       </section>
 
       <!-- Panel 4: 3D Ansicht -->
       <section class="panel">
         <div class="panel-header">
-          <h2>3D Orbitale Mondansicht</h2>
+          <h2 data-i18n="p4_title">3D Orbitale Mondansicht</h2>
           <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
         </div>
         <div id="viewport-3d-box">
@@ -353,7 +322,7 @@
       <!-- Panel 5: Missions-Terminal -->
       <section class="panel">
         <div class="panel-header">
-          <h2>Missions-Terminal (Syslog)</h2>
+          <h2 data-i18n="p5_title">Missions-Terminal (Syslog)</h2>
           <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted);">LIVE</span>
         </div>
         <div class="terminal-log" id="terminal-log">
@@ -374,10 +343,10 @@
   <div class="modal-overlay" id="briefing-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h2>CLPS Mission & SAR System-Briefing</h2>
+        <h2 data-i18n="modal_title">CLPS Mission & SAR System-Briefing</h2>
         <button class="close-btn" onclick="toggleModal(false)">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modal-content-body">
         <p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und verborgene Felsbrocken.</p>
         <h3>1. Wassereis in dunklen Kratern</h3>
         <p>Optische Kameras können nicht in Schattenkrater blicken. SAR nutzt die zirkulare Polarisationsrate, um Vorkommen von Wassereis zu lokalisieren.</p>
@@ -391,6 +360,101 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
+    // --- SPRACH-WÖRTERBUCH (i18n) ---
+    const translations = {
+      de: {
+        title: "Dancing with SARS",
+        elev_lbl: "ELEV",
+        freq_lbl: "SAR FREQ",
+        btn_scan: "KI-SCAN",
+        btn_briefing: "BRIEFING",
+        p1_title: "SAR Radar-Ebenen & Suche",
+        search_ph: "Zielsuche (z.B. Shackleton)...",
+        layer_cpr: "Mini-RF Polarisationsrate (CPR)",
+        layer_rough: "Geländerauigkeit / Gefahrenkarte",
+        layer_opt: "Optische Basiskarte (LROC WAC)",
+        p2_title: "CLPS Ziel-Messwerte",
+        lbl_site: "Landeplatz:",
+        lbl_coords: "Koordinaten:",
+        lbl_ice: "Eis-Wahrscheinlichkeit:",
+        lbl_solar: "Sonneneinstrahlung:",
+        lbl_slope: "Hangneigung:",
+        lbl_thermal: "Temperaturbereich:",
+        lbl_backscatter: "Rückstreuwert:",
+        lbl_clps: "CLPS Bewertung:",
+        p3_title: "SAR AI Copilot (Groq / Llama)",
+        status_connected: "VERBUNDEN",
+        sys_init: "[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Bereit für kostenlose Live-Anfragen an das Llama Modell.",
+        chat_ph: "Frage an die Groq KI...",
+        btn_send: "SEND",
+        p4_title: "3D Orbitale Mondansicht",
+        p5_title: "Missions-Terminal (Syslog)",
+        modal_title: "CLPS Mission & SAR System-Briefing",
+        modal_html: `<p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und verborgene Felsbrocken.</p>
+        <h3>1. Wassereis in dunklen Kratern</h3>
+        <p>Optische Kameras können nicht in Schattenkrater blicken. SAR nutzt die zirkulare Polarisationsrate, um Vorkommen von Wassereis zu lokalisieren.</p>
+        <h3>2. Gefahrenkartierung</h3>
+        <p>Identifiziert steile Hänge (>10°) und Felsfelder, um ein Umkippen von Landern zu verhindern.</p>`
+      },
+      en: {
+        title: "Dancing with SARS",
+        elev_lbl: "ELEV",
+        freq_lbl: "SAR FREQ",
+        btn_scan: "AI SCAN",
+        btn_briefing: "BRIEFING",
+        p1_title: "SAR Radar Layers & Search",
+        search_ph: "Search target (e.g. Shackleton)...",
+        layer_cpr: "Mini-RF Circular Pol. Ratio (CPR)",
+        layer_rough: "Terrain Roughness / Hazard Map",
+        layer_opt: "Optical Basemap (LROC WAC)",
+        p2_title: "CLPS Target Metrics",
+        lbl_site: "Landing Site:",
+        lbl_coords: "Coordinates:",
+        lbl_ice: "Ice Probability:",
+        lbl_solar: "Solar Illumination:",
+        lbl_slope: "Slope Gradient:",
+        lbl_thermal: "Thermal Range:",
+        lbl_backscatter: "Backscatter Value:",
+        lbl_clps: "CLPS Assessment:",
+        p3_title: "SAR AI Copilot (Groq / Llama)",
+        status_connected: "CONNECTED",
+        sys_init: "[SYSTEM]: Cloudflare Worker endpoint active. Ready for free live queries to the Llama model.",
+        chat_ph: "Ask Groq AI...",
+        btn_send: "SEND",
+        p4_title: "3D Orbital Lunar View",
+        p5_title: "Mission Terminal (Syslog)",
+        modal_title: "CLPS Mission & SAR System Briefing",
+        modal_html: `<p><strong>Challenge:</strong> Commercial Lunar Payload Services (CLPS) landers face extreme risks at the lunar south pole due to permanently shadowed regions (PSRs), steep crater slopes, and hidden boulders.</p>
+        <h3>1. Water Ice in Dark Craters</h3>
+        <p>Optical cameras cannot peer into shadowed craters. SAR uses circular polarization ratios to locate water ice deposits.</p>
+        <h3>2. Hazard Mapping</h3>
+        <p>Identifies steep slopes (>10°) and boulder fields to prevent lander tip-overs.</p>`
+      }
+    };
+
+    let currentLang = 'de';
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      const dict = translations[lang];
+
+      // Alle Attribute mit data-i18n aktualisieren
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerText = dict[key];
+      });
+
+      // Placeholder aktualisieren
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.placeholder = dict[key];
+      });
+
+      // Modal HTML aktualisieren
+      document.getElementById('modal-content-body').innerHTML = dict.modal_html;
+      logTerminal(lang === 'de' ? 'Sprache auf Deutsch geändert.' : 'Language changed to English.');
+    }
+
     // Funktion zur Generierung einer detaillierten Mondoberflächen-Textur
     function generateLunarBaseTexture() {
       const canvas = document.createElement('canvas');
@@ -450,7 +514,7 @@
         const marker = L.circleMarker([target.lat, target.lng], {
           radius: 9, fillColor: '#00f0ff', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.85
         }).addTo(map);
-        marker.bindTooltip(`<b>${target.name}</b><br>Eis-Wert: ${target.ice_score}`, { permanent: false, direction: 'top' });
+        marker.bindTooltip(`<b>${target.name}</b><br>Ice Score: ${target.ice_score}`, { permanent: false, direction: 'top' });
         marker.on('click', () => selectTarget(target));
         currentMarkers.push(marker);
       });
@@ -468,7 +532,7 @@
       document.getElementById('val-backscatter').innerText = target.backscatter_db;
       document.getElementById('val-clps').innerText = target.clps_suitability;
       document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
-      logTerminal(`Ziel ausgewählt: ${target.name} (${target.id})`);
+      logTerminal(`Ziel ausgewählt / Target selected: ${target.name} (${target.id})`);
       rotateMoonToTarget();
     }
 
@@ -485,9 +549,9 @@
         document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
         e.target.closest('.toggle-btn').classList.add('active');
         const val = e.target.value;
-        if (val === 'cpr') { lunarOverlay.setOpacity(0.95); logTerminal("SAR Layer gewechselt: Mini-RF CPR"); }
-        else if (val === 'roughness') { lunarOverlay.setOpacity(0.5); logTerminal("SAR Layer gewechselt: Geländerauigkeit"); }
-        else { lunarOverlay.setOpacity(1.0); logTerminal("SAR Layer gewechselt: Optische Basiskarte"); }
+        if (val === 'cpr') { lunarOverlay.setOpacity(0.95); logTerminal("SAR Layer: Mini-RF CPR"); }
+        else if (val === 'roughness') { lunarOverlay.setOpacity(0.5); logTerminal("SAR Layer: Terrain Roughness"); }
+        else { lunarOverlay.setOpacity(1.0); logTerminal("SAR Layer: Optical Basemap"); }
       });
     });
 
@@ -497,7 +561,7 @@
       else modal.classList.remove('active');
     }
 
-    // --- ECHTER GROQ / LLAMA CLOUDFLARE WORKER AUFRUF ---
+    // --- CLOUDFLARE WORKER AUFRUF ---
     async function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
@@ -505,7 +569,7 @@
 
       appendAiMsg(text, 'user');
       input.value = '';
-      logTerminal(`Sende Anfrage an Groq (Llama 3.3 Worker)...`);
+      logTerminal(`Sende Anfrage an Groq (Worker)...`);
 
       const cur = selectedTargetData;
       const systemPrompt = `Du bist der KI-Copilot für eine NASA-Mond-SAR- und CLPS-Landeplatz-Analyse im Dashboard "Dancing with SARS". 
@@ -518,7 +582,7 @@ Der Commander hat aktuell folgenden Landeplatz ausgewählt:
 - Thermik: ${cur.thermal_k}
 - Bewertung: ${cur.clps_suitability}
 
-Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die Fragen des Nutzers (z.B. ob etwas gut/schlecht ist) und nutze die oben genannten Telemetriedaten des ausgewählten Ziels.`;
+Antworte im NASA-Stil auf ${currentLang === 'de' ? 'Deutsch' : 'Englisch'} und beziehe dich auf diese Telemetriedaten.`;
 
       try {
         const workerUrl = 'https://nexus.elias256.workers.dev/';
@@ -527,7 +591,6 @@ Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: text }
@@ -540,18 +603,18 @@ Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die
         if (data.choices && data.choices.length > 0) {
           const aiReply = data.choices[0].message.content;
           appendAiMsg(aiReply, 'system');
-          logTerminal("Kostenlose Llama-Antwort erhalten.");
+          logTerminal("Antwort erhalten.");
         } else if (data.error) {
           appendAiMsg(`API-Fehler: ${data.error.message || JSON.stringify(data.error)}`, 'error');
-          logTerminal("Fehler vom Groq/Worker erhalten.");
+          logTerminal("Fehler vom Worker.");
         } else {
-          appendAiMsg("Unerwartete Antwortstruktur vom Worker.", 'error');
+          appendAiMsg("Unerwartete Antwortstruktur.", 'error');
         }
 
       } catch (err) {
         console.error(err);
-        appendAiMsg(`Netzwerk- oder CORS-Fehler beim Worker-Aufruf: ${err.message}`, 'error');
-        logTerminal("Fehler: Verbindung zum Cloudflare Worker fehlgeschlagen.");
+        appendAiMsg(`Netzwerkfehler: ${err.message}`, 'error');
+        logTerminal("Fehler: Verbindung fehlgeschlagen.");
       }
     }
 
@@ -571,8 +634,8 @@ Antworte fachlich präzise im NASA-Stil auf Deutsch, beziehe dich direkt auf die
     }
 
     function triggerScan() {
-      logTerminal("Manueller SAR-Vollscan der Südpolregion gestartet...");
-      appendAiMsg("Vollständiger Radar-Scan gestartet. Kraterprofile und Eisvorkommen werden via L-Band aktualisiert.", 'system');
+      logTerminal("SAR-Vollscan gestartet...");
+      appendAiMsg(currentLang === 'de' ? "Vollständiger Radar-Scan gestartet." : "Full radar scan initiated.", 'system');
     }
 
     function logTerminal(msg) {

@@ -385,23 +385,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
+    // Funktion zur Generierung einer realistischeren Mondoberflächen-Textur für die Karte
     function generateLunarBaseTexture() {
       const canvas = document.createElement('canvas');
-      canvas.width = 1024; canvas.height = 512;
+      canvas.width = 2048; canvas.height = 1024;
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#0d111a';
-      ctx.fillRect(0, 0, 1024, 512);
-      for (let i = 0; i < 400; i++) {
-        const x = Math.random() * 1024, y = Math.random() * 512, radius = Math.random() * 32 + 3;
+      ctx.fillStyle = '#080c14';
+      ctx.fillRect(0, 0, 2048, 1024);
+      
+      // Krater-Strukturen und Textur-Details zeichnen
+      for (let i = 0; i < 800; i++) {
+        const x = Math.random() * 2048, y = Math.random() * 1024, radius = Math.random() * 45 + 4;
         const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        grad.addColorStop(0, 'rgba(50, 65, 85, 0.45)');
-        grad.addColorStop(0.6, 'rgba(25, 35, 50, 0.65)');
-        grad.addColorStop(1, 'rgba(13, 17, 26, 0)');
+        grad.addColorStop(0, 'rgba(45, 55, 75, 0.55)');
+        grad.addColorStop(0.5, 'rgba(20, 28, 40, 0.75)');
+        grad.addColorStop(1, 'rgba(8, 12, 20, 0)');
         ctx.fillStyle = grad;
         ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       }
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.18)';
-      ctx.beginPath(); ctx.arc(512, 450, 190, 0, Math.PI * 2); ctx.fill();
+      
+      // Südpol-Highlight-Bereich
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.22)';
+      ctx.beginPath(); ctx.arc(1024, 900, 280, 0, Math.PI * 2); ctx.fill();
       return canvas.toDataURL();
     }
 
@@ -413,7 +418,7 @@
     map.setMaxBounds([[-110, -200], [110, 200]]);
 
     const lunarSurfaceUrl = generateLunarBaseTexture();
-    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, { opacity: 0.9, interactive: false }).addTo(map);
+    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, { opacity: 0.95, interactive: false }).addTo(map);
     map.fitBounds(mapBounds);
 
     map.on('mousemove', (e) => {
@@ -476,7 +481,7 @@
         document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
         e.target.closest('.toggle-btn').classList.add('active');
         const val = e.target.value;
-        if (val === 'cpr') { lunarOverlay.setOpacity(0.9); logTerminal("SAR Layer gewechselt: Mini-RF CPR"); }
+        if (val === 'cpr') { lunarOverlay.setOpacity(0.95); logTerminal("SAR Layer gewechselt: Mini-RF CPR"); }
         else if (val === 'roughness') { lunarOverlay.setOpacity(0.5); logTerminal("SAR Layer gewechselt: Geländerauigkeit"); }
         else { lunarOverlay.setOpacity(1.0); logTerminal("SAR Layer gewechselt: Optische Basiskarte"); }
       });
@@ -488,7 +493,7 @@
       else modal.classList.remove('active');
     }
 
-    // --- DYNAMISCHE KI-ANTWORT-LOGIK ---
+    // --- VERBesserte, reaktive KI-ANALYSE-ENGINE ---
     function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
@@ -499,29 +504,32 @@
       logTerminal(`KI-Abfrage gesendet: "${text}"`);
 
       setTimeout(() => {
-        let reply = "Analyse läuft...";
+        let reply = "";
         const low = text.toLowerCase();
         const cur = selectedTargetData;
 
-        if (low.includes('gut') || low.includes('schlecht') || low.includes('sicher') || low.includes('risiko')) {
-          if (cur.slope_deg.includes('Hohes Risiko') || cur.slope_deg.includes('Achtung')) {
-            reply = `Bewertung für ${cur.name}: Eher kritisch! Die Hangneigung beträgt ${cur.slope_deg}, was ein erhöhtes Risiko für die Landung darstellt. Vorsicht geboten!`;
+        // Gezielt auf Fragen reagieren ("gut", "schlecht", "warum", "eis", "sonne", "sicher")
+        if (low.includes('gut') || low.includes('schlecht') || low.includes('sicher') || low.includes('risiko') || low.includes('lohnt')) {
+          if (cur.slope_deg.includes('Hohes Risiko') || cur.slope_deg.includes('Achtung') || cur.slope_deg.includes('Steilhang')) {
+            reply = `Das ist eher ungünstig bzw. riskant! Für ${cur.name} zeigen unsere Sensoren eine Hangneigung von ${cur.slope_deg} und eine Beleuchtung von ${cur.illumination_pct}. Das erhöht die Gefahr für den Lander.`;
           } else {
-            reply = `Bewertung für ${cur.name}: Positiv! Die Werte sehen gut aus (${cur.slope_deg}, ${cur.illumination_pct} Sonne). Ausgezeichneter Standort für CLPS.`;
+            reply = `Das ist ziemlich gut! ${cur.name} bietet mit einer Neigung von ${cur.slope_deg} und ${cur.illumination_pct} Sonneneinstrahlung hervorragende Bedingungen für eine sichere CLPS-Landung.`;
           }
-        } else if (low.includes('eis') || low.includes('wasser')) {
-          reply = `Der aktuelle Sektor (${cur.name}) zeigt eine Eis-Wahrscheinlichkeit von ${cur.ice_score}. Der SAR-Rückstreuwert liegt bei ${cur.backscatter_db}.`;
-        } else if (low.includes('sonne') || low.includes('energie') || low.includes('licht')) {
-          reply = `Sonneneinstrahlung am gewählten Ziel (${cur.name}): ${cur.illumination_pct}. Optimal für Solarkollektoren und dauerhafte Stromversorgung.`;
+        } else if (low.includes('eis') || low.includes('wasser') || low.includes('kalt')) {
+          reply = `Bezirkseinschätzung zu Wassereis bei ${cur.name}: Die Eis-Wahrscheinlichkeit liegt bei ${cur.ice_score} (Rückstreuwert: ${cur.backscatter_db}, Thermik: ${cur.thermal_k}).`;
+        } else if (low.includes('sonne') || low.includes('licht') || low.includes('strom') || low.includes('energie')) {
+          reply = `Die Sonneneinstrahlung am gewählten Ziel (${cur.name}) beträgt ${cur.illumination_pct}. Damit ist die Energieversorgung für Solarmodule ${parseInt(cur.illumination_pct) > 50 ? 'gesichert und optimal' : 'stark eingeschränkt (Schattenregion)'}.`;
+        } else if (low.includes('warum') || low.includes('wieso')) {
+          reply = `Die Analyse von ${cur.name} basiert auf L-Band Radar-Rückstreuung und topografischen Höhendaten. Der Status wird als '${cur.clps_suitability}' eingestuft.`;
         } else if (low.includes('hallo') || low.includes('hi') || low.includes('hey')) {
-          reply = `Hallo Commander! Das System überwacht aktuell das Ziel "${cur.name}". Was möchtest du wissen?`;
+          reply = `Hallo Commander! Ich überwache aktuell das Ziel "${cur.name}" (${cur.lat}°, ${cur.lng}°). Was möchtest du zu diesem Landeplatz wissen?`;
         } else {
-          reply = `Analyse für ${cur.name} (${cur.clps_suitability}): Thermik liegt bei ${cur.thermal_k}. Für diesen Bereich wird ein L-Band Radar-Feinscan empfohlen.`;
+          reply = `Analyse-Update für ${cur.name}: ${cur.clps_suitability}. Hangneigung: ${cur.slope_deg}, Eis: ${cur.ice_score}. Empfehle die Details im Messwerte-Panel zu prüfen.`;
         }
 
         appendAiMsg(reply, 'system');
         logTerminal("KI-Antwort erfolgreich generiert.");
-      }, 700);
+      }, 600);
     }
 
     function appendAiMsg(text, sender) {
@@ -551,6 +559,7 @@
       term.scrollTop = term.scrollHeight;
     }
 
+    // Three.js 3D Mondansicht
     const container = document.getElementById('viewport-3d-box');
     const canvas = document.getElementById('canvas-3d');
     const scene = new THREE.Scene();

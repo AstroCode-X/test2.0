@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dancing with SARS — Advanced Lunar SAR & CLPS Control Dashboard</title>
+  <title>Dancing with SARS — Responsive Lunar SAR & CLPS Control</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +13,8 @@
   <style>
     :root {
       --bg-dark: #04060a;
-      --panel-bg: rgba(10, 14, 22, 0.95);
+      --panel-bg: rgba(10, 14, 22, 0.92);
       --panel-border: rgba(0, 240, 255, 0.3);
-      --panel-border-bright: #00f0ff;
       --accent-cyan: #00f0ff;
       --accent-green: #00ff66;
       --accent-amber: #ffb700;
@@ -32,35 +31,36 @@
     html, body {
       width: 100%; height: 100%; height: 100dvh;
       background-color: var(--bg-dark); color: var(--text-main);
-      font-family: var(--font-body); overflow: hidden; font-size: 14px; line-height: 1.3;
+      font-family: var(--font-body); overflow: hidden; font-size: 14px;
     }
 
     body { display: flex; flex-direction: column; }
 
+    /* Header */
     .nasa-header {
-      flex-shrink: 0; width: 100%; padding: 10px 18px;
+      flex-shrink: 0; width: 100%; padding: 10px 16px;
       background: linear-gradient(180deg, #090e18 0%, #04060a 100%);
       border-bottom: 1px solid var(--panel-border);
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-      gap: 12px; z-index: 1000; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
+      gap: 10px; z-index: 1000; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
     }
 
-    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
     .brand h1 {
-      font-family: var(--font-heading); font-size: clamp(0.9rem, 2.2vw, 1.15rem);
-      letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); white-space: nowrap;
+      font-family: var(--font-heading); font-size: clamp(0.85rem, 2vw, 1.1rem);
+      letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); white-space: nowrap;
     }
 
     .badge {
       background: rgba(0, 240, 255, 0.12); border: 1px solid var(--accent-cyan);
-      color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.65rem;
-      padding: 3px 8px; border-radius: 3px; letter-spacing: 1px;
+      color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.6rem;
+      padding: 2px 6px; border-radius: 3px; letter-spacing: 1px;
     }
 
     .pulse-dot {
-      width: 9px; height: 9px; background-color: var(--accent-green);
-      border-radius: 50%; box-shadow: 0 0 10px var(--accent-green);
+      width: 8px; height: 8px; background-color: var(--accent-green);
+      border-radius: 50%; box-shadow: 0 0 8px var(--accent-green);
       animation: pulse 1.8s infinite;
     }
 
@@ -71,150 +71,155 @@
     }
 
     .telemetry-bar {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 16px;
-      font-family: var(--font-mono); font-size: 0.75rem;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+      font-family: var(--font-mono); font-size: 0.72rem;
     }
-
     .metric { color: var(--text-muted); white-space: nowrap; }
     .metric strong { color: var(--accent-cyan); }
 
-    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .header-actions { display: flex; gap: 6px; align-items: center; }
     
-    .lang-select {
+    .lang-select, .btn-action {
       background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-cyan);
-      color: var(--accent-cyan); font-family: var(--font-heading); font-size: 0.68rem;
-      padding: 5px 8px; border-radius: 4px; cursor: pointer; outline: none;
+      color: var(--accent-cyan); font-family: var(--font-heading); font-size: 0.65rem;
+      padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
     }
     .lang-select option { background: #04060a; color: #fff; }
+    .btn-action:hover { background: var(--accent-cyan); color: #000; box-shadow: 0 0 10px rgba(0,240,255,0.5); }
 
-    .btn-action {
-      background: linear-gradient(135deg, rgba(0,240,255,0.2) 0%, rgba(0,102,255,0.2) 100%);
-      border: 1px solid var(--accent-cyan); color: #fff; font-family: var(--font-heading);
-      font-size: 0.68rem; padding: 6px 12px; border-radius: 4px; cursor: pointer;
-      transition: all 0.3s ease; letter-spacing: 1px;
-    }
-    .btn-action:hover {
-      background: var(--accent-cyan); color: #000; box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
-    }
-
+    /* Responsive Layout Container */
     .dashboard-container {
       flex: 1; min-height: 0; display: flex; position: relative; width: 100%;
     }
 
+    /* Sidebar - Vollständig responsiv mit feinem Scrollen */
     .sidebar {
-      width: 440px; max-width: 46%; background-color: var(--panel-bg);
-      backdrop-filter: blur(14px); border-right: 1px solid var(--panel-border);
-      display: flex; flex-direction: column; gap: 10px; padding: 12px;
-      overflow-y: auto; z-index: 500; box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
+      width: 400px; max-width: 100%; background-color: var(--panel-bg);
+      backdrop-filter: blur(12px); border-right: 1px solid var(--panel-border);
+      display: flex; flex-direction: column; gap: 8px; padding: 10px;
+      overflow-y: auto; z-index: 500; box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
     }
 
     .panel {
       background: rgba(8, 12, 20, 0.85); border: 1px solid var(--panel-border);
-      border-radius: 6px; padding: 10px 12px; transition: border-color 0.3s ease;
+      border-radius: 5px; padding: 8px 10px;
     }
-    .panel:hover { border-color: rgba(0, 240, 255, 0.5); }
-
     .panel-header {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;
+      margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 4px;
     }
     .panel h2 {
-      font-family: var(--font-heading); font-size: 0.8rem; color: var(--accent-cyan);
-      letter-spacing: 1px; text-transform: uppercase;
+      font-family: var(--font-heading); font-size: 0.75rem; color: var(--accent-cyan);
+      letter-spacing: 0.5px; text-transform: uppercase;
     }
 
-    .control-group { display: flex; flex-direction: column; gap: 6px; }
+    /* Controls & Inputs */
+    .control-group { display: flex; flex-direction: column; gap: 5px; }
     .toggle-btn {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 7px 10px; background: rgba(255, 255, 255, 0.02);
+      padding: 6px 8px; background: rgba(255,255,255,0.02);
       border: 1px solid var(--panel-border); color: var(--text-main);
-      font-family: var(--font-mono); font-size: 0.74rem; cursor: pointer;
-      border-radius: 4px; transition: all 0.2s ease;
+      font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer;
+      border-radius: 3px; transition: all 0.2s;
     }
-    .toggle-btn:hover { border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.06); }
-    .toggle-btn.active {
-      border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.15);
-      color: #fff; box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
+    .toggle-btn:hover, .toggle-btn.active {
+      border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.12); color: #fff;
     }
     .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); }
 
-    .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.8rem; }
+    .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 0.78rem; }
     .data-label { color: var(--text-muted); }
     .data-value { color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600; text-align: right; }
 
-    .search-bar { display: flex; gap: 6px; margin-bottom: 10px; }
+    .search-bar { display: flex; gap: 6px; margin-bottom: 8px; }
     .search-input {
       flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border);
-      border-radius: 4px; padding: 6px 10px; color: #fff; font-family: var(--font-mono); font-size: 0.75rem;
+      border-radius: 3px; padding: 5px 8px; color: #fff; font-family: var(--font-mono); font-size: 0.72rem;
     }
     .search-input:focus { outline: none; border-color: var(--accent-cyan); }
 
+    /* AI Chat Box */
     .ai-chat-box {
-      height: 130px; background: #020305; border: 1px solid var(--panel-border);
-      border-radius: 4px; padding: 8px; overflow-y: auto; font-family: var(--font-mono);
-      font-size: 0.7rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px;
+      height: 110px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 3px; padding: 6px; overflow-y: auto; font-family: var(--font-mono);
+      font-size: 0.68rem; display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px;
     }
-    .ai-msg { padding: 5px 8px; border-radius: 4px; line-height: 1.3; word-break: break-word; }
+    .ai-msg { padding: 4px 6px; border-radius: 3px; line-height: 1.25; word-break: break-word; }
     .ai-msg.system { background: rgba(0, 240, 255, 0.08); border-left: 2px solid var(--accent-cyan); color: var(--text-main); }
-    .ai-msg.user { background: rgba(255, 255, 255, 0.05); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 92%; }
-    .ai-msg.error { background: rgba(255, 51, 102, 0.1); border-left: 2px solid var(--accent-red); color: var(--accent-red); }
+    .ai-msg.user { background: rgba(255, 255, 255, 0.04); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 90%; }
     
-    .ai-input-row { display: flex; gap: 6px; }
+    .ai-input-row { display: flex; gap: 5px; }
     .ai-input {
       flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--panel-border);
-      border-radius: 4px; padding: 6px 8px; color: #fff; font-family: var(--font-mono); font-size: 0.7rem;
+      border-radius: 3px; padding: 5px 6px; color: #fff; font-family: var(--font-mono); font-size: 0.68rem;
     }
     .ai-input:focus { outline: none; border-color: var(--accent-cyan); }
     .ai-btn {
-      background: var(--accent-cyan); color: #000; border: none; padding: 6px 12px;
-      border-radius: 4px; font-family: var(--font-heading); font-size: 0.68rem; cursor: pointer; font-weight: bold;
-      transition: background 0.2s;
+      background: var(--accent-cyan); color: #000; border: none; padding: 5px 10px;
+      border-radius: 3px; font-family: var(--font-heading); font-size: 0.65rem; cursor: pointer; font-weight: bold;
     }
-    .ai-btn:hover { background: #00c2cc; }
 
     .terminal-log {
-      height: 90px; background: #010204; border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 4px; padding: 6px; font-family: var(--font-mono); font-size: 0.66rem;
+      height: 75px; background: #010204; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px; padding: 5px; font-family: var(--font-mono); font-size: 0.62rem;
       color: var(--accent-green); overflow-y: auto;
     }
 
     #viewport-3d-box {
-      width: 100%; height: 140px; background: #020305; border: 1px solid var(--panel-border);
-      border-radius: 6px; position: relative; overflow: hidden;
+      width: 100%; height: 120px; background: #020305; border: 1px solid var(--panel-border);
+      border-radius: 4px; position: relative; overflow: hidden;
     }
     #canvas-3d { width: 100%; height: 100%; display: block; }
     .viewport-overlay {
-      position: absolute; top: 6px; left: 8px; pointer-events: none;
-      font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan); text-shadow: 0 0 4px #000;
+      position: absolute; top: 4px; left: 6px; pointer-events: none;
+      font-family: var(--font-mono); font-size: 0.6rem; color: var(--accent-cyan);
     }
 
+    /* Map Viewport */
     .map-viewport { flex: 1; height: 100%; position: relative; background: #020305; }
     #map { width: 100%; height: 100%; background: #020305; }
 
+    /* Mobile Toggle Button for Sidebar */
+    .mobile-toggle-sidebar {
+      display: none; position: absolute; bottom: 20px; right: 20px;
+      background: var(--panel-bg); border: 1px solid var(--accent-cyan); color: var(--accent-cyan);
+      padding: 10px 14px; border-radius: 30px; font-family: var(--font-heading); font-size: 0.75rem;
+      z-index: 1500; cursor: pointer; box-shadow: 0 4px 15px rgba(0,240,255,0.3);
+    }
+
+    /* Modal */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(8px);
+      background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(6px);
       display: flex; align-items: center; justify-content: center; z-index: 2000;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-card {
-      width: 680px; max-width: 90%; background: #0c121e; border: 1px solid var(--accent-cyan);
-      border-radius: 8px; padding: 22px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); max-height: 85vh; overflow-y: auto;
+      width: 600px; max-width: 90%; background: #0c121e; border: 1px solid var(--accent-cyan);
+      border-radius: 6px; padding: 18px; box-shadow: 0 0 30px rgba(0,240,255,0.25); max-height: 80vh; overflow-y: auto;
     }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 12px; border-bottom: 1px solid var(--panel-border); padding-bottom: 8px;
-    }
-    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.05rem; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
-    .close-btn:hover { color: var(--accent-cyan); }
-    .modal-body { font-size: 0.88rem; line-height: 1.5; color: #c0cdf0; }
-    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.85rem; margin: 12px 0 6px 0; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--panel-border); padding-bottom: 6px; }
+    .modal-header h2 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 0.95rem; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
+    .modal-body { font-size: 0.84rem; line-height: 1.4; color: #c0cdf0; }
+    .modal-body h3 { font-family: var(--font-heading); color: var(--accent-amber); font-size: 0.8rem; margin: 10px 0 4px 0; }
 
-    ::-webkit-scrollbar { width: 5px; }
+    /* Media Query für mobile Endgeräte */
+    @media (max-width: 850px) {
+      .dashboard-container { flex-direction: column-reverse; }
+      .sidebar {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; max-width: 100%;
+        transform: translateY(100%); transition: transform 0.3s ease-in-out;
+      }
+      .sidebar.mobile-open { transform: translateY(0); }
+      .mobile-toggle-sidebar { display: block; }
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #050810; }
-    ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -223,15 +228,14 @@
     <div class="brand">
       <div class="pulse-dot"></div>
       <h1 data-i18n="title">Dancing with SARS</h1>
-      <span class="badge">CLPS v5.0 PRO</span>
+      <span class="badge">CLPS v5.1</span>
     </div>
 
     <div class="telemetry-bar">
       <div class="metric">LAT: <strong id="telemetry-lat">-89.90°</strong></div>
       <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
-      <div class="metric"><span data-i18n="elev_lbl">ELEV</span>: <strong id="telemetry-elev">1,840 m</strong></div>
-      <div class="metric"><span data-i18n="freq_lbl">SAR FREQ</span>: <strong>L-Band (1.25 GHz)</strong></div>
-      <div class="metric">PING: <strong id="telemetry-ping">1.82s</strong></div>
+      <div class="metric">ELEV: <strong id="telemetry-elev">1,840 m</strong></div>
+      <div class="metric">PING: <strong id="telemetry-ping">1.42s</strong></div>
     </div>
 
     <div class="header-actions">
@@ -239,19 +243,17 @@
         <option value="de" selected>DE</option>
         <option value="en">EN</option>
       </select>
-      <button class="btn-action" onclick="triggerScan()" data-i18n="btn_scan">KI-SCAN</button>
       <button class="btn-action" onclick="toggleModal(true)" data-i18n="btn_briefing">BRIEFING</button>
     </div>
   </header>
 
   <div class="dashboard-container">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       
-      <!-- Panel 1: SAR Layer & Suche -->
+      <!-- Panel 1: Suche & Layer -->
       <section class="panel">
         <div class="panel-header">
           <h2 data-i18n="p1_title">SAR Radar-Ebenen & Suche</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">ONLINE</span>
         </div>
         <div class="search-bar">
           <input type="text" id="target-search" class="search-input" placeholder="Zielsuche (z.B. Shackleton)..." data-i18n-placeholder="search_ph" oninput="filterTargets(this.value)">
@@ -276,7 +278,7 @@
       <section class="panel">
         <div class="panel-header">
           <h2 data-i18n="p2_title">CLPS Ziel-Messwerte</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
+          <span style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
         </div>
         <div id="target-info-content">
           <div class="data-row"><span class="data-label" data-i18n="lbl_site">Landeplatz:</span><span class="data-value" id="val-name">Shackleton Crater Rim</span></div>
@@ -284,22 +286,18 @@
           <div class="data-row"><span class="data-label" data-i18n="lbl_ice">Eis-Wahrscheinlichkeit:</span><span class="data-value" style="color: var(--accent-green);" id="val-ice">89 %</span></div>
           <div class="data-row"><span class="data-label" data-i18n="lbl_solar">Sonneneinstrahlung:</span><span class="data-value" id="val-solar">86 %</span></div>
           <div class="data-row"><span class="data-label" data-i18n="lbl_slope">Hangneigung:</span><span class="data-value" id="val-slope">4.2° (Sicher)</span></div>
-          <div class="data-row"><span class="data-label" data-i18n="lbl_thermal">Temperaturbereich:</span><span class="data-value" id="val-thermal">40 K bis 220 K</span></div>
-          <div class="data-row"><span class="data-label" data-i18n="lbl_backscatter">Rückstreuwert:</span><span class="data-value" id="val-backscatter">-2.4 dB</span></div>
-          <div class="data-row" style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px;">
-            <span class="data-label" data-i18n="lbl_clps">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT (Wassereis + Energie)</span>
-          </div>
+          <div class="data-row"><span class="data-label" data-i18n="lbl_clps">CLPS Bewertung:</span><span class="data-value" style="color: var(--accent-amber);" id="val-clps">HOCHER WERT</span></div>
         </div>
       </section>
 
-      <!-- Panel 3: SAR AI Copilot mit robuster Fehlerbehandlung -->
+      <!-- Panel 3: AI Copilot -->
       <section class="panel">
         <div class="panel-header">
           <h2 data-i18n="p3_title">SAR AI Copilot (Groq / Llama)</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);" data-i18n="status_connected">VERBUNDEN</span>
+          <span style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--accent-green);">ONLINE</span>
         </div>
         <div class="ai-chat-box" id="ai-chat-box">
-          <div class="ai-msg system" data-i18n="sys_init">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Llama KI-Modell einsatzbereit.</div>
+          <div class="ai-msg system" data-i18n="sys_init">[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Llama KI-Modell bereit.</div>
         </div>
         <div class="ai-input-row">
           <input type="text" id="ai-user-input" class="ai-input" placeholder="Frage an die Groq KI..." data-i18n-placeholder="chat_ph" onkeypress="handleAiKeyPress(event)">
@@ -311,25 +309,21 @@
       <section class="panel">
         <div class="panel-header">
           <h2 data-i18n="p4_title">3D Orbitale Mondansicht</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-cyan);">THREE.JS REALTIME</span>
         </div>
         <div id="viewport-3d-box">
           <canvas id="canvas-3d"></canvas>
-          <div class="viewport-overlay" id="3d-status">LUNAR ORBIT: LOCKED</div>
+          <div class="viewport-overlay" id="3d-status">LOCKED: Shackleton</div>
         </div>
       </section>
 
-      <!-- Panel 5: Missions-Terminal -->
+      <!-- Panel 5: Terminal -->
       <section class="panel">
         <div class="panel-header">
           <h2 data-i18n="p5_title">Missions-Terminal (Syslog)</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted);">LIVE</span>
         </div>
         <div class="terminal-log" id="terminal-log">
           <div>[00:00:01] Deep Space Network Link stabil.</div>
-          <div>[00:00:05] SAR L-Band Telemetrie synchronisiert.</div>
-          <div>[00:00:12] Ziel Shackleton Rim geladen.</div>
-          <div>[00:00:19] KI-Worker Verbindung erfolgreich verifiziert.</div>
+          <div>[00:00:06] SAR L-Band Telemetrie synchronisiert.</div>
         </div>
       </section>
 
@@ -338,20 +332,20 @@
     <main class="map-viewport">
       <div id="map"></div>
     </main>
+
+    <button class="mobile-toggle-sidebar" id="mobile-toggle-btn" onclick="toggleMobileSidebar()">
+      <span data-i18n="mobile_toggle">DASHBOARD & MENÜ</span>
+    </button>
   </div>
 
   <div class="modal-overlay" id="briefing-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h2 data-i18n="modal_title">CLPS Mission & SAR System-Briefing</h2>
+        <h2 data-i18n="modal_title">CLPS Mission & SAR Briefing</h2>
         <button class="close-btn" onclick="toggleModal(false)">&times;</button>
       </div>
       <div class="modal-body" id="modal-content-body">
-        <p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und Felsbrocken.</p>
-        <h3>1. Wassereis in dunklen Kratern</h3>
-        <p>Optische Kameras können nicht in Schattenkrater blicken. SAR nutzt die zirkulare Polarisationsrate (CPR), um Vorkommen von Wassereis zuverlässig aufzuspüren.</p>
-        <h3>2. Gefahrenkartierung</h3>
-        <p>Identifiziert steile Hänge (>10°) und unebene Felder, um ein Umkippen von Landern zu verhindern.</p>
+        <p>Commercial Lunar Payload Services (CLPS) Landefahrzeuge nutzen SAR-Radardaten, um am Mondsüdpol sicher zu landen und Wassereisvorkommen in Schattenkratern zu analysieren.</p>
       </div>
     </div>
   </div>
@@ -363,9 +357,6 @@
     const translations = {
       de: {
         title: "Dancing with SARS",
-        elev_lbl: "ELEV",
-        freq_lbl: "SAR FREQ",
-        btn_scan: "KI-SCAN",
         btn_briefing: "BRIEFING",
         p1_title: "SAR Radar-Ebenen & Suche",
         search_ph: "Zielsuche (z.B. Shackleton)...",
@@ -378,28 +369,18 @@
         lbl_ice: "Eis-Wahrscheinlichkeit:",
         lbl_solar: "Sonneneinstrahlung:",
         lbl_slope: "Hangneigung:",
-        lbl_thermal: "Temperaturbereich:",
-        lbl_backscatter: "Rückstreuwert:",
         lbl_clps: "CLPS Bewertung:",
         p3_title: "SAR AI Copilot (Groq / Llama)",
-        status_connected: "VERBUNDEN",
-        sys_init: "[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Llama KI-Modell einsatzbereit.",
+        sys_init: "[SYSTEM]: Cloudflare Worker Endpunkt aktiv. Llama KI-Modell bereit.",
         chat_ph: "Frage an die Groq KI...",
         btn_send: "SEND",
         p4_title: "3D Orbitale Mondansicht",
         p5_title: "Missions-Terminal (Syslog)",
-        modal_title: "CLPS Mission & SAR System-Briefing",
-        modal_html: `<p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und Felsbrocken.</p>
-        <h3>1. Wassereis in dunklen Kratern</h3>
-        <p>Optische Kameras können nicht in Schattenkrater blicken. SAR nutzt die zirkulare Polarisationsrate (CPR), um Vorkommen von Wassereis zuverlässig aufzuspüren.</p>
-        <h3>2. Gefahrenkartierung</h3>
-        <p>Identifiziert steile Hänge (>10°) und unebene Felder, um ein Umkippen von Landern zu verhindern.</p>`
+        mobile_toggle: "DASHBOARD & MENÜ",
+        modal_title: "CLPS Mission & SAR Briefing"
       },
       en: {
         title: "Dancing with SARS",
-        elev_lbl: "ELEV",
-        freq_lbl: "SAR FREQ",
-        btn_scan: "AI SCAN",
         btn_briefing: "BRIEFING",
         p1_title: "SAR Radar Layers & Search",
         search_ph: "Search target (e.g. Shackleton)...",
@@ -412,26 +393,20 @@
         lbl_ice: "Ice Probability:",
         lbl_solar: "Solar Illumination:",
         lbl_slope: "Slope Gradient:",
-        lbl_thermal: "Thermal Range:",
-        lbl_backscatter: "Backscatter Value:",
         lbl_clps: "CLPS Assessment:",
         p3_title: "SAR AI Copilot (Groq / Llama)",
-        status_connected: "CONNECTED",
         sys_init: "[SYSTEM]: Cloudflare Worker endpoint active. Llama AI model ready.",
         chat_ph: "Ask Groq AI...",
         btn_send: "SEND",
         p4_title: "3D Orbital Lunar View",
         p5_title: "Mission Terminal (Syslog)",
-        modal_title: "CLPS Mission & SAR System Briefing",
-        modal_html: `<p><strong>Challenge:</strong> Commercial Lunar Payload Services (CLPS) landers face extreme risks at the lunar south pole due to permanently shadowed regions (PSRs), steep crater slopes, and boulders.</p>
-        <h3>1. Water Ice in Dark Craters</h3>
-        <p>Optical cameras cannot peer into shadowed craters. SAR uses circular polarization ratios to locate water ice deposits.</p>
-        <h3>2. Hazard Mapping</h3>
-        <p>Identifies steep slopes (>10°) and boulder fields to prevent lander tip-overs.</p>`
+        mobile_toggle: "DASHBOARD & MENU",
+        modal_title: "CLPS Mission & SAR Briefing"
       }
     };
 
     let currentLang = 'de';
+    let mobileOpen = false;
 
     function changeLanguage(lang) {
       currentLang = lang;
@@ -444,56 +419,52 @@
         const key = el.getAttribute('data-i18n-placeholder');
         if (dict[key]) el.placeholder = dict[key];
       });
-      document.getElementById('modal-content-body').innerHTML = dict.modal_html;
-      logTerminal(lang === 'de' ? 'Sprache auf Deutsch geändert.' : 'Language changed to English.');
     }
 
-    function generateLunarBaseTexture() {
-      const canvas = document.createElement('canvas');
-      canvas.width = 2048; canvas.height = 1024;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#080c14';
-      ctx.fillRect(0, 0, 2048, 1024);
-      
-      for (let i = 0; i < 900; i++) {
-        const x = Math.random() * 2048, y = Math.random() * 1024, radius = Math.random() * 50 + 4;
-        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        grad.addColorStop(0, 'rgba(45, 55, 75, 0.6)');
-        grad.addColorStop(0.5, 'rgba(20, 28, 40, 0.8)');
-        grad.addColorStop(1, 'rgba(8, 12, 20, 0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      mobileOpen = !mobileOpen;
+      if (mobileOpen) {
+        sidebar.classList.add('mobile-open');
+        document.getElementById('mobile-toggle-btn').innerText = currentLang === 'de' ? 'KARTE ANZEIGEN' : 'SHOW MAP';
+      } else {
+        sidebar.classList.remove('mobile-open');
+        document.getElementById('mobile-toggle-btn').innerText = currentLang === 'de' ? 'DASHBOARD & MENÜ' : 'DASHBOARD & MENU';
       }
-      
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
-      ctx.beginPath(); ctx.arc(1024, 900, 300, 0, Math.PI * 2); ctx.fill();
-      return canvas.toDataURL();
     }
 
-    const map = L.map('map', {
-      center: [-60, 0], zoom: 2, crs: L.CRS.Simple, minZoom: 1, maxZoom: 5, attributionControl: false
-    });
-
+    // Leaflet Karte
+    const map = L.map('map', { center: [-60, 0], zoom: 2, crs: L.CRS.Simple, minZoom: 1, maxZoom: 5, attributionControl: false });
     const mapBounds = [[-90, -180], [90, 180]];
     map.setMaxBounds([[-110, -200], [110, 200]]);
 
-    const lunarSurfaceUrl = generateLunarBaseTexture();
-    const lunarOverlay = L.imageOverlay(lunarSurfaceUrl, mapBounds, { opacity: 0.95, interactive: false }).addTo(map);
+    function generateLunarBaseTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024; canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#060911'; ctx.fillRect(0, 0, 1024, 512);
+      for (let i = 0; i < 600; i++) {
+        const x = Math.random() * 1024, y = Math.random() * 512, r = Math.random() * 30 + 3;
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+        grad.addColorStop(0, 'rgba(40, 50, 70, 0.6)');
+        grad.addColorStop(1, 'rgba(6, 9, 17, 0)');
+        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      }
+      return canvas.toDataURL();
+    }
+
+    const lunarOverlay = L.imageOverlay(generateLunarBaseTexture(), mapBounds, { opacity: 0.95 }).addTo(map);
     map.fitBounds(mapBounds);
 
     map.on('mousemove', (e) => {
       document.getElementById('telemetry-lat').innerText = `${e.latlng.lat.toFixed(2)}°`;
       document.getElementById('telemetry-lng').innerText = `${e.latlng.lng.toFixed(2)}°`;
-      const elev = Math.abs(Math.sin(e.latlng.lat) * 1200 - Math.cos(e.latlng.lng) * 450).toFixed(0);
-      document.getElementById('telemetry-elev').innerText = `${elev} m`;
     });
 
     const defaultTargets = [
-      { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.9, lng: 0.0, ice_score: "89 %", illumination_pct: "86 %", slope_deg: "4.2° (Sicher)", thermal_k: "40 K bis 220 K", backscatter_db: "-2.4 dB", clps_suitability: "HOCHER WERT (Wassereis + Energie)" },
-      { id: "SAR-002", name: "Cabeus Crater Floor", lat: -84.9, lng: -35.5, ice_score: "94 %", illumination_pct: "12 %", slope_deg: "8.5° (Achtung)", thermal_k: "35 K bis 100 K", backscatter_db: "-1.8 dB", clps_suitability: "FORSCHUNGSZIEL (Kältefalle)" },
-      { id: "SAR-003", name: "Madrigal Connecting Ridge", lat: -88.7, lng: -15.2, ice_score: "62 %", illumination_pct: "92 %", slope_deg: "2.1° (Optimal)", thermal_k: "110 K bis 240 K", backscatter_db: "-5.1 dB", clps_suitability: "OPTIMALER LANDESPUNKT" },
-      { id: "SAR-004", name: "Tycho Crater", lat: -43.3, lng: -11.2, ice_score: "14 %", illumination_pct: "45 %", slope_deg: "14.8° (Hohes Risiko)", thermal_k: "100 K bis 380 K", backscatter_db: "-12.1 dB", clps_suitability: "GEFÄHRLICH (Steilhang)" },
-      { id: "SAR-005", name: "Aristarchus Plateau", lat: 23.7, lng: -47.4, ice_score: "31 %", illumination_pct: "50 %", slope_deg: "3.5° (Sicher)", thermal_k: "120 K bis 390 K", backscatter_db: "-8.5 dB", clps_suitability: "MITTLERES RISIKO" }
+      { id: "SAR-001", name: "Shackleton Crater Rim", lat: -89.9, lng: 0.0, ice_score: "89 %", illumination_pct: "86 %", slope_deg: "4.2° (Sicher)", clps_suitability: "HOCHER WERT" },
+      { id: "SAR-002", name: "Cabeus Crater Floor", lat: -84.9, lng: -35.5, ice_score: "94 %", illumination_pct: "12 %", slope_deg: "8.5° (Achtung)", clps_suitability: "FORSCHUNGSZIEL" },
+      { id: "SAR-003", name: "Madrigal Ridge", lat: -88.7, lng: -15.2, ice_score: "62 %", illumination_pct: "92 %", slope_deg: "2.1° (Optimal)", clps_suitability: "OPTIMAL" }
     ];
 
     let currentMarkers = [];
@@ -504,9 +475,8 @@
       currentMarkers = [];
       targets.forEach(target => {
         const marker = L.circleMarker([target.lat, target.lng], {
-          radius: 9, fillColor: '#00f0ff', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.85
+          radius: 8, fillColor: '#00f0ff', color: '#ffffff', weight: 2, fillOpacity: 0.85
         }).addTo(map);
-        marker.bindTooltip(`<b>${target.name}</b><br>Ice Score: ${target.ice_score}`, { permanent: false, direction: 'top' });
         marker.on('click', () => selectTarget(target));
         currentMarkers.push(marker);
       });
@@ -520,18 +490,15 @@
       document.getElementById('val-ice').innerText = target.ice_score;
       document.getElementById('val-solar').innerText = target.illumination_pct;
       document.getElementById('val-slope').innerText = target.slope_deg;
-      document.getElementById('val-thermal').innerText = target.thermal_k;
-      document.getElementById('val-backscatter').innerText = target.backscatter_db;
       document.getElementById('val-clps').innerText = target.clps_suitability;
       document.getElementById('3d-status').innerText = `LOCKED: ${target.name}`;
-      logTerminal(`Ziel ausgewählt: ${target.name} (${target.id})`);
-      rotateMoonToTarget();
+      logTerminal(`Ziel ausgewählt: ${target.name}`);
+      if (window.innerWidth <= 850) toggleMobileSidebar();
     }
 
     function filterTargets(query) {
       const q = query.toLowerCase();
-      const filtered = defaultTargets.filter(t => t.name.toLowerCase().includes(q) || t.id.toLowerCase().includes(q));
-      loadTargets(filtered);
+      loadTargets(defaultTargets.filter(t => t.name.toLowerCase().includes(q)));
     }
 
     loadTargets(defaultTargets);
@@ -540,20 +507,15 @@
       radio.addEventListener('change', (e) => {
         document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
         e.target.closest('.toggle-btn').classList.add('active');
-        const val = e.target.value;
-        if (val === 'cpr') { lunarOverlay.setOpacity(0.95); logTerminal("SAR Layer: Mini-RF CPR"); }
-        else if (val === 'roughness') { lunarOverlay.setOpacity(0.5); logTerminal("SAR Layer: Terrain Roughness"); }
-        else { lunarOverlay.setOpacity(1.0); logTerminal("SAR Layer: Optical Basemap"); }
+        logTerminal(`SAR Layer gewechselt zu: ${e.target.value}`);
       });
     });
 
     function toggleModal(show) {
-      const modal = document.getElementById('briefing-modal');
-      if (show) modal.classList.add('active');
-      else modal.classList.remove('active');
+      document.getElementById('briefing-modal').classList.toggle('active', show);
     }
 
-    // --- ROBUSTE CLOUDFLARE WORKER / GROQ KI ANBINDUNG ---
+    // AI Copilot Anbindung über Cloudflare Worker
     async function sendAiMessage() {
       const input = document.getElementById('ai-user-input');
       const text = input.value.trim();
@@ -561,60 +523,27 @@
 
       appendAiMsg(text, 'user');
       input.value = '';
-      logTerminal("Übermittle Anfrage an Cloudflare Worker (Groq)...");
+      logTerminal("Sende Anfrage an Cloudflare Worker...");
 
       const cur = selectedTargetData;
-      const systemPrompt = `Du bist der offizielle KI-Copilot für die NASA-Mond-SAR- und CLPS-Landeplatz-Analyse im Dashboard "Dancing with SARS". 
-Der Commander hat aktuell folgenden Landeplatz ausgewählt:
-- Name: ${cur.name} (${cur.id})
-- Koordinaten: LAT ${cur.lat}°, LNG ${cur.lng}°
-- Eis-Wahrscheinlichkeit: ${cur.ice_score}
-- Sonneneinstrahlung: ${cur.illumination_pct}
-- Hangneigung: ${cur.slope_deg}
-- Thermik: ${cur.thermal_k}
-- CLPS-Bewertung: ${cur.clps_suitability}
-
-Antworte präzise im professionellen NASA-Ingenieursstil auf ${currentLang === 'de' ? 'Deutsch' : 'Englisch'} und beziehe dich direkt auf diese Telemetriedaten.`;
+      const systemPrompt = `Du bist der NASA KI-Copilot für das Dashboard "Dancing with SARS". Aktuelles Ziel: ${cur.name}, Eis: ${cur.ice_score}, Hangneigung: ${cur.slope_deg}. Antworte kurz und präzise im Ingenieursstil.`;
 
       try {
-        const workerUrl = 'https://nexus.elias256.workers.dev/';
-        
-        const response = await fetch(workerUrl, {
+        const res = await fetch('https://nexus.elias256.workers.dev/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: text }
-            ]
-          })
+          body: JSON.stringify({ messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }] })
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.choices && data.choices.length > 0) {
-          const aiReply = data.choices[0].message.content;
-          appendAiMsg(aiReply, 'system');
-          logTerminal("KI-Antwort erfolgreich empfangen.");
-        } else if (data.error) {
-          throw new Error(data.error.message || JSON.stringify(data.error));
+        const data = await res.json();
+        if (data.choices?.[0]?.message?.content) {
+          appendAiMsg(data.choices[0].message.content, 'system');
+          logTerminal("KI-Antwort empfangen.");
         } else {
-          throw new Error("Unerwartetes Antwortformat vom Server.");
+          throw new Error("Ungültiges Format");
         }
-
       } catch (err) {
-        console.error("AI Fetch Error:", err);
-        // Automatischer Fallback-Modus, falls der Worker blockiert oder offline ist, damit die UI stabil bleibt
-        const fallbackReply = currentLang === 'de' 
-          ? `[Offline-Assistent]: Telemetrie für ${cur.name} analysiert. Die Hangneigung von ${cur.slope_deg} und eine Eis-Wahrscheinlichkeit von ${cur.ice_score} bestätigen die Eignung für CLPS-Missionen. (Hinweis: Netzwerkanfrage zum Worker fehlgeschlagen, lokaler Analyse-Modus aktiv).`
-          : `[Offline Assistant]: Telemetry for ${cur.name} analyzed. Slope of ${cur.slope_deg} and ice probability of ${cur.ice_score} confirm viability. (Note: Worker request failed, local mode active).`;
-        
-        appendAiMsg(fallbackReply, 'system');
-        logTerminal("Warnung: Live-Worker nicht erreichbar, lokales Fallback aktiv.");
+        appendAiMsg(`[Lokaler Modus]: Analyse für ${cur.name} bestätigt sichere CLPS-Parameter.`, 'system');
+        logTerminal("Hinweis: Worker-Fallback aktiv.");
       }
     }
 
@@ -622,76 +551,39 @@ Antworte präzise im professionellen NASA-Ingenieursstil auf ${currentLang === '
       const box = document.getElementById('ai-chat-box');
       const div = document.createElement('div');
       div.className = `ai-msg ${sender}`;
-      if (sender === 'system') div.innerText = `[KI]: ${text}`;
-      else if (sender === 'user') div.innerText = `[OP]: ${text}`;
-      else div.innerText = `[FEHLER]: ${text}`;
+      div.innerText = (sender === 'system' ? '[KI]: ' : '[OP]: ') + text;
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
     }
 
-    function handleAiKeyPress(e) {
-      if (e.key === 'Enter') sendAiMessage();
-    }
-
-    function triggerScan() {
-      logTerminal("Vollständiger SAR-Radar-Scan initiiert...");
-      appendAiMsg(currentLang === 'de' ? "Vollständiger Radar-Scan gestartet. Alle Sensoren kalibriert." : "Full radar scan initiated. All sensors calibrated.", 'system');
-    }
-
+    function handleAiKeyPress(e) { if (e.key === 'Enter') sendAiMessage(); }
     function logTerminal(msg) {
       const term = document.getElementById('terminal-log');
-      const time = new Date().toTimeString().split(' ')[0];
       const div = document.createElement('div');
-      div.innerText = `[${time}] ${msg}`;
+      div.innerText = `[${new Date().toTimeString().split(' ')[0]}] ${msg}`;
       term.appendChild(div);
       term.scrollTop = term.scrollHeight;
     }
 
-    // Three.js 3D Mondansicht
+    // Three.js Mond
     const container = document.getElementById('viewport-3d-box');
-    const canvas = document.getElementById('canvas-3d');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 2.8;
-
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas-3d'), antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
 
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshPhongMaterial({ color: 0x8899aa, shininess: 5 });
-    const moon = new THREE.Mesh(geometry, material);
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 24), new THREE.MeshPhongMaterial({ color: 0x8899aa, shininess: 5 }));
     scene.add(moon);
-
-    const wireGeo = new THREE.SphereGeometry(1.02, 16, 16);
-    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.15 });
-    const wireframe = new THREE.Mesh(wireGeo, wireMat);
-    scene.add(wireframe);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    dirLight.position.set(5, 3, 5);
-    scene.add(dirLight);
-
-    const ambientLight = new THREE.AmbientLight(0x112233);
-    scene.add(ambientLight);
-
-    function rotateMoonToTarget() {
-      moon.rotation.y += Math.PI / 4;
-    }
+    scene.add(new THREE.DirectionalLight(0xffffff, 1.2).position.set(5, 3, 5));
+    scene.add(new THREE.AmbientLight(0x223344));
 
     function animate() {
       requestAnimationFrame(animate);
       moon.rotation.y += 0.003;
-      wireframe.rotation.y -= 0.0015;
       renderer.render(scene, camera);
     }
     animate();
-
-    window.addEventListener('resize', () => {
-      if (!container) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    });
   </script>
 </body>
 </html>

@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dancing with SARs — Lunar Control & Analysis Dashboard</title>
+  <title>Dancing with SARs — Lunar Landing Site Analysis</title>
   
   <!-- Fonts & Leaflet CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
     :root {
-      --bg-dark: #030509;
-      --panel-bg: rgba(8, 13, 22, 0.94);
-      --panel-border: rgba(0, 240, 255, 0.28);
-      --panel-glow: rgba(0, 240, 255, 0.6);
-      --accent-cyan: #00f0ff;
-      --accent-blue: #0066ff;
-      --accent-green: #00ff66;
-      --accent-amber: #ffb700;
-      --accent-red: #ff3366;
-      --text-main: #d8e2f0;
-      --text-muted: #6a7c92;
-      --font-heading: 'Orbitron', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
+      --bg-dark: #f3f5f8;
+      --panel-bg: #f3f5f8;
+      --panel-border: #dfe3ea;
+      --panel-glow: rgba(10, 60, 145, 0.35);
+      --accent-cyan: #0a3c91;
+      --accent-blue: #0a3c91;
+      --accent-green: #17784a;
+      --accent-amber: #9a5b00;
+      --accent-red: #fc3c23;
+      --text-main: #111827;
+      --text-muted: #5b6678;
+      --font-heading: 'Inter', 'Public Sans', sans-serif;
+      --font-body: 'Inter', 'Public Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
       --header-height: 54px;
     }
 
@@ -46,7 +46,7 @@
       background: linear-gradient(180deg, #0a101d 0%, #030509 100%);
       border-bottom: 1px solid var(--panel-border);
       display: flex; justify-content: space-between; align-items: center;
-      z-index: 3000; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.12);
+      z-index: 3000; box-shadow: 0 4px 20px rgba(10, 60, 145, 0.12);
     }
 
     .brand-group { display: flex; align-items: center; gap: 10px; }
@@ -54,11 +54,11 @@
     .brand h1 {
       font-family: var(--font-heading); font-size: clamp(0.8rem, 1.8vw, 1.05rem);
       letter-spacing: 1.2px; color: var(--accent-cyan); text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); white-space: nowrap;
+      text-shadow: 0 0 10px rgba(10, 60, 145, 0.4); white-space: nowrap;
     }
 
     .badge {
-      background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-cyan);
+      background: rgba(10, 60, 145, 0.1); border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.6rem;
       padding: 2px 6px; border-radius: 3px; letter-spacing: 1px;
     }
@@ -86,20 +86,20 @@
     .header-actions { display: flex; gap: 8px; align-items: center; }
     
     .lang-select {
-      background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-cyan);
+      background: rgba(10, 60, 145, 0.1); border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan); font-family: var(--font-heading); font-size: 0.65rem;
       padding: 4px 6px; border-radius: 4px; cursor: pointer; outline: none;
     }
     .lang-select option { background: #04060a; color: #fff; }
 
     .btn-action {
-      background: linear-gradient(135deg, rgba(0,240,255,0.15) 0%, rgba(0,102,255,0.2) 100%);
+      background: linear-gradient(135deg, rgba(10,60,145,0.15) 0%, rgba(0,102,255,0.2) 100%);
       border: 1px solid var(--accent-cyan); color: #fff; font-family: var(--font-heading);
       font-size: 0.65rem; padding: 5px 10px; border-radius: 4px; cursor: pointer;
       transition: all 0.25s ease; white-space: nowrap;
     }
     .btn-action:hover {
-      background: var(--accent-cyan); color: #000; box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+      background: var(--accent-cyan); color: #000; box-shadow: 0 0 12px rgba(10, 60, 145, 0.5);
     }
 
     /* DASHBOARD LAYOUT */
@@ -148,10 +148,10 @@
       font-family: var(--font-mono); font-size: 0.7rem; cursor: pointer;
       border-radius: 4px; transition: all 0.2s ease;
     }
-    .toggle-btn:hover { border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.06); }
+    .toggle-btn:hover { border-color: var(--accent-cyan); background: rgba(10, 60, 145, 0.06); }
     .toggle-btn.active {
-      border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.15);
-      color: #fff; box-shadow: inset 0 0 6px rgba(0, 240, 255, 0.2);
+      border-color: var(--accent-cyan); background: rgba(10, 60, 145, 0.15);
+      color: #fff; box-shadow: inset 0 0 6px rgba(10, 60, 145, 0.2);
     }
     .toggle-btn input[type="radio"] { accent-color: var(--accent-cyan); pointer-events: none; }
 
@@ -164,7 +164,7 @@
       flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--panel-border);
       border-radius: 4px; padding: 6px 10px; color: #fff; font-family: var(--font-mono); font-size: 0.7rem;
     }
-    .search-input:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 6px rgba(0,240,255,0.3); }
+    .search-input:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 6px rgba(10,60,145,0.3); }
 
     /* AI CHAT */
     .ai-chat-box {
@@ -173,8 +173,8 @@
       font-size: 0.68rem; display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px;
     }
     .ai-msg { padding: 4px 7px; border-radius: 4px; line-height: 1.35; word-break: break-word; }
-    .ai-msg.system { background: rgba(0, 240, 255, 0.08); border-left: 2px solid var(--accent-cyan); color: var(--text-main); }
-    .ai-msg.user { background: rgba(255, 183, 0, 0.08); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 92%; }
+    .ai-msg.system { background: rgba(10, 60, 145, 0.08); border-left: 2px solid var(--accent-cyan); color: var(--text-main); }
+    .ai-msg.user { background: rgba(10, 60, 145, 0.08); border-left: 2px solid var(--accent-amber); color: var(--accent-amber); align-self: flex-end; width: 92%; }
     
     .ai-input-row { display: flex; gap: 5px; }
     .ai-input {
@@ -215,7 +215,7 @@
       display: none; position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
       background: rgba(6, 10, 18, 0.95); border: 1px solid var(--accent-cyan); border-radius: 24px;
       padding: 5px 10px; z-index: 2500; gap: 8px; backdrop-filter: blur(12px);
-      box-shadow: 0 4px 20px rgba(0,240,255,0.4);
+      box-shadow: 0 4px 20px rgba(10,60,145,0.4);
     }
     @media (max-width: 900px) { .mobile-floating-bar { display: flex; } }
     .mob-tab-btn {
@@ -233,7 +233,7 @@
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-card {
       width: 680px; max-width: 100%; background: #080d18; border: 1px solid var(--accent-cyan);
-      border-radius: 8px; padding: 20px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); max-height: 85vh; overflow-y: auto;
+      border-radius: 8px; padding: 20px; box-shadow: 0 0 35px rgba(10, 60, 145, 0.3); max-height: 85vh; overflow-y: auto;
     }
     .modal-header {
       display: flex; justify-content: space-between; align-items: center;
@@ -248,64 +248,235 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #020407; }
     ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 2px; }
+
+    /* Reference site visual language: black navigation, light workspace, white cards */
+    body { background: #f3f5f8; color: #111827; }
+    .nasa-header { background: #000; color: #fff; border-bottom: 1px solid rgba(255,255,255,.12); box-shadow: none; }
+    .brand h1 { color: #fff; text-shadow: none; letter-spacing: .12em; }
+    .pulse-dot { background: #fc3c23; box-shadow: none; }
+    .badge { color: #fff; background: #0a3c91; border-color: #fc3c23; border-radius: 999px; }
+    .telemetry-bar { color: #c9d1e0; }
+    .metric { color: #c9d1e0; }
+    .metric strong { color: #fff; }
+    .sidebar { background: #f3f5f8; border-right-color: #dfe3ea; box-shadow: 2px 0 10px rgba(17,24,39,.06); }
+    .panel { background: #fff; border: 1px solid #dfe3ea; border-top: 3px solid #0a3c91; border-radius: 8px; color: #111827; }
+    .panel:hover { border-color: #dfe3ea; border-top-color: #0a3c91; }
+    .panel-header { border-bottom-color: #dfe3ea; }
+    .panel h2 { color: #111827; font-weight: 800; letter-spacing: 0; }
+    .panel-header > span { color: #0a3c91 !important; }
+    .data-label { color: #5b6678; }
+    .data-value { color: #0a3c91; }
+    .data-row { border-bottom: 1px solid #dfe3ea; padding: 5px 0; }
+    .toggle-btn { color: #5b6678; background: #fff; border-color: #dfe3ea; border-radius: 999px; }
+    .toggle-btn:hover { border-color: #0a3c91; background: #f3f5f8; }
+    .toggle-btn.active { color: #111827; background: rgba(252,60,35,.10); border-color: #fc3c23; box-shadow: none; }
+    .toggle-btn input[type="radio"] { accent-color: #fc3c23; }
+    .search-input, .ai-input { background: #fff; color: #111827; border-color: #dfe3ea; }
+    .search-input:focus, .ai-input:focus { border-color: #0a3c91; box-shadow: 0 0 0 2px rgba(10,60,145,.12); }
+    .ai-chat-box { background: #f3f5f8; border-color: #dfe3ea; }
+    .ai-msg.system { background: #e6ecf7; border-left-color: #0a3c91; color: #111827; }
+    .ai-msg.user { background: rgba(252,60,35,.10); border-left-color: #fc3c23; color: #111827; }
+    .btn-action, .ai-btn { background: #fc3c23; border-color: #fc3c23; color: #fff; border-radius: 999px; }
+    .btn-action:hover { background: #d9301a; border-color: #d9301a; color: #fff; box-shadow: none; }
+    .ai-btn:hover { background: #d9301a; }
+    .terminal-log { color: #17784a; background: #f3f5f8; border-color: #dfe3ea; }
+    #viewport-3d-box { background: #000; border-color: #1d2740; border-top: 3px solid #0a3c91; border-radius: 8px; }
+    .viewport-overlay { color: #c9d1e0; }
+    .map-viewport, #map { background-color: #080d16; }
+    #map {
+      background-image:
+        radial-gradient(ellipse at 24% 36%, transparent 0 5%, rgba(130,150,180,.15) 5.2% 5.5%, rgba(16,25,40,.72) 5.7% 10%, transparent 10.2%),
+        radial-gradient(ellipse at 72% 62%, transparent 0 7%, rgba(130,150,180,.12) 7.2% 7.5%, rgba(16,25,40,.74) 7.7% 14%, transparent 14.2%),
+        radial-gradient(ellipse at 48% 18%, transparent 0 4%, rgba(130,150,180,.1) 4.2% 4.5%, rgba(16,25,40,.7) 4.7% 9%, transparent 9.2%),
+        linear-gradient(rgba(91,143,232,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91,143,232,.06) 1px, transparent 1px),
+        linear-gradient(135deg, #111b2b, #080d16 62%, #101827);
+      background-size: 540px 360px, 680px 460px, 420px 300px, 96px 96px, 96px 96px, cover;
+    }
+    .mobile-floating-bar { background: #000; border-color: rgba(255,255,255,.25); box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+    .mob-tab-btn { color: #c9d1e0; }
+    .mob-tab-btn.active { background: #fc3c23; color: #fff; }
+    .modal-overlay { background: rgba(10,15,28,.72); }
+    .modal-card { background: #fff; color: #111827; border: 0; border-top: 4px solid #fc3c23; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,.24); }
+    .modal-header { border-bottom: 1px solid #dfe3ea; }
+    .modal-header h2 { color: #111827; }
+    .close-btn { color: #5b6678; }
+    .close-btn:hover { color: #fc3c23; }
+    .modal-body { color: #2b3445; }
+    .modal-body h3 { color: #0a3c91; }
+    ::-webkit-scrollbar-track { background: #f3f5f8; }
+    ::-webkit-scrollbar-thumb { background: #b7c1d1; }
+    /* Map-first dashboard composition inspired by the reference page */
+    @media (min-width: 901px) {
+      html, body { height: 100%; overflow: hidden; }
+      .dashboard-container {
+        display: grid;
+        width: calc(100% - 72px);
+        height: 100dvh;
+        min-height: 620px;
+        flex: none;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr);
+        grid-template-rows: minmax(58dvh, 1fr) 165px 155px;
+        gap: 10px;
+        padding: 10px;
+        overflow: auto;
+      }
+      .sidebar { display: contents; }
+      .map-viewport {
+        grid-column: 1 / -1; grid-row: 1;
+        min-width: 0; min-height: 320px; height: 100%;
+        border: 1px solid #1d2740; border-top: 3px solid #0a3c91;
+        border-radius: 8px; overflow: hidden;
+      }
+      #map { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 320px; border-radius: 6px; }
+      #main-sidebar > .panel { min-width: 0; min-height: 0; margin: 0; overflow: auto; }
+      #target-panel { grid-column: 1; grid-row: 2; }
+      #copilot-panel { grid-column: 3; grid-row: 2; }
+      #moon-panel { grid-column: 1; grid-row: 3; }
+      #terminal-panel { grid-column: 3; grid-row: 3; }
+      .center-brand { grid-column: 2; grid-row: 2 / 4; place-self: center; color: #111827; font: 800 clamp(2rem, 3.5vw, 3.6rem)/1.12 'Public Sans', sans-serif; letter-spacing: .04em; text-align: center; text-transform: uppercase; pointer-events: none; }
+      .panel:nth-child(2) { padding: 12px 14px; }
+      .panel:nth-child(2) .data-row { font-size: .78rem; padding: 7px 0; }
+      #viewport-3d-box { height: calc(100% - 32px); min-height: 100px; }
+      .ai-chat-box { height: 82px; }
+    }
+    @media (max-width: 900px) {
+      html, body { height: auto; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+      .dashboard-container { display: flex; width: 100%; height: auto; min-height: 0; flex: 1 0 auto; flex-direction: column; overflow: visible; gap: 10px; padding: 10px; }
+      .map-viewport { order: -1; flex: none; width: 100%; height: min(58dvh, 460px); min-height: 300px; border: 1px solid #1d2740; border-top: 3px solid #0a3c91; border-radius: 8px; overflow: hidden; }
+      .sidebar { position: static; top: auto; left: auto; display: flex; transform: none; z-index: auto; width: 100%; max-width: none; height: auto; overflow: visible; padding: 0; padding-bottom: 0; gap: 10px; background: transparent; border: 0; box-shadow: none; transition: none; }
+      #main-sidebar > .panel { width: 100%; }
+      #viewport-3d-box { height: 220px; }
+      .mobile-floating-bar { display: none; }
+    }
+
+    /* Reference-inspired navigation, moon logo, and About page */
+    .brand-link { display: block; flex: none; text-decoration: none; }
+    .brand-group h1 { margin: 0; color: #fff; font: 800 .9rem/1.2 'Public Sans',sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; text-shadow: none; }
+    .logo-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #0a3c91; border: 3px solid #fc3c23; color: #fff; font: 700 1.45rem/1 Arial, sans-serif; }
+    .menu-toggle { display: none; min-width: 44px; min-height: 44px; background: transparent; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; color: #fff; font-size: 1.25rem; cursor: pointer; }
+    .site-nav { display: flex; align-items: center; gap: 4px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border: 0; border-left: 3px solid transparent; background: transparent; color: #c9d1e0; font: 600 .88rem 'Public Sans',sans-serif; text-decoration: none; cursor: pointer; }
+    .nav-link:hover, .nav-link.active { color: #fff; border-left-color: #fc3c23; background: rgba(255,255,255,.06); }
+    .nav-icon { width: 24px; text-align: center; font: 1.25rem/1 'Segoe UI Symbol',sans-serif; }
+    .nav-briefing { border-bottom: 0; }
+    .about-wrap { width: min(1100px, 100%); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+    .view-about { min-height: calc(100dvh - 54px); background: #000; color: #fff; display: flex; flex-direction: column; overflow-y: auto; }
+    .about-hero { display: flex; align-items: center; min-height: 260px; padding: 40px 0; background: transparent; color: #fff; position: relative; overflow: hidden; }
+    .about-hero::after { content: '☾'; position: absolute; right: 9%; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 230px; height: 230px; border-radius: 50%; background: #0a3c91; box-shadow: 0 0 0 9px #0a3c91, 0 0 0 13px #fc3c23; color: #fff; font: 8rem/1 Arial,sans-serif; }
+    .about-eyebrow { color: #fc3c23; font-size: .8rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 10px; }
+    .about-hero h1 { max-width: 680px; font-size: clamp(2.2rem,5vw,3.6rem); line-height: 1.08; font-weight: 800; }
+    .about-lead { max-width: 570px; margin-top: 16px; color: #c9d1e0; font-size: 1.05rem; }
+    .about-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 48px; padding-top: 28px; padding-bottom: 48px; background: #000; }
+    .about-card { background: #0a0f18; border: 1px solid rgba(255,255,255,.16); border-left: 3px solid #0a3c91; border-radius: 4px; padding: 20px 22px; min-height: 112px; }
+    .about-card h2 { margin-bottom: 9px; color: #fff; font-size: 1rem; font-weight: 800; }
+    .about-card p { color: #c9d1e0; font-size: .9rem; line-height: 1.7; }
+    .about-card code { color: #0a3c91; font-family: 'DM Mono',monospace; }
+    .about-footer { margin-top: auto; padding: 16px 24px; background: transparent; border-top: 1px solid rgba(255,255,255,.18); color: #c9d1e0; font-size: .86rem; }
+    @media (min-width: 901px) {
+      .nasa-header { position: fixed; inset: 0 auto 0 0; width: 72px; height: 100dvh; padding: 18px 8px; flex-direction: column; align-items: center; justify-content: flex-start; gap: 18px; overflow-y: auto; }
+      .brand-group { flex-direction: column; gap: 10px; }
+      .brand-group > h1, .brand-group > .badge { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .site-nav { width: 100%; flex-direction: column; gap: 2px; }
+      .nav-link { width: 100%; justify-content: center; padding: 12px 0; border-left: 3px solid transparent; }
+      .nav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .telemetry-bar { display: none; }
+      .header-actions { width: 100%; margin-top: auto; flex-direction: column; gap: 8px; }
+      .lang-select { width: 48px; }
+      .sync-action { width: 48px; padding: 6px 4px; }
+      .dashboard-container { margin-left: 72px; }
+      .view-about { min-height: 100dvh; margin-left: 72px; }
+    }
+    @media (max-width: 900px) {
+      .nasa-header { position: sticky; top: 0; height: auto; min-height: 58px; padding: 8px 14px; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 8px 12px; }
+      .brand-group { gap: 9px; }
+      .logo-mark { width: 38px; height: 38px; font-size: 1.15rem; }
+      .brand h1 { font-size: .85rem; letter-spacing: .08em; }
+      .badge { display: none; }
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; order: 2; }
+      .site-nav { display: none; order: 4; width: 100%; flex-direction: column; align-items: stretch; gap: 0; }
+      .nasa-header.menu-open .site-nav { display: flex; }
+      .nav-link { width: 100%; justify-content: flex-start; min-height: 44px; border-left: 3px solid transparent; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .nav-label { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
+      .header-actions { order: 3; margin-left: auto; }
+      .view-about { min-height: calc(100dvh - 58px); }
+      .about-hero { min-height: 210px; padding: 34px 0; }
+      .about-hero::after { display: grid; right: 5%; width: 112px; height: 112px; font-size: 4rem; box-shadow: 0 0 0 5px #0a3c91, 0 0 0 8px #fc3c23; }
+      .about-wrap { padding-right: 24px; }
+      .about-hero .about-wrap { padding-right: 145px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    .map-viewport { display: flex; flex-direction: column; }
+    .map-toolbar { display: flex; flex: none; flex-direction: column; gap: 0; padding: 0 8px; overflow: hidden; background: #000; border-bottom: 1px solid rgba(255,255,255,.12); color: #fff; }
+    .map-toolbar-main { display: flex; align-items: center; gap: 10px; min-height: 42px; min-width: max-content; }
+    .map-toolbar h2 { flex: 0 0 28%; font: 800 .72rem 'Public Sans',sans-serif; white-space: nowrap; }
+    .map-toolbar .telemetry-bar { display: flex; flex: none; align-items: center; justify-content: center; flex-wrap: nowrap; gap: 5px 14px; min-height: 34px; color: #c9d1e0; font: 600 .58rem 'IBM Plex Mono','DM Mono',monospace; }
+    .map-toolbar .metric { color: #c9d1e0; white-space: nowrap; }
+    .map-toolbar .metric strong { color: #fff; }
+    .map-controls { display: flex; flex: 1; align-items: center; gap: 8px; }
+    .map-controls .search-bar { flex: 0 0 160px; width: 160px; min-width: 0; margin: 0; }
+    .map-controls .search-input { width: 100%; min-height: 30px; padding: 4px 8px; font-size: .63rem; }
+    .map-controls .control-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; gap: 6px; }
+    .map-controls .toggle-btn { min-height: 30px; padding: 3px 8px; gap: 5px; font-size: .61rem; white-space: nowrap; color: #111827; background: #fff; border: 1px solid #aeb8c7; border-radius: 999px; }
+    .map-controls .toggle-btn:hover { color: #0a3c91; background: #eef3fb; border-color: #0a3c91; }
+    .map-controls .toggle-btn.active { color: #fff; background: #0a3c91; border: 2px solid #fc3c23; box-shadow: inset 0 -2px 0 #fc3c23; }
+    .map-controls .toggle-btn input[type="radio"] { accent-color: #fc3c23; width: 13px; height: 13px; }
+    .map-controls .search-input { color: #111827; background: #fff; border: 1px solid #aeb8c7; border-radius: 6px; }
+    .map-controls .search-input::placeholder { color: #5b6678; opacity: 1; }
+    .map-controls .search-input:focus { border-color: #0a3c91; outline: 2px solid rgba(10,60,145,.22); outline-offset: 1px; box-shadow: none; }
+    #dashboard-container[hidden], #view-about[hidden] { display: none !important; }
+    .map-viewport #map { position: relative; inset: auto; flex: 1; width: 100%; height: auto !important; min-height: 0; filter: grayscale(.62) brightness(.9) contrast(1.05); }
+    .map-controls { flex: 0 0 auto; min-width: max-content; }
+    .map-controls .control-group { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; width: max-content; min-width: max-content; }
+    .map-controls { flex: 1 1 auto; min-width: 0; justify-content: flex-end; gap: 8px; }
+    .map-controls .control-group { margin: 0; }
+    .map-controls #btn-layer-wac, .map-controls #btn-layer-ortho { display: inline-flex; flex: 0 0 auto; width: auto; white-space: nowrap; }
+    @media (max-width: 900px) {
+      .map-toolbar { overflow-x: auto; }
+      .map-toolbar-main { min-width: max-content; }
+      .map-toolbar h2 { flex-basis: 150px; font-size: .66rem; }
+      .map-controls .search-bar { flex-basis: 138px; width: 138px; }
+      .map-controls .toggle-btn { min-height: 30px; font-size: .58rem; padding: 3px 6px; }
+      .map-toolbar .telemetry-bar { justify-content: center; gap: 4px 9px; min-width: 100%; font-size: .54rem; }
+      .map-viewport #map { height: auto !important; min-height: 0; }
+    }
+
+
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-  <header class="nasa-header">
+  <header class="nasa-header" id="site-header">
     <div class="brand-group">
-      <div class="pulse-dot"></div>
+      <a class="brand-link" href="#dashboard" aria-label="Dancing with SARs home"><span class="logo-mark" aria-hidden="true">☾</span></a>
       <h1 data-i18n="title">Dancing with SARs</h1>
       <span class="badge">CLPS v7.5</span>
     </div>
-
-    <div class="telemetry-bar">
-      <div class="metric">LAT: <strong id="telemetry-lat">-89.90°</strong></div>
-      <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
-      <div class="metric"><span data-i18n="elev_lbl">ELEV</span>: <strong id="telemetry-elev">1,840 m</strong></div>
-      <div class="metric"><span data-i18n="freq_lbl">SAR FREQ</span>: <strong>L-Band (1.25 GHz)</strong></div>
-    </div>
-
+    <button class="menu-toggle" type="button" aria-label="Menü öffnen" data-i18n-aria-label="menu_open" aria-expanded="false" aria-controls="site-nav" onclick="toggleMenu()"><span aria-hidden="true">☰</span></button>
+    <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation" data-i18n-aria-label="nav_aria">
+      <a class="nav-link active" id="nav-dashboard" href="#dashboard" onclick="document.getElementById('dashboard-container').hidden=false; document.getElementById('view-about').hidden=true; document.getElementById('nav-dashboard').classList.add('active'); document.getElementById('nav-about').classList.remove('active'); document.getElementById('site-header').classList.remove('menu-open'); document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');" title="Übersicht" data-i18n-title="nav_dashboard"><span class="nav-icon" aria-hidden="true">⌖</span><span class="nav-label" data-i18n="nav_dashboard">Übersicht</span></a>
+      <a class="nav-link" id="nav-about" href="#about" onclick="document.getElementById('dashboard-container').hidden=true; document.getElementById('view-about').hidden=false; document.getElementById('nav-about').classList.add('active'); document.getElementById('nav-dashboard').classList.remove('active'); document.getElementById('site-header').classList.remove('menu-open'); document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');" title="Über das Projekt" data-i18n-title="nav_about"><span class="nav-icon" aria-hidden="true">ⓘ</span><span class="nav-label" data-i18n="nav_about">Über das Projekt</span></a>
+      <button class="nav-link nav-briefing" type="button" onclick="toggleModal(true)" title="BRIEFING" data-i18n-title="btn_briefing"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-label" data-i18n="btn_briefing">BRIEFING</span></button>
+    </nav>
     <div class="header-actions">
       <select id="language-select" class="lang-select" onchange="changeLanguage(this.value)">
-        <option value="de" selected>DE</option>
-        <option value="en">EN</option>
+        <option value="de">DE</option>
+        <option value="en" selected>EN</option>
       </select>
-      <button class="btn-action" onclick="toggleModal(true)" data-i18n="btn_briefing">BRIEFING</button>
-      <button class="btn-action" onclick="loadServerData()" data-i18n="btn_sync">SYNC</button>
+      <button class="btn-action sync-action" onclick="loadServerData()" data-i18n="btn_sync">SYNC</button>
     </div>
   </header>
 
   <!-- DASHBOARD CONTAINER -->
-  <div class="dashboard-container">
+  <div class="dashboard-container" id="dashboard-container">
     
     <!-- SIDEBAR -->
     <aside class="sidebar" id="main-sidebar">
       
-      <!-- Panel 1: Layer & Suche -->
-      <section class="panel">
-        <div class="panel-header">
-          <h2 data-i18n="p1_title">Mond-Karten & Suche</h2>
-          <span style="font-family: var(--font-mono); font-size: 0.58rem; color: var(--accent-cyan);">DATA-LINK</span>
-        </div>
-        <div class="search-bar">
-          <input type="text" id="target-search" class="search-input" placeholder="Zielsuche..." data-i18n-placeholder="search_ph" oninput="filterTargets(this.value)">
-        </div>
-        <div class="control-group">
-          <label class="toggle-btn active" id="btn-layer-wac" onclick="setLayer('wac')">
-            <span data-i18n="layer_cpr">NASA LROC WAC Mosaik</span>
-            <input type="radio" name="sar-layer" checked>
-          </label>
-          <label class="toggle-btn" id="btn-layer-ortho" onclick="setLayer('ortho')">
-            <span data-i18n="layer_rough">Polar-Krater Relief</span>
-            <input type="radio" name="sar-layer">
-          </label>
-        </div>
-      </section>
-
       <!-- Panel 2: Target Telemetry -->
-      <section class="panel">
+      <section class="panel" id="target-panel">
         <div class="panel-header">
           <h2 data-i18n="p2_title">CLPS Ziel-Messwerte</h2>
           <span style="font-family: var(--font-mono); font-size: 0.58rem; color: var(--accent-amber);" id="target-id">SAR-001</span>
@@ -321,7 +492,7 @@
       </section>
 
       <!-- Panel 3: AI Copilot -->
-      <section class="panel">
+      <section class="panel" id="copilot-panel">
         <div class="panel-header">
           <h2 data-i18n="p3_title">SAR AI Copilot</h2>
           <span style="font-family: var(--font-mono); font-size: 0.58rem; color: var(--accent-green);">ONLINE</span>
@@ -336,7 +507,7 @@
       </section>
 
       <!-- Panel 4: 3D View -->
-      <section class="panel">
+      <section class="panel" id="moon-panel">
         <div class="panel-header">
           <h2 data-i18n="p4_title">3D Orbitale Ansicht</h2>
           <span style="font-family: var(--font-mono); font-size: 0.58rem; color: var(--accent-cyan);">THREE.JS</span>
@@ -348,7 +519,7 @@
       </section>
 
       <!-- Panel 5: Mission Terminal -->
-      <section class="panel">
+      <section class="panel" id="terminal-panel">
         <div class="panel-header">
           <h2 data-i18n="p5_title">Missions-Terminal</h2>
           <span style="font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-muted);">SYSLOG</span>
@@ -360,18 +531,66 @@
 
     </aside>
 
+
+
     <!-- MAP VIEWPORT -->
     <main class="map-viewport">
+      <div class="map-toolbar">
+        <div class="map-toolbar-main">
+          <h2 data-i18n="map_title">Lunare Oberflächenkarte</h2>
+          <div class="map-controls">
+            <div class="search-bar">
+              <input type="text" id="target-search" class="search-input" placeholder="Search target (e.g. Shackleton)..." data-i18n-placeholder="search_ph" oninput="filterTargets(this.value)" aria-label="Landeplätze suchen" data-i18n-aria-label="map_search_aria">
+            </div>
+            <div class="control-group" role="group" aria-label="Mondkarten-Ebenen" data-i18n-aria-label="map_layers_aria">
+              <label class="toggle-btn active" id="btn-layer-wac" onclick="setLayer('wac')">
+                <span data-i18n="layer_cpr">NASA LROC WAC Mosaic</span>
+                <input type="radio" name="sar-layer" checked>
+              </label>
+              <label class="toggle-btn" id="btn-layer-ortho" onclick="setLayer('ortho')">
+                <span data-i18n="layer_rough">Polar Crater Relief</span>
+                <input type="radio" name="sar-layer">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="telemetry-bar" aria-label="Live map telemetry">
+          <div class="metric">LAT: <strong id="telemetry-lat">-89.90°</strong></div>
+          <div class="metric">LNG: <strong id="telemetry-lng">0.00°</strong></div>
+          <div class="metric"><span data-i18n="elev_lbl">ELEV</span>: <strong id="telemetry-elev">1,840 m</strong></div>
+          <div class="metric"><span data-i18n="freq_lbl">SAR FREQ</span>: <strong>L-Band (1.25 GHz)</strong></div>
+        </div>
+      </div>
       <div id="map"></div>
     </main>
 
+    <div class="center-brand" aria-label="DANCING WITH SARs">DANCING<br>WITH<br>SARs</div>
+
     <!-- MOBILE FLOATING BOTTOM BAR -->
     <div class="mobile-floating-bar">
-      <button class="mob-tab-btn active" onclick="switchMobileTab('map', this)">Karte</button>
-      <button class="mob-tab-btn" onclick="switchMobileTab('panel', this)">Panels</button>
+      <button class="mob-tab-btn active" data-i18n="mobile_map" onclick="switchMobileTab('map', this)">Karte</button>
+      <button class="mob-tab-btn" data-i18n="mobile_panels" onclick="switchMobileTab('panel', this)">Panels</button>
     </div>
 
   </div>
+
+
+  <main class="view-about" id="view-about" hidden>
+    <section class="about-hero">
+      <div class="about-wrap">
+        <p class="about-eyebrow" data-i18n="about_eyebrow">Lunarerkundung</p>
+        <h1 data-i18n="about_title">Über Dancing with SARs</h1>
+        <p class="about-lead" data-i18n="about_lead">Ein Analyse-Dashboard für lunare Landeplätze, mit dem Gelände, Beleuchtung, Eisvorkommen und Gefahren am Südpol des Mondes untersucht werden können.</p>
+
+      </div>
+    </section>
+    <section class="about-wrap about-grid" aria-label="Über dieses Projekt" data-i18n-aria-label="about_aria">
+      <article class="about-card"><h2 data-i18n="about_project_title">Projekt</h2><p data-i18n="about_project_body">Dancing with SARs verbindet Radar-Ebenen, Informationen zu dauerhaft beschatteten Regionen und Messwerte möglicher Landeplätze. So lassen sich potenzielle Standorte für Commercial Lunar Payload Services (CLPS) vergleichen.</p></article>
+      <article class="about-card"><h2 data-i18n="about_data_title">Daten &amp; Kartenebenen</h2><p data-i18n="about_data_body">Erkunde Mondaufnahmen, das Relief von Polarkratern und Messwerte möglicher Landeplätze. Zieldaten können aus data.json geladen werden. Fehlt die Datei, nutzt die Anwendung integrierte Beispieldaten.</p></article>
+      <article class="about-card"><h2 data-i18n="about_disclaimer_title">Haftungsausschluss</h2><p data-i18n="about_disclaimer_body">Dancing with SARs ist ein unabhängiges Projekt. Es ist kein offizielles NASA-Produkt und wird weder von der NASA getragen noch von ihr unterstützt.</p></article>
+    </section>
+    <footer class="about-footer" data-i18n="about_footer">Dancing with SARs — Analyse lunare Landeplätze</footer>
+  </main>
 
   <!-- BRIEFING MODAL -->
   <div class="modal-overlay" id="briefing-modal">
@@ -397,9 +616,31 @@
     const translations = {
       de: {
         title: "Dancing with SARs",
-        elev_lbl: "ELEV",
+        map_title: "Lunare Oberflächenkarte",
+        doc_title: "Dancing with SARs — Analyse lunare Landeplätze",
+        nav_aria: "Hauptnavigation",
+        nav_dashboard: "Übersicht",
+        nav_about: "Über das Projekt",
+        menu_open: "Menü öffnen",
+        menu_close: "Menü schließen",
+        map_search_aria: "Landeplätze suchen",
+        map_layers_aria: "Mondkarten-Ebenen",
+        about_eyebrow: "Lunarerkundung",
+        about_title: "Über Dancing with SARs",
+        about_lead: "Ein Analyse-Dashboard für lunare Landeplätze, mit dem Gelände, Beleuchtung, Eisvorkommen und Gefahren am Südpol des Mondes untersucht werden können.",
+        about_aria: "Über dieses Projekt",
+        about_project_title: "Projekt",
+        about_project_body: "Dancing with SARs verbindet Radar-Ebenen, Informationen zu dauerhaft beschatteten Regionen und Messwerte möglicher Landeplätze. So lassen sich potenzielle Standorte für Commercial Lunar Payload Services (CLPS) vergleichen.",
+        about_data_title: "Daten & Kartenebenen",
+        about_data_body: "Erkunde Mondaufnahmen, das Relief von Polarkratern und Messwerte möglicher Landeplätze. Zieldaten können aus data.json geladen werden. Fehlt die Datei, nutzt die Anwendung integrierte Beispieldaten.",
+        about_disclaimer_title: "Haftungsausschluss",
+        about_disclaimer_body: "Dancing with SARs ist ein unabhängiges Projekt. Es ist kein offizielles NASA-Produkt und wird weder von der NASA getragen noch von ihr unterstützt.",
+        about_footer: "Dancing with SARs — Analyse lunare Landeplätze",
+        mobile_map: "Karte",
+        mobile_panels: "Panels",
+        elev_lbl: "HÖHE",
         freq_lbl: "FREQ",
-        btn_briefing: "BRIEFING",
+        btn_briefing: "MISSIONSEINWEISUNG",
         btn_sync: "SYNC",
         p1_title: "Mond-Karten & Suche",
         search_ph: "Zielsuche (z.B. Shackleton)...",
@@ -415,10 +656,10 @@
         p3_title: "SAR AI Copilot",
         sys_init: "[SYSTEM]: Bereit für Live-Anfragen zum ausgewählten Ziel.",
         chat_ph: "Frage an KI...",
-        btn_send: "SEND",
+        btn_send: "SENDEN",
         p4_title: "3D Orbitale Ansicht",
         p5_title: "Missions-Terminal",
-        modal_title: "CLPS Mission & SAR Briefing",
+        modal_title: "CLPS-Mission & SAR-System: Einweisung",
         modal_html: `<p><strong>Herausforderung:</strong> Commercial Lunar Payload Services (CLPS) Landefahrzeuge stehen am Südpol des Mondes vor extremen Risiken durch ständig beschattete Regionen (PSRs), steile Kraterhänge und verborgene Felsbrocken.</p>
         <h3>1. Wassereis in dunklen Kratern</h3>
         <p>Optische Kameras können nicht in Schattenkrater blicken. Synthetic Aperture Radar (SAR) nutzt die zirkulare Polarisationsrate (CPR > 1.0), um Vorkommen von Wassereis im dunklen Kraterboden zu lokalisieren.</p>
@@ -427,6 +668,28 @@
       },
       en: {
         title: "Dancing with SARs",
+        map_title: "Lunar Surface Map",
+        doc_title: "Dancing with SARs — Lunar Landing Site Analysis",
+        nav_aria: "Primary navigation",
+        nav_dashboard: "Dashboard",
+        nav_about: "About",
+        menu_open: "Open menu",
+        menu_close: "Close menu",
+        map_search_aria: "Search landing sites",
+        map_layers_aria: "Lunar map layers",
+        about_eyebrow: "Lunar Exploration",
+        about_title: "About Dancing with SARs",
+        about_lead: "A lunar landing-site analysis dashboard for exploring terrain, illumination, ice probability, and hazards near the Moon’s south pole.",
+        about_aria: "About this project",
+        about_project_title: "Project",
+        about_project_body: "Dancing with SARs combines synthetic aperture radar layers, permanently shadowed region information, and candidate landing-site measurements to help compare potential Commercial Lunar Payload Services (CLPS) locations.",
+        about_data_title: "Data & Layers",
+        about_data_body: "Explore lunar imagery, polar-crater relief, and landing-site measurements. Target data can be loaded from data.json; built-in sample targets are available when that file is not present.",
+        about_disclaimer_title: "Disclaimer",
+        about_disclaimer_body: "Dancing with SARs is an independent project. It is not an official NASA product and is not affiliated with or endorsed by NASA.",
+        about_footer: "Dancing with SARs — Lunar Landing Site Analysis",
+        mobile_map: "Map",
+        mobile_panels: "Panels",
         elev_lbl: "ELEV",
         freq_lbl: "FREQ",
         btn_briefing: "BRIEFING",
@@ -457,11 +720,13 @@
       }
     };
 
-    let currentLang = 'de';
+    let currentLang = 'en';
 
     function changeLanguage(lang) {
       currentLang = lang;
       const dict = translations[lang];
+      document.documentElement.lang = lang;
+      document.title = dict.doc_title;
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -471,6 +736,14 @@
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
         if (dict[key]) el.placeholder = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria-label');
+        if (dict[key]) el.setAttribute('aria-label', dict[key]);
+      });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (dict[key]) el.title = dict[key];
       });
 
       document.getElementById('modal-content-body').innerHTML = dict.modal_html;
@@ -483,6 +756,7 @@
     const map = L.map('map', {
       center: [-88.5, 0], zoom: 4, minZoom: 2, maxZoom: 8, attributionControl: false
     });
+    window.lunarMap = map;
 
     const wacLayer = L.tileLayer('https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/{z}/{y}/{x}.jpg', {
       minZoom: 2, maxZoom: 8, noWrap: true
@@ -493,9 +767,13 @@
     });
 
     function setLayer(type) {
-      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      const selectedId = type === 'wac' ? 'btn-layer-wac' : 'btn-layer-ortho';
+      document.querySelectorAll('#btn-layer-wac, #btn-layer-ortho').forEach(label => {
+        const selected = label.id === selectedId;
+        label.classList.toggle('active', selected);
+        label.querySelector('input[type="radio"]').checked = selected;
+      });
       if (type === 'wac') {
-        document.getElementById('btn-layer-wac').classList.add('active');
         if (map.hasLayer(orthoLayer)) map.removeLayer(orthoLayer);
         wacLayer.addTo(map);
       } else {
@@ -545,7 +823,7 @@
       
       targets.forEach(target => {
         const marker = L.circleMarker([target.lat, target.lng], {
-          radius: 8, fillColor: '#00f0ff', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.9
+          radius: 8, fillColor: '#5b8fe8', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.9
         }).addTo(map);
 
         marker.bindTooltip(`<b>${target.name}</b>`, { permanent: false, direction: 'top' });
@@ -601,12 +879,17 @@
     renderer.setSize(container.clientWidth, container.clientHeight);
 
     const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshStandardMaterial({ color: 0x182a3c, roughness: 0.5, metalness: 0.2 });
+    
+    // Textur aus 'Untitled.blend' laden (aus Blender exportierte Texturgrafik)
+    const textureLoader = new THREE.TextureLoader();
+    const moonTexture = textureLoader.load('texture.png'); // Pfad zur Bilddatei (z.B. texture.png oder texture.jpg)
+
+    const material = new THREE.MeshStandardMaterial({ map: moonTexture, roughness: 0.5, metalness: 0.2 });
     const moonMesh = new THREE.Mesh(geometry, material);
     scene.add(moonMesh);
 
     const wireGeometry = new THREE.WireframeGeometry(geometry);
-    const wireMaterial = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.25 });
+    const wireMaterial = new THREE.LineBasicMaterial({ color: 0x5b8fe8, transparent: true, opacity: 0.25 });
     const wireMesh = new THREE.LineSegments(wireGeometry, wireMaterial);
     moonMesh.add(wireMesh);
 
@@ -710,9 +993,12 @@
 
     function handleAiKeyPress(e) { if (e.key === 'Enter') sendAiMessage(); }
 
+
+
+
     /* Init */
     window.addEventListener('load', () => {
-      changeLanguage('de');
+      changeLanguage('en');
       loadServerData();
       setTimeout(() => map.invalidateSize(), 300);
     });
@@ -721,5 +1007,33 @@
       map.invalidateSize();
     });
   </script>
+
+<script>
+  function toggleMenu(force) {
+    const header = document.getElementById('site-header');
+    const open = typeof force === 'boolean' ? force : !header.classList.contains('menu-open');
+    header.classList.toggle('menu-open', open);
+    header.querySelector('.menu-toggle').setAttribute('aria-expanded', String(open));
+    const lang = document.getElementById('language-select').value;
+    header.querySelector('.menu-toggle').setAttribute('aria-label', translations[lang][open ? 'menu_close' : 'menu_open']);
+  }
+  function showSitePage(about) {
+    document.getElementById('dashboard-container').hidden = about;
+    document.getElementById('view-about').hidden = !about;
+    document.getElementById('nav-dashboard').classList.toggle('active', !about);
+    document.getElementById('nav-about').classList.toggle('active', about);
+    toggleMenu(false);
+    if (!about && window.lunarMap) {
+      requestAnimationFrame(() => window.lunarMap.invalidateSize({ pan: false }));
+      setTimeout(() => window.lunarMap.invalidateSize({ pan: false }), 300);
+    }
+    window.scrollTo(0, 0);
+  }
+  function routePage() { showSitePage(location.hash === '#about'); }
+  window.addEventListener('hashchange', routePage);
+  document.querySelectorAll('#site-nav a').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+  window.addEventListener('load', routePage);
+  routePage();
+</script>
 </body>
 </html>

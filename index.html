@@ -531,8 +531,6 @@
 
     </aside>
 
-
-
     <!-- MAP VIEWPORT -->
     <main class="map-viewport">
       <div class="map-toolbar">
@@ -573,7 +571,6 @@
     </div>
 
   </div>
-
 
   <main class="view-about" id="view-about" hidden>
     <section class="about-hero">
@@ -877,18 +874,27 @@
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
     camera.position.z = 2.6;
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
 
     // Group für den Mond-Container
     const moonMesh = new THREE.Group();
     scene.add(moonMesh);
 
-    // Lichter
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    // Ausgewogene Ausleuchtung für Texturen & Materialien
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
     dirLight.position.set(5, 3, 5);
     scene.add(dirLight);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.8);
+    scene.add(hemiLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
 
     // GLTF / Draco Loader initialisieren
     const loader = new THREE.GLTFLoader();
@@ -896,10 +902,41 @@
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
     loader.setDRACOLoader(dracoLoader);
 
-    // Untitled.glb laden
-    loader.load('Untitled.glb', (gltf) => {
+    // Untitled.glb laden und Texturen/Materialien automatisch konfigurieren
+    loader.load('./Untitled.glb', (gltf) => {
       const model = gltf.scene;
       
+      // Automatische Korrektur aller Materialien & Textur-Mappings in Untitled.glb
+      model.traverse((child) => {
+        if (child.isMesh) {
+          if (child.material) {
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            
+            materials.forEach((mat) => {
+              mat.needsUpdate = true;
+              
+              // Korrekte Farbraumkodierung für Texturen erzwingen
+              if (mat.map) {
+                mat.map.encoding = THREE.sRGBEncoding;
+                mat.map.needsUpdate = true;
+              }
+              if (mat.emissiveMap) mat.emissiveMap.encoding = THREE.sRGBEncoding;
+              if (mat.normalMap) mat.normalMap.needsUpdate = true;
+              
+              // Optimierte Reflexionswerte für Mondoberflächen
+              if (mat.isMeshStandardMaterial || mat.isMeshPhysicalMaterial) {
+                if (!mat.map) {
+                  mat.roughness = 0.9;
+                  mat.metalness = 0.1;
+                } else {
+                  mat.roughness = mat.roughness ?? 0.85;
+                }
+              }
+            });
+          }
+        }
+      });
+
       // Automatisch zentrieren und auf den Viewport skalieren
       const box = new THREE.Box3().setFromObject(model);
       const size = box.getSize(new THREE.Vector3());
@@ -914,8 +951,10 @@
       model.position.sub(center.multiplyScalar(model.scale.x));
       
       moonMesh.add(model);
+      logTerminal("Untitled.glb inkl. Texturen geladen.");
     }, undefined, (error) => {
       console.error('Fehler beim Laden von Untitled.glb:', error);
+      logTerminal("Fehler beim Laden von Untitled.glb");
     });
 
     // Interactive Dragging
@@ -1013,9 +1052,6 @@
 
     function handleAiKeyPress(e) { if (e.key === 'Enter') sendAiMessage(); }
 
-
-
-
     /* Init */
     window.addEventListener('load', () => {
       changeLanguage('en');
@@ -1031,7 +1067,7 @@
 <script>
   function toggleMenu(force) {
     const header = document.getElementById('site-header');
-    const open = typeof force === 'boolean' ? force : !header.classList.contains('menu-open');
+    const open = typeof force === 'between' ? force : !header.classList.contains('menu-open');
     header.classList.toggle('menu-open', open);
     header.querySelector('.menu-toggle').setAttribute('aria-expanded', String(open));
     const lang = document.getElementById('language-select').value;

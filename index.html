@@ -608,6 +608,8 @@
   <!-- LEAFLET & THREE.JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 
   <script>
     /* ==========================================
@@ -866,7 +868,7 @@
     });
 
     /* ==========================================
-       4. THREE.JS 3D MOON VIEWPORT
+       4. THREE.JS 3D MOON VIEWPORT (UNTITLED.GLB)
        ========================================== */
     const container = document.getElementById('viewport-3d-box');
     const canvas = document.getElementById('canvas-3d');
@@ -878,25 +880,43 @@
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
 
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    
-    // Textur aus 'Untitled.blend' laden (aus Blender exportierte Texturgrafik)
-    const textureLoader = new THREE.TextureLoader();
-    const moonTexture = textureLoader.load('texture.png'); // Pfad zur Bilddatei (z.B. texture.png oder texture.jpg)
-
-    const material = new THREE.MeshStandardMaterial({ map: moonTexture, roughness: 0.5, metalness: 0.2 });
-    const moonMesh = new THREE.Mesh(geometry, material);
+    // Group für den Mond-Container
+    const moonMesh = new THREE.Group();
     scene.add(moonMesh);
 
-    const wireGeometry = new THREE.WireframeGeometry(geometry);
-    const wireMaterial = new THREE.LineBasicMaterial({ color: 0x5b8fe8, transparent: true, opacity: 0.25 });
-    const wireMesh = new THREE.LineSegments(wireGeometry, wireMaterial);
-    moonMesh.add(wireMesh);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    // Lichter
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
     dirLight.position.set(5, 3, 5);
     scene.add(dirLight);
-    scene.add(new THREE.AmbientLight(0x112233));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+    // GLTF / Draco Loader initialisieren
+    const loader = new THREE.GLTFLoader();
+    const dracoLoader = new THREE.DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    loader.setDRACOLoader(dracoLoader);
+
+    // Untitled.glb laden
+    loader.load('Untitled.glb', (gltf) => {
+      const model = gltf.scene;
+      
+      // Automatisch zentrieren und auf den Viewport skalieren
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      
+      if (maxDim > 0) {
+        const scale = 1.8 / maxDim;
+        model.scale.set(scale, scale, scale);
+      }
+      
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.sub(center.multiplyScalar(model.scale.x));
+      
+      moonMesh.add(model);
+    }, undefined, (error) => {
+      console.error('Fehler beim Laden von Untitled.glb:', error);
+    });
 
     // Interactive Dragging
     let isDragging = false, prevMouseX = 0, prevMouseY = 0;
